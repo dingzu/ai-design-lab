@@ -6,6 +6,7 @@
     <CapabilitiesSection />
     <WorkflowSection />
     <ToolsSection />
+    <WorksSection />
     <FooterSection />
   </div>
 </template>
@@ -17,6 +18,7 @@ import ManifestoSection from './components/ManifestoSection.vue'
 import CapabilitiesSection from './components/CapabilitiesSection.vue'
 import WorkflowSection from './components/WorkflowSection.vue'
 import ToolsSection from './components/ToolsSection.vue'
+import WorksSection from './components/WorksSection.vue'
 import FooterSection from './components/FooterSection.vue'
 </script>
 
