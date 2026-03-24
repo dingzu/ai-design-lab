@@ -614,7 +614,7 @@
         </article>
 
         <!-- article: infographic-types -->
-        <article v-if="activeArticle === 'infographic-types'" class="article">
+        <article v-if="activeArticle === 'infographic-types'" class="article article-iframe">
 
           <header class="article-header">
             <div class="article-breadcrumb">
@@ -624,221 +624,57 @@
             </div>
             <div class="article-badges">
               <span class="tag tag-blue">设计研究</span>
-              <span class="tag tag-green">11 种类型</span>
-              <span class="tag" style="background:#fef3e8;border-color:#fdba74;color:#b45309">信息可视化</span>
+              <span class="tag tag-green">10 大语义类</span>
+              <span class="tag" style="background:#f0f4ff;border-color:#a5b4fc;color:#4338ca">三维分类</span>
             </div>
-            <h1 class="article-title">信息图分类研究：11 种主流类型全解析</h1>
-            <p class="article-desc">基于 Piktochart、Visme、Canva 等专业平台的研究，系统梳理信息图的分类体系与设计原则</p>
+            <h1 class="article-title">信息可视化图表分类体系</h1>
+            <p class="article-desc">语义维度 × 技术路径 × Skill 工程路径，涵盖全量图表类型，精细到品牌屋层级</p>
             <div class="article-meta">
-              <span class="meta-item">📊 研究来源: Piktochart, Visme, Canva</span>
+              <span class="meta-item">📊 10 大语义类 · 60+ 图表类型</span>
               <span class="meta-item">📅 研究日期: 2026年3月</span>
-              <span class="meta-item">🔍 11 种信息图类型</span>
+              <span class="meta-item">🧩 含 Skill 工程路径</span>
             </div>
           </header>
 
-          <!-- OVERVIEW -->
-          <section id="inf-overview" class="art-section">
+          <!-- 分类说明 -->
+          <section id="inf-semantic" class="art-section">
             <div class="art-section-header">
-              <div class="art-icon" style="background:#eef6f1">📊</div>
+              <div class="art-icon" style="background:#eef6f1">🗂️</div>
               <div>
-                <h2>概述</h2>
-                <p class="text-3">信息图是将复杂信息通过视觉元素呈现的数据可视化形式，选择正确的类型至关重要</p>
+                <h2>三维分类体系说明</h2>
+                <p class="text-3">语义 × 技术 × Skill 三个维度，点击下方维度按钮切换视角</p>
               </div>
             </div>
-
-            <div class="info-box info-green">
-              <span class="ib-icon">💡</span>
-              <span>研究表明，人们三天后对视觉信息的保留率高达 <strong>65%</strong>，而纯文本仅约 <strong>10%</strong>。</span>
-            </div>
-
-            <div class="r-card-grid">
-              <div class="r-card">
-                <div class="r-card-title">📐 按结构分类</div>
-                <div class="r-card-body">层级、时间轴、流程、流程图 —— 强调信息的组织方式与关系</div>
+            <div class="r-card-grid" style="grid-template-columns:repeat(3,1fr)">
+              <div class="r-card" style="border-top:3px solid var(--green)">
+                <div class="r-card-title">🗂 语义分类</div>
+                <div class="r-card-body">按「表达什么信息」分类，10 大语义类覆盖 60+ 图表类型，含品牌屋等概念框架图</div>
               </div>
-              <div class="r-card">
-                <div class="r-card-title">📝 按内容分类</div>
-                <div class="r-card-body">信息说明、数据可视化、对比、列表 —— 强调信息的表达形式</div>
+              <div class="r-card" style="border-top:3px solid var(--blue)">
+                <div class="r-card-title">⚙️ 技术路径</div>
+                <div class="r-card-body">按「用什么技术实现」分类，覆盖 SVG/Canvas/WebGL/可视化库/BI 工具/AI 生成五大路径</div>
               </div>
-              <div class="r-card">
-                <div class="r-card-title">🎯 按应用场景分类</div>
-                <div class="r-card-body">地图、简历、交互式 —— 强调特定的使用情境</div>
+              <div class="r-card" style="border-top:3px solid #a78bfa">
+                <div class="r-card-title">🧩 Skill 路径</div>
+                <div class="r-card-body">按「用哪个 Skill 工程化实现」分类，从单点生成到自进化闭环五条工程路径</div>
               </div>
             </div>
           </section>
 
-          <!-- STRUCTURE TYPES -->
-          <section id="inf-structure" class="art-section">
-            <div class="art-section-header">
-              <div class="art-icon" style="background:#ebf4ff">📐</div>
-              <div>
-                <h2>按结构分类</h2>
-                <p class="text-3">基于信息的组织方式与关系结构的 4 种核心类型</p>
-              </div>
-            </div>
-
-            <div class="r-card-grid">
-              <div class="r-card" v-for="type in infographicTypes" :key="type.id">
-                <div class="r-card-title">{{ type.icon }} {{ type.name }} <span class="text-3" style="font-size:11px">{{ type.en }}</span></div>
-                <div class="r-card-body">{{ type.desc }}</div>
-                <div style="margin-top:12px">
-                  <div class="text-3" style="font-size:11px;font-weight:600;margin-bottom:6px">适用场景</div>
-                  <div class="r-card-tags">
-                    <span class="tag" style="font-size:11px;background:#f8f7f4" v-for="s in type.scenarios" :key="s">{{ s }}</span>
-                  </div>
-                </div>
-                <div style="margin-top:12px">
-                  <div class="text-3" style="font-size:11px;font-weight:600;margin-bottom:6px">最佳实践</div>
-                  <ul style="font-size:12px;line-height:1.6;color:var(--text-2);padding-left:16px;margin:0">
-                    <li v-for="tip in type.tips" :key="tip">{{ tip }}</li>
-                  </ul>
-                </div>
-              </div>
+          <!-- iframe 嵌入 -->
+          <section id="inf-tech" class="art-section" style="padding:0">
+            <div class="infovis-iframe-wrap">
+              <iframe
+                src="/infovis-taxonomy/"
+                class="infovis-iframe"
+                title="信息可视化图表分类体系"
+                allow="same-origin"
+              ></iframe>
             </div>
           </section>
 
-          <!-- CONTENT TYPES -->
-          <section id="inf-content" class="art-section">
-            <div class="art-section-header">
-              <div class="art-icon" style="background:#f3ebff">📝</div>
-              <div>
-                <h2>按内容分类</h2>
-                <p class="text-3">基于信息表达形式与数据特征的 4 种核心类型</p>
-              </div>
-            </div>
-
-            <div class="r-card-grid">
-              <div class="r-card" v-for="type in contentTypes" :key="type.id">
-                <div class="r-card-title">{{ type.icon }} {{ type.name }} <span class="text-3" style="font-size:11px">{{ type.en }}</span></div>
-                <div class="r-card-body">{{ type.desc }}</div>
-                <div style="margin-top:12px" v-if="type.charts">
-                  <div class="text-3" style="font-size:11px;font-weight:600;margin-bottom:6px">常见图表</div>
-                  <div class="r-card-tags">
-                    <span class="tag tag-blue" style="font-size:11px" v-for="c in type.charts" :key="c">{{ c }}</span>
-                  </div>
-                </div>
-                <div style="margin-top:12px">
-                  <div class="text-3" style="font-size:11px;font-weight:600;margin-bottom:6px">适用场景</div>
-                  <div class="r-card-tags">
-                    <span class="tag" style="font-size:11px;background:#f8f7f4" v-for="s in type.scenarios" :key="s">{{ s }}</span>
-                  </div>
-                </div>
-                <div style="margin-top:12px">
-                  <div class="text-3" style="font-size:11px;font-weight:600;margin-bottom:6px">最佳实践</div>
-                  <ul style="font-size:12px;line-height:1.6;color:var(--text-2);padding-left:16px;margin:0">
-                    <li v-for="tip in type.tips" :key="tip">{{ tip }}</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- SCENARIO TYPES -->
-          <section id="inf-scenario" class="art-section">
-            <div class="art-section-header">
-              <div class="art-icon" style="background:#fef9f0">🎯</div>
-              <div>
-                <h2>按应用场景分类</h2>
-                <p class="text-3">针对特定使用情境的 3 种专业类型</p>
-              </div>
-            </div>
-
-            <div class="r-card-grid">
-              <div class="r-card" v-for="type in scenarioTypes" :key="type.id">
-                <div class="r-card-title">{{ type.icon }} {{ type.name }} <span class="text-3" style="font-size:11px">{{ type.en }}</span></div>
-                <div class="r-card-body">{{ type.desc }}</div>
-                <div style="margin-top:12px">
-                  <div class="text-3" style="font-size:11px;font-weight:600;margin-bottom:6px">适用场景</div>
-                  <div class="r-card-tags">
-                    <span class="tag" style="font-size:11px;background:#f8f7f4" v-for="s in type.scenarios" :key="s">{{ s }}</span>
-                  </div>
-                </div>
-                <div style="margin-top:12px">
-                  <div class="text-3" style="font-size:11px;font-weight:600;margin-bottom:6px">最佳实践</div>
-                  <ul style="font-size:12px;line-height:1.6;color:var(--text-2);padding-left:16px;margin:0">
-                    <li v-for="tip in type.tips" :key="tip">{{ tip }}</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- DECISION TREE -->
-          <section id="inf-decision" class="art-section">
-            <div class="art-section-header">
-              <div class="art-icon" style="background:#e8f4ff">🌲</div>
-              <div>
-                <h2>信息图选择决策树</h2>
-                <p class="text-3">根据数据特征快速选择合适的信息图类型</p>
-              </div>
-            </div>
-
-            <div class="wide-card">
-              <h3>数据类型是什么？</h3>
-              <div class="decision-tree">
-                <div class="dt-row" v-for="(item, index) in decisionTree" :key="index">
-                  <div class="dt-condition">{{ item.condition }}</div>
-                  <div class="dt-arrow">→</div>
-                  <div class="dt-result">{{ item.result }}</div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- DESIGN PRINCIPLES -->
-          <section id="inf-principles" class="art-section">
-            <div class="art-section-header">
-              <div class="art-icon" style="background:#fef3e8">🎨</div>
-              <div>
-                <h2>通用设计原则</h2>
-                <p class="text-3">跨类型的信息图设计最佳实践</p>
-              </div>
-            </div>
-
-            <div class="r-card-grid">
-              <div class="r-card" v-for="principle in designPrinciples" :key="principle.title">
-                <div class="r-card-title">{{ principle.icon }} {{ principle.title }}</div>
-                <ul style="font-size:13px;line-height:1.7;color:var(--text-2);padding-left:18px;margin:0">
-                  <li v-for="point in principle.points" :key="point">{{ point }}</li>
-                </ul>
-              </div>
-            </div>
-          </section>
-
-          <!-- AI ERA -->
-          <section id="inf-ai" class="art-section">
-            <div class="art-section-header">
-              <div class="art-icon" style="background:#f0f4ff">🤖</div>
-              <div>
-                <h2>AI 时代的信息图生成</h2>
-                <p class="text-3">AI 辅助信息图创作的优势与人工审核要点</p>
-              </div>
-            </div>
-
-            <div class="r-card-grid">
-              <div class="r-card" v-for="item in aiEraPoints" :key="item.title">
-                <div class="r-card-title">{{ item.icon }} {{ item.title }}</div>
-                <ul style="font-size:13px;line-height:1.7;color:var(--text-2);padding-left:18px;margin:0">
-                  <li v-for="point in item.points" :key="point">{{ point }}</li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="info-box info-blue" style="margin-top:20px">
-              <span class="ib-icon">📌</span>
-              <span><strong>本研究文档</strong>由 AI 助手整理生成，供 AI Design Lab 项目参考使用。信息图 Skill 开发可直接引用本文的分类体系与设计原则。</span>
-            </div>
-
-            <div class="wide-card" style="margin-top:20px">
-              <h3>参考资源</h3>
-              <div class="ref-list">
-                <a v-for="ref in references" :key="ref.name" :href="ref.url" target="_blank" rel="noopener" class="ref-item">
-                  <span class="ref-name">{{ ref.name }}</span>
-                  <span class="ref-arrow">→</span>
-                </a>
-              </div>
-            </div>
-          </section>
+          <!-- Skill 路径锚点占位 -->
+          <section id="inf-skill" style="height:0;overflow:hidden;margin:0;padding:0"></section>
 
         </article>
 
@@ -1255,9 +1091,9 @@ const articles = [
   {
     id: 'infographic-types',
     icon: '📊',
-    title: '信息图分类研究：11 种主流类型全解析',
+    title: '信息可视化图表分类体系',
     date: '2026-03',
-    readTime: '~12 min',
+    readTime: '交互图谱',
   },
   {
     id: 'bb-browser',
@@ -1288,13 +1124,9 @@ const tocMap = {
     { id: 'arch', label: 'Agent Loop 渲染架构', level: 1 },
   ],
   'infographic-types': [
-    { id: 'inf-overview', label: '概述', level: 1 },
-    { id: 'inf-structure', label: '按结构分类', level: 1 },
-    { id: 'inf-content', label: '按内容分类', level: 1 },
-    { id: 'inf-scenario', label: '按应用场景分类', level: 1 },
-    { id: 'inf-decision', label: '选择决策树', level: 1 },
-    { id: 'inf-principles', label: '通用设计原则', level: 1 },
-    { id: 'inf-ai', label: 'AI 时代的信息图生成', level: 1 },
+    { id: 'inf-semantic', label: '语义分类维度', level: 1 },
+    { id: 'inf-tech', label: '技术路径维度', level: 1 },
+    { id: 'inf-skill', label: 'Skill 工程路径', level: 1 },
   ],
   'bb-browser': [
     { id: 'bb-overview', label: '概述', level: 1 },
@@ -1703,6 +1535,26 @@ const references = [
 .page {
   padding-top: var(--nav-h);
   min-height: 100vh;
+}
+
+/* iframe 嵌入样式 */
+.article-iframe {
+  padding-bottom: 0;
+}
+.infovis-iframe-wrap {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #0f0f1a;
+  margin-top: 24px;
+}
+.infovis-iframe {
+  display: block;
+  width: 100%;
+  height: 85vh;
+  min-height: 600px;
+  border: none;
 }
 
 /* LAYOUT */
