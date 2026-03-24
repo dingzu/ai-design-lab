@@ -444,6 +444,174 @@
           </section>
 
         </article>
+
+        <!-- article: agency-agents -->
+        <article v-if="activeArticle === 'agency-agents'" class="article">
+
+          <header class="article-header">
+            <div class="article-breadcrumb">
+              <RouterLink to="/" class="text-3">首页</RouterLink>
+              <span class="text-3"> / </span>
+              <span class="text-2">研究汇总</span>
+            </div>
+            <div class="article-badges">
+              <span class="tag tag-blue">仓库分析报告</span>
+              <span class="tag tag-green">12 部门</span>
+              <span class="tag" style="background:#fef9f0;border-color:#f6d860;color:#b45309">Multi-Agent</span>
+            </div>
+            <h1 class="article-title">The Agency：147 个 AI 专家 Agent 体系全览</h1>
+            <p class="article-desc">对 msitarzewski/agency-agents 的全面分析——涵盖 12 个部门、多工具集成体系与 Agent 设计哲学</p>
+            <div class="article-meta">
+              <span class="meta-item">📦 Source: github.com/msitarzewski/agency-agents</span>
+              <span class="meta-item">🎭 147 个专家 Agent</span>
+              <span class="meta-item">🔌 10+ 工具集成</span>
+            </div>
+          </header>
+
+          <!-- OVERVIEW -->
+          <section id="aa-overview" class="art-section">
+            <div class="art-section-header">
+              <div class="art-icon" style="background:#f3ebff">🗺️</div>
+              <div>
+                <h2>项目概览</h2>
+                <p class="text-3">从 Reddit 帖子起步，迭代数月，The Agency 已成为最具影响力的 AI Agent 角色库之一</p>
+              </div>
+            </div>
+
+            <div class="r-card-grid">
+              <div class="r-card" v-for="item in aaOverviewCards" :key="item.title">
+                <div class="r-card-title">{{ item.icon }} {{ item.title }}</div>
+                <div class="r-card-body">{{ item.desc }}</div>
+              </div>
+            </div>
+
+            <div class="info-box info-purple">
+              <span class="ib-icon">💡</span>
+              <div>
+                <strong>核心理念：</strong>组建你的梦之队，只不过他们是 AI 专家——永不睡觉、永不抱怨、永远交付。与通用 Prompt 库不同，每个 Agent 都有<strong>个性、流程和可衡量的交付物</strong>。
+              </div>
+            </div>
+          </section>
+
+          <!-- DIVISIONS -->
+          <section id="aa-divisions" class="art-section">
+            <div class="art-section-header">
+              <div class="art-icon" style="background:#ebf4ff">🏢</div>
+              <div>
+                <h2>12 个业务部门</h2>
+                <p class="text-3">横跨工程、设计、营销、销售、测试等全职能线，覆盖企业软件团队的所有岗位</p>
+              </div>
+            </div>
+
+            <div class="r-card-grid">
+              <div class="r-card" v-for="div in aaDivisions" :key="div.name">
+                <div class="r-card-title">{{ div.icon }} {{ div.name }} <span class="tag" style="font-size:11px;margin-left:6px;background:#f3ebff;border-color:#d6bcfa;color:#7c3aed">{{ div.count }}</span></div>
+                <div class="r-card-body">{{ div.desc }}</div>
+                <div class="r-card-tags" style="margin-top:6px">
+                  <span class="tag" style="background:#f8f7f4;font-size:11px" v-for="a in div.agents" :key="a">{{ a }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="info-box" style="background:#fff7ed;border:1px solid #fdba74;margin-top:16px">
+              <span class="ib-icon">🇨🇳</span>
+              <div>Marketing 部门内置了小红书、微信公众号、抖音、快手、知乎、B站、百度 SEO、跨境电商、直播电商、私域运营等 <strong>10+ 中国平台专家 Agent</strong>，是目前最全面的中文市场 AI Agent 集合之一。</div>
+            </div>
+          </section>
+
+          <!-- PHILOSOPHY -->
+          <section id="aa-philosophy" class="art-section">
+            <div class="art-section-header">
+              <div class="art-icon" style="background:#fef9f0">📖</div>
+              <div>
+                <h2>Agent 设计哲学</h2>
+                <p class="text-3">让 The Agency 区别于普通 Prompt 库的核心方法论</p>
+              </div>
+            </div>
+
+            <div class="wide-card">
+              <h3>Agent 文件标准结构</h3>
+              <div class="r-card-grid">
+                <div class="r-card" v-for="field in aaFileFields" :key="field.name">
+                  <div class="r-card-title"><code>{{ field.name }}</code></div>
+                  <div class="r-card-body">{{ field.desc }}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="wide-card" style="margin-top:14px">
+              <h3>Agent 个性语录</h3>
+              <div style="display:flex;flex-direction:column;gap:10px;margin-top:10px">
+                <div class="info-box info-purple" v-for="q in aaQuotes" :key="q.from" style="margin:0">
+                  <span class="ib-icon">💬</span>
+                  <div><em>「{{ q.text }}」</em><br><small style="color:var(--text3)">— {{ q.from }}</small></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- TOOLS -->
+          <section id="aa-tools" class="art-section">
+            <div class="art-section-header">
+              <div class="art-icon" style="background:#ebf4ff">🔌</div>
+              <div>
+                <h2>多工具集成体系</h2>
+                <p class="text-3">原生支持 Claude Code，通过自动化脚本一键适配 10 种主流 AI 编程工具</p>
+              </div>
+            </div>
+
+            <div class="r-card-grid">
+              <div class="r-card" v-for="tool in aaTools" :key="tool.name">
+                <div class="r-card-title">{{ tool.icon }} {{ tool.name }}</div>
+                <div class="r-card-body">
+                  <code>{{ tool.format }}</code> → <code>{{ tool.dest }}</code>
+                </div>
+              </div>
+            </div>
+
+            <div class="wide-card">
+              <h3>快速安装命令</h3>
+              <div class="code-demo">
+                <div>
+                  <div class="code-label">Step 1：生成集成文件</div>
+                  <pre><code>./scripts/convert.sh
+# 并行加速
+./scripts/convert.sh --parallel</code></pre>
+                </div>
+                <div>
+                  <div class="code-label">Step 2：交互式安装</div>
+                  <pre><code>./scripts/install.sh
+# 指定工具
+./scripts/install.sh --tool cursor</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <div class="info-box info-blue" style="margin-top:14px">
+              <span class="ib-icon">🦞</span>
+              <div>OpenClaw 专属：每个 Agent 生成 <code>SOUL.md</code> + <code>AGENTS.md</code> + <code>IDENTITY.md</code> 三件套，安装到 <code>~/.openclaw/agency-agents/</code></div>
+            </div>
+          </section>
+
+          <!-- INSIGHTS -->
+          <section id="aa-insights" class="art-section">
+            <div class="art-section-header">
+              <div class="art-icon" style="background:#fef3e8">🔮</div>
+              <div>
+                <h2>核心洞察与借鉴价值</h2>
+                <p class="text-3">可直接应用于自有 Skill/Agent 体系的方法论提炼</p>
+              </div>
+            </div>
+
+            <div class="r-card-grid">
+              <div class="r-card" v-for="ins in aaInsights" :key="ins.title">
+                <div class="r-card-title">{{ ins.title }}</div>
+                <div class="r-card-body">{{ ins.desc }}</div>
+              </div>
+            </div>
+          </section>
+
+        </article>
       </div>
 
     </div>
@@ -463,9 +631,23 @@ const articles = [
     date: '2026-03',
     readTime: '~10 min',
   },
+  {
+    id: 'agency-agents',
+    icon: '🎭',
+    title: 'The Agency：147 个 AI 专家 Agent 体系全览',
+    date: '2026-03',
+    readTime: '~8 min',
+  },
 ]
 
 const tocMap = {
+  'agency-agents': [
+    { id: 'aa-overview', label: '项目概览', level: 1 },
+    { id: 'aa-divisions', label: '12 个业务部门', level: 1 },
+    { id: 'aa-philosophy', label: 'Agent 设计哲学', level: 1 },
+    { id: 'aa-tools', label: '多工具集成体系', level: 1 },
+    { id: 'aa-insights', label: '核心洞察与借鉴价值', level: 1 },
+  ],
   'openclaw-rendering': [
     { id: 'overview', label: '特殊渲染机制总览', level: 1 },
     { id: 'streaming', label: '流式渲染（Streaming）', level: 1 },
@@ -641,6 +823,65 @@ const channelSummary = [
   { name: 'Signal', block: '<span class="pill pill-gray">可选</span>', preview: '<span class="cross">✗</span>', md: '<span class="pill pill-purple">ranges</span>', react: '<span class="check">✓</span>', note: 'Spoiler ranges；reactionNotifications 可配' },
   { name: 'WhatsApp', block: '<span class="pill pill-gray">可选</span>', preview: '<span class="cross">✗</span>', md: '<span class="pill pill-gray">plain</span>', react: '<span class="check">✓</span>', note: 'textChunkLimit' },
   { name: 'WebChat', block: '<span class="cross">✗</span>', preview: '<span class="cross">N/A</span>', md: '<span class="pill pill-gray">—</span>', react: '<span class="cross">✗</span>', note: 'chat.delta / chat.final；tools.catalog 面板' },
+]
+
+// ===== agency-agents 文章数据 =====
+const aaOverviewCards = [
+  { icon: '🎯', title: '专业化', desc: '每个 Agent 都是深度垂直的领域专家，而非泛用 Prompt 模板。Frontend Developer 不等于「帮我写代码」。' },
+  { icon: '🧠', title: '个性驱动', desc: '独特的声音、沟通风格和处理方式。Evidence Collector 会主动「找 3-5 个问题并要求视觉证明」。' },
+  { icon: '📋', title: '聚焦交付物', desc: '真实的代码、流程和可量化成果，而非模糊指导。每个 Agent 文件都包含可直接使用的代码示例。' },
+  { icon: '✅', title: '生产就绪', desc: '经过实战检验的工作流和成功指标。含有明确的 Critical Rules，防止 Agent 行为漂移。' },
+]
+
+const aaDivisions = [
+  { icon: '💻', name: 'Engineering', count: '23 agents', desc: '前端/后端/移动/AI/安全/DevOps 全栈工程团队', agents: ['Frontend Dev', 'Backend Architect', 'AI Engineer', 'Security Eng', 'SRE'] },
+  { icon: '🎨', name: 'Design', count: '8 agents', desc: 'UI/UX/品牌/视觉叙事/趣味性注入的设计团队', agents: ['UI Designer', 'UX Researcher', 'Brand Guardian', 'Whimsy Injector'] },
+  { icon: '📢', name: 'Marketing', count: '28 agents', desc: '涵盖全球 + 中国市场的完整营销矩阵（含微信/小红书/抖音/知乎/B站等）', agents: ['Growth Hacker', '小红书 Specialist', '抖音 Strategist', 'Reddit Builder'] },
+  { icon: '💰', name: 'Paid Media', count: '7 agents', desc: '从 PPC 策略到程序化广告的付费媒体全链路', agents: ['PPC Strategist', 'Ad Creative', 'Paid Media Auditor'] },
+  { icon: '💼', name: 'Sales', count: '8 agents', desc: '从线索挖掘到客户成功的全销售周期团队', agents: ['Outbound Strategist', 'Deal Strategist', 'Pipeline Analyst'] },
+  { icon: '📊', name: 'Product', count: '5 agents', desc: '产品规划、用户研究、行为科学的产品团队', agents: ['Product Manager', 'Sprint Prioritizer', 'Behavioral Nudge'] },
+  { icon: '🎬', name: 'Project Mgmt', count: '6 agents', desc: '项目编排、协调、运营、Jira 工作流管理', agents: ['Studio Producer', 'Project Shepherd', 'Senior PM'] },
+  { icon: '🧪', name: 'Testing', count: '8 agents', desc: 'QA、性能测试、无障碍审计、工具评估', agents: ['Evidence Collector', 'Reality Checker', 'Accessibility Auditor'] },
+  { icon: '🥽', name: 'Spatial Computing', count: '6 agents', desc: 'XR/AR/VR/Vision Pro/WebXR 空间计算团队', agents: ['XR Architect', 'visionOS Engineer', 'WebXR Dev'] },
+  { icon: '🎮', name: 'Game Dev', count: '18 agents', desc: 'Unity/Unreal/Godot/Roblox/Blender 全引擎游戏开发', agents: ['Unity Architect', 'Unreal Eng', 'Godot Scripter'] },
+  { icon: '🎯', name: 'Specialized', count: '30+ agents', desc: 'MCP Builder、区块链安全、自动化治理等特殊专家', agents: ['MCP Builder', 'Agents Orchestrator', 'Blockchain Auditor'] },
+  { icon: '📚', name: 'Academic', count: '5 agents', desc: '世界观构建与叙事设计的学术专家团队', agents: ['Anthropologist', 'Historian', 'Narratologist'] },
+]
+
+const aaFileFields = [
+  { name: 'Frontmatter', desc: 'name、description、color — 用于工具自动化集成时的元数据识别' },
+  { name: 'Identity & Memory', desc: '角色定位、记忆机制、自我认知框架' },
+  { name: 'Core Mission', desc: '一句话使命宣言 + 价值观声明' },
+  { name: 'Critical Rules', desc: '领域专属的 Must / Must Not 约束列表' },
+  { name: 'Technical Deliverables', desc: '带真实代码示例的可交付物清单' },
+  { name: 'Workflow Process', desc: '分阶段 Step-by-Step 工作流' },
+  { name: 'Success Metrics', desc: '量化的质量标准和完成判定条件' },
+]
+
+const aaQuotes = [
+  { text: '我不只是测试你的代码——我默认要找出 3-5 个问题，而且每个问题都需要视觉证明。', from: 'Evidence Collector（Testing Division）' },
+  { text: '你不是在 Reddit 上营销——你是在成为一个碰巧代表品牌的有价值社区成员。', from: 'Reddit Community Builder（Marketing Division）' },
+  { text: '每一个趣味性元素都必须服务于功能或情感目的。设计的愉悦感要增强体验，而非干扰。', from: 'Whimsy Injector（Design Division）' },
+]
+
+const aaTools = [
+  { icon: '🤖', name: 'Claude Code', format: '.md 原生', dest: '~/.claude/agents/' },
+  { icon: '👁️', name: 'GitHub Copilot', format: '.md 原生', dest: '~/.github/agents/' },
+  { icon: '💎', name: 'Cursor', format: '.mdc 转换', dest: '.cursor/rules/' },
+  { icon: '🌊', name: 'Windsurf', format: '.windsurfrules', dest: '项目根目录' },
+  { icon: '⚡', name: 'Aider', format: 'CONVENTIONS.md', dest: './CONVENTIONS.md' },
+  { icon: '🔮', name: 'Gemini CLI', format: 'extension + SKILL.md', dest: '~/.gemini/extensions/' },
+  { icon: '🦞', name: 'OpenClaw', format: 'SOUL.md + AGENTS.md + IDENTITY.md', dest: '~/.openclaw/agency-agents/' },
+  { icon: '🐉', name: 'Qwen Code', format: '.md SubAgents', dest: '~/.qwen/agents/' },
+]
+
+const aaInsights = [
+  { title: '🎭 角色 > 指令', desc: '让 AI 扮演一个「人格」比给它一堆指令更有效。Whimsy Injector 知道「每个趣味元素必须服务于目的」——这是价值观，不是规则列表。' },
+  { title: '📏 Critical Rules 是护栏', desc: '每个 Agent 都有领域专属的 Critical Rules。Evidence Collector「必须要视觉证明」——这防止它在压力下妥协。护栏比通用约束更有效。' },
+  { title: '🔌 格式标准化的价值', desc: '统一的 Frontmatter + 标准目录结构使得 convert.sh 可以一键转换到 10 种工具。设计时考虑「可迁移性」比事后适配省力。' },
+  { title: '🌍 本地化即竞争力', desc: '深度覆盖中国市场（15+ 中国平台专家）是该仓库的核心差异化之一。已有社区维护的中文 Fork，用中文写本地 Agent 是正确方向。' },
+  { title: '🤝 Multi-Agent 协同模式', desc: '8 Agent 并行工作于同一目标，生成跨职能产品蓝图。「专家团队」比「超级助手」在复杂任务上更可靠。' },
+  { title: '💬 成功指标消除模糊性', desc: '明确定义「什么算成功」——让 Agent 和用户都知道何时任务真正完成。这是避免无休止迭代的关键机制。' },
 ]
 </script>
 
