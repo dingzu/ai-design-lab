@@ -1,66 +1,66 @@
 <template>
-  <nav class="navbar" :class="{ scrolled: isScrolled }">
-    <div class="nav-inner container">
-      <RouterLink to="/" class="nav-brand">
-        <span class="brand-text">R&amp;D design</span>
-      </RouterLink>
-      <div class="nav-links">
-        <RouterLink to="/skill">SKILL 开发</RouterLink>
-        <RouterLink to="/genui">GenUI</RouterLink>
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <RouterLink to="/" class="nav-logo">R&amp;D design</RouterLink>
+      <div class="nav-right">
+        <RouterLink to="/skill" class="nav-link" :class="{ active: route.path === '/skill' }">SKILL 开发</RouterLink>
+        <RouterLink to="/genui" class="nav-link" :class="{ active: route.path === '/genui' }">GenUI</RouterLink>
       </div>
     </div>
   </nav>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
-
-const isScrolled = ref(false)
-const handleScroll = () => { isScrolled.value = window.scrollY > 60 }
-onMounted(() => window.addEventListener('scroll', handleScroll))
-onUnmounted(() => window.removeEventListener('scroll', handleScroll))
+import { useRoute } from 'vue-router'
+const route = useRoute()
 </script>
 
 <style scoped>
-.navbar {
+.nav {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 100;
-  padding: var(--space-lg) 0;
-  transition: all var(--duration-normal) var(--ease-out);
-}
-.navbar.scrolled {
-  padding: var(--space-sm) 0;
-  background: rgba(255,255,255,0.92);
-  backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 1px solid rgba(0,0,0,0.06);
+  height: var(--nav-h);
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--c-border);
 }
 .nav-inner {
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.nav-brand {
+.nav-logo {
   font-family: var(--font-mono);
+  font-size: var(--t-sm);
   font-weight: 700;
-  font-size: var(--text-sm);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--text-primary);
+  color: var(--c-text);
 }
-.nav-links {
+.nav-right {
   display: flex;
-  gap: var(--space-xl);
+  align-items: center;
+  gap: 0;
 }
-.nav-links a {
-  font-size: var(--text-sm);
-  font-weight: 500;
-  color: var(--text-secondary);
-  transition: color var(--duration-fast) var(--ease-out);
-  letter-spacing: 0.02em;
+.nav-link {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-text-3);
+  padding: 0 var(--s-4);
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  border-left: 1px solid var(--c-border);
+  transition: color 150ms, background 150ms;
 }
-.nav-links a:hover,
-.nav-links a.router-link-active {
-  color: var(--text-primary);
+.nav-link:hover,
+.nav-link.active {
+  color: var(--c-text);
+  background: var(--c-bg-2);
 }
 </style>
