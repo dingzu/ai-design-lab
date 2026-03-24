@@ -171,7 +171,22 @@
             class="view-all-link text-green"
           >查看全部 →</a>
         </div>
-        <div class="empty-state">
+        <!-- Research entry -->
+        <RouterLink to="/skill/research" class="research-card">
+          <div class="rc-left">
+            <div class="rc-icon">🔬</div>
+            <div>
+              <div class="rc-title">Skill 评测分析</div>
+              <div class="rc-desc text-3">研究顶级 Design Skill 真实实现，按设计子类分类，持续更新最佳实践</div>
+            </div>
+          </div>
+          <div class="rc-meta">
+            <span class="tag tag-purple">第一批研究中</span>
+            <span class="rc-arrow">→</span>
+          </div>
+        </RouterLink>
+
+        <div class="empty-state" style="margin-top:14px">
           <div class="cs-icon">🌱</div>
           <div class="cs-title">第一批 Skill 建设中</div>
           <div class="cs-desc text-3">欢迎提交你的第一个 Skill 提案到 designskill 仓库</div>
@@ -414,6 +429,40 @@
 .cs-icon { font-size: 28px; }
 .cs-title { font-size: 15px; font-weight: 600; }
 .cs-desc { font-size: 13px; line-height: 1.5; max-width: 320px; }
+
+/* Research card */
+.research-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 150ms, border-color 150ms;
+  cursor: pointer;
+}
+.research-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--purple);
+}
+.rc-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.rc-icon { font-size: 20px; flex-shrink: 0; padding-top: 2px; }
+.rc-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.rc-desc { font-size: 13px; line-height: 1.5; }
+.rc-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.rc-arrow { font-size: 16px; color: var(--text-3); }
 
 .submit-btn {
   margin-top: 8px;
