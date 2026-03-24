@@ -1205,9 +1205,37 @@ bazel build --config=remote-ubuntu-22-04 @abseil-hello//:hello_main</pre>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
+const route = useRoute()
+const router = useRouter()
 
 const activeArticle = ref('openclaw-rendering')
+
+// 从 URL 参数初始化 activeArticle
+onMounted(() => {
+  const articleId = route.params.articleId
+  if (articleId && articles.some(a => a.id === articleId)) {
+    activeArticle.value = articleId
+  }
+})
+
+// 监听路由变化
+watch(() => route.params.articleId, (newId) => {
+  if (newId && articles.some(a => a.id === newId)) {
+    activeArticle.value = newId
+  } else if (!newId) {
+    activeArticle.value = 'openclaw-rendering'
+  }
+})
+
+// 切换文章时更新 URL
+watch(activeArticle, (newId) => {
+  if (route.params.articleId !== newId) {
+    router.push(`/hub/${newId}`)
+  }
+})
 
 const articles = [
   {
