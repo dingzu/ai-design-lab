@@ -1,8 +1,9 @@
 <template>
   <nav class="nav">
-    <div class="wrap nav-inner">
+    <div class="nav-inner wrap">
       <RouterLink to="/" class="nav-logo">R&amp;D design</RouterLink>
-      <div class="nav-right">
+      <div class="nav-links">
+        <RouterLink to="/" class="nav-link" :class="{ active: route.path === '/' }">首页</RouterLink>
         <RouterLink to="/skill" class="nav-link" :class="{ active: route.path === '/skill' }">SKILL 开发</RouterLink>
         <RouterLink to="/genui" class="nav-link" :class="{ active: route.path === '/genui' }">GenUI</RouterLink>
       </div>
@@ -21,9 +22,9 @@ const route = useRoute()
   top: 0; left: 0; right: 0;
   z-index: 100;
   height: var(--nav-h);
-  background: rgba(255,255,255,0.95);
+  background: rgba(255,255,255,0.92);
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--c-border);
+  border-bottom: 1px solid var(--border);
 }
 .nav-inner {
   height: 100%;
@@ -32,35 +33,23 @@ const route = useRoute()
   justify-content: space-between;
 }
 .nav-logo {
-  font-family: var(--font-mono);
-  font-size: var(--t-sm);
+  font-size: 14px;
   font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--c-text);
+  letter-spacing: -0.01em;
+  color: var(--text);
 }
-.nav-right {
+.nav-links {
   display: flex;
-  align-items: center;
-  gap: 0;
+  gap: 4px;
 }
 .nav-link {
-  font-family: var(--font-mono);
-  font-size: var(--t-xs);
-  font-weight: 400;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--c-text-3);
-  padding: 0 var(--s-4);
-  height: var(--nav-h);
-  display: flex;
-  align-items: center;
-  border-left: 1px solid var(--c-border);
-  transition: color 150ms, background 150ms;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-2);
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  transition: background 150ms, color 150ms;
 }
-.nav-link:hover,
-.nav-link.active {
-  color: var(--c-text);
-  background: var(--c-bg-2);
-}
+.nav-link:hover { background: var(--bg-subtle); color: var(--text); }
+.nav-link.active { background: var(--bg-subtle); color: var(--text); font-weight: 600; }
 </style>
