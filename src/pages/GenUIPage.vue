@@ -272,6 +272,152 @@
 
       </section>
 
+      <div class="section-divider"></div>
+
+      <!-- JSON-RENDER RESEARCH SECTION -->
+      <section class="content-section">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">json-render 深度研究</h2>
+            <p class="text-3" style="font-size:13px;margin-top:4px">来源：json-render.dev · vercel-labs · Apache 2.0</p>
+          </div>
+          <a href="https://json-render.dev" target="_blank" class="tag tag-green" style="display:inline-flex;align-items:center;gap:4px;font-size:12px">json-render.dev ↗</a>
+        </div>
+
+        <!-- Overview -->
+        <div class="res-block">
+          <div class="res-block-header">
+            <div class="res-icon" style="background:#ecfdf5">🧱</div>
+            <div>
+              <h3 class="res-block-title">json-render 是什么</h3>
+              <p class="text-3" style="font-size:13px">来自 vercel-labs 的 Generative UI 框架：从 Prompt 到原生渲染的完整工具链</p>
+            </div>
+          </div>
+
+          <div class="highlight-box" style="background:var(--green-bg);border-color:var(--green-border)">
+            <div class="hb-icon">💡</div>
+            <div>
+              json-render 解决的问题：<strong>AI 生成的 UI 既要自由（AI 决定组件组合），又要可控（不执行未知代码）</strong>。<br>
+              方案：你定义 <code>Catalog</code>（白名单），AI 生成 JSON <code>Spec</code>，Renderer 映射到真实组件——框架负责连接这三者。
+            </div>
+          </div>
+
+          <div class="card-grid-2">
+            <div class="res-card" v-for="item in jrWhatItems" :key="item.title">
+              <div class="rc-title">{{ item.icon }} {{ item.title }}</div>
+              <div class="rc-body text-2">{{ item.desc }}</div>
+            </div>
+          </div>
+
+          <!-- 包生态 -->
+          <div class="sub-title" style="margin-top:20px">包生态（20+ 渲染目标）</div>
+          <div class="jr-pkg-grid">
+            <div class="jr-pkg" v-for="pkg in jrPackages" :key="pkg.name">
+              <span class="jr-pkg-icon">{{ pkg.icon }}</span>
+              <div>
+                <div class="jr-pkg-name text-2">{{ pkg.name }}</div>
+                <div class="jr-pkg-desc text-3">{{ pkg.target }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 三步工作流 -->
+        <div class="res-block">
+          <div class="res-block-header">
+            <div class="res-icon" style="background:#f5f3ff">⚙️</div>
+            <div>
+              <h3 class="res-block-title">三步工作流</h3>
+              <p class="text-3" style="font-size:13px">Catalog → AI 生成 Spec → Registry 渲染，职责分离彻底</p>
+            </div>
+          </div>
+
+          <div class="jr-steps">
+            <div class="jr-step" v-for="(step, idx) in jrSteps" :key="step.title">
+              <div class="js-num">{{ idx + 1 }}</div>
+              <div>
+                <div class="js-title">{{ step.title }}</div>
+                <div class="js-desc text-2">{{ step.desc }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Catalog 代码示例 -->
+          <div class="sub-title" style="margin-top:20px">Catalog 定义示例</div>
+          <div class="code-block">
+            <div class="cb-label">TypeScript · defineCatalog</div>
+            <pre><code>{{ jrCatalogExample }}</code></pre>
+          </div>
+
+          <!-- Spec 代码示例 -->
+          <div class="sub-title">AI 生成的 Spec（flat tree）</div>
+          <div class="code-block">
+            <div class="cb-label">JSON · Spec 格式</div>
+            <pre><code>{{ jrSpecExample }}</code></pre>
+          </div>
+
+          <div class="info-note">
+            <span>📌</span>
+            <span>Spec 采用 <strong>flat tree</strong> 模型（root key + elements map），与 A2UI 的邻接表思路相同——都是为了让 LLM 可以增量生成，不需要先输出完整嵌套结构。</span>
+          </div>
+        </div>
+
+        <!-- 核心能力 -->
+        <div class="res-block">
+          <div class="res-block-header">
+            <div class="res-icon" style="background:#fff7ed">✨</div>
+            <div>
+              <h3 class="res-block-title">核心能力详解</h3>
+              <p class="text-3" style="font-size:13px">超越 A2UI 的地方：完整的状态管理、数据绑定、条件渲染和代码导出</p>
+            </div>
+          </div>
+
+          <div class="card-grid-2">
+            <div class="res-card" v-for="cap in jrCapabilities" :key="cap.title">
+              <div class="rc-title">{{ cap.icon }} {{ cap.title }}</div>
+              <div class="rc-body text-2">{{ cap.desc }}</div>
+              <code class="jr-cap-code" v-if="cap.code">{{ cap.code }}</code>
+            </div>
+          </div>
+        </div>
+
+        <!-- json-render vs A2UI 对比 -->
+        <div class="res-block">
+          <div class="res-block-header">
+            <div class="res-icon" style="background:#fef2f2">⚖️</div>
+            <div>
+              <h3 class="res-block-title">json-render vs A2UI：深度对比</h3>
+              <p class="text-3" style="font-size:13px">两者都是「Catalog + Spec + Renderer」模式，但定位和生态差异明显</p>
+            </div>
+          </div>
+
+          <div class="compare-table-wrap">
+            <table class="compare-table">
+              <thead>
+                <tr>
+                  <th>维度</th>
+                  <th>json-render</th>
+                  <th>A2UI</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="row in jrVsA2UI" :key="row.dim">
+                  <td class="dim-label">{{ row.dim }}</td>
+                  <td v-html="row.jr"></td>
+                  <td v-html="row.a2ui"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="info-note" style="margin-top:16px">
+            <span>🔗</span>
+            <span><strong>关键洞察：</strong>json-render 是一个「开发者框架」，提供 npm 包、状态管理、代码导出；A2UI 是一个「Agent 协议」，专注于跨信任边界传递 UI 描述。两者可以组合使用：用 A2UI 作为 Agent 间传输协议，json-render 作为客户端渲染框架。</span>
+          </div>
+        </div>
+
+      </section>
+
     </div>
   </main>
 </template>
@@ -437,6 +583,140 @@ const dimensions = [
       'AG UI': '✅ 支持协作',
     },
   },
+]
+
+// ===== json-render 数据 =====
+const jrWhatItems = [
+  { icon: '🛡️', title: 'Guardrailed（护栏）', desc: 'AI 只能使用你在 Catalog 中定义的组件，不能 hallucinate 组件名，不能执行任意代码。' },
+  { icon: '🔮', title: 'Predictable（可预测）', desc: 'JSON 输出严格符合 Zod schema 约束，每次生成结果都可校验、可存储、可重放。' },
+  { icon: '⚡', title: 'Streaming（流式渲染）', desc: 'SpecStream 协议支持逐步 patch 更新，模型边生成用户边看到 UI 构建过程。' },
+  { icon: '🌐', title: 'Cross-Platform（全平台）', desc: '同一份 Catalog + Spec 可渲染到 Web/Mobile/Video/PDF/Email/Terminal/3D，极致复用。' },
+  { icon: '📦', title: 'Batteries Included', desc: '36 个预制 shadcn/ui 组件开箱即用；React Native 25+ 移动组件；Three.js 19 个 3D 组件。' },
+  { icon: '💾', title: 'Code Export', desc: '生成的 UI 可导出为完整的 Next.js 项目，包含 package.json 和所有组件文件，无运行时依赖。' },
+]
+
+const jrPackages = [
+  { icon: '⚛️', name: '@json-render/react', target: 'React Web' },
+  { icon: '📱', name: '@json-render/react-native', target: 'React Native 移动端' },
+  { icon: '💎', name: '@json-render/shadcn', target: '36 预制 shadcn/ui 组件' },
+  { icon: '🎬', name: '@json-render/remotion', target: '视频生成' },
+  { icon: '📄', name: '@json-render/react-pdf', target: 'PDF 文档' },
+  { icon: '✉️', name: '@json-render/react-email', target: 'HTML 邮件' },
+  { icon: '🌿', name: '@json-render/vue', target: 'Vue 3' },
+  { icon: '🔥', name: '@json-render/svelte', target: 'Svelte 5' },
+  { icon: '🧊', name: '@json-render/solid', target: 'SolidJS' },
+  { icon: '🖼️', name: '@json-render/image', target: 'SVG/PNG 图像（OG card）' },
+  { icon: '🟦', name: '@json-render/react-three-fiber', target: 'Three.js 3D 场景' },
+  { icon: '💻', name: '@json-render/ink', target: 'Terminal TUI' },
+  { icon: '🔗', name: '@json-render/mcp', target: 'MCP（Claude/ChatGPT/Cursor）' },
+  { icon: '🔧', name: '@json-render/core', target: 'Schema + Catalog + SpecStream 核心' },
+]
+
+const jrSteps = [
+  { title: 'Step 1: 定义 Catalog', desc: '用 defineCatalog() 声明 AI 可以使用的组件和动作，用 Zod 描述 props 类型约束。Catalog 同时生成 LLM 的 System Prompt。' },
+  { title: 'Step 2: AI 生成 Spec', desc: '给 LLM 描述你想要的 UI（如"生成一个收入 Dashboard"），AI 输出 JSON Spec，严格约束在 Catalog 范围内。' },
+  { title: 'Step 3: Registry 渲染', desc: '用 defineRegistry() 将 Catalog 类型映射到真实的 React/Vue/原生组件，Renderer 组件完成渲染。' },
+]
+
+const jrCatalogExample = `import { defineCatalog } from "@json-render/core";
+import { schema } from "@json-render/react/schema";
+import { z } from "zod";
+
+const catalog = defineCatalog(schema, {
+  components: {
+    Card: {
+      props: z.object({ title: z.string() }),
+      description: "A card container",
+    },
+    Metric: {
+      props: z.object({
+        label: z.string(),
+        value: z.string(),
+        format: z.enum(["currency", "percent", "number"]).nullable(),
+      }),
+      description: "Display a metric value",
+    },
+  },
+  actions: {
+    export_report: { description: "Export dashboard to PDF" },
+  },
+});
+
+// 自动生成 LLM System Prompt：
+const systemPrompt = catalog.prompt();`
+
+const jrSpecExample = `// AI 输出的 Spec（flat tree 格式）
+{
+  "root": "card-1",
+  "elements": {
+    "card-1": {
+      "type": "Card",
+      "props": { "title": "Revenue Q1" },
+      "children": ["metric-1", "metric-2"]
+    },
+    "metric-1": {
+      "type": "Metric",
+      "props": {
+        "label": "Total Revenue",
+        "value": { "$state": "/data/revenue" },  // 数据绑定
+        "format": "currency"
+      },
+      "children": [],
+      "visible": [{ "$state": "/showMetrics" }]  // 条件可见性
+    }
+  }
+}`
+
+const jrCapabilities = [
+  {
+    icon: '🔄',
+    title: 'SpecStream 流式渲染',
+    desc: '使用 createSpecStreamCompiler 处理 AI 流式输出，每个 chunk 对应一个 patch，UI 实时增量更新。',
+    code: 'const compiler = createSpecStreamCompiler(); compiler.push(chunk);',
+  },
+  {
+    icon: '📊',
+    title: '数据绑定（Data Binding）',
+    desc: '支持 $state 路径引用、$item/$index 列表绑定、$bindState 双向绑定，AI 可以生成数据驱动的动态 UI。',
+    code: '{ "value": { "$state": "/user/name" } }',
+  },
+  {
+    icon: '👁️',
+    title: '条件可见性（Visibility）',
+    desc: 'visible 字段支持条件数组，AI 可以生成「有条件显示」的 UI 而无需写逻辑代码。',
+    code: '{ "visible": [{ "$state": "/form/hasError" }] }',
+  },
+  {
+    icon: '⚡',
+    title: '动态 Props',
+    desc: '$cond 条件表达式、$template 字符串插值、$computed 注册函数调用——Props 可以完全数据驱动。',
+    code: '{ "$cond": {...}, "$then": "red", "$else": "blue" }',
+  },
+  {
+    icon: '🔧',
+    title: 'Actions + State Watchers',
+    desc: '组件可以触发 Action（如 setState），watch 字段监听状态变化自动触发 Action，实现交互联动。',
+    code: '{ "action": "setState", "actionParams": {...} }',
+  },
+  {
+    icon: '💾',
+    title: 'Code Export',
+    desc: 'AI 生成的 UI 树可导出为完整的 Next.js 项目，无运行时依赖，可直接部署。这是 json-render 独有的能力。',
+    code: null,
+  },
+]
+
+const jrVsA2UI = [
+  { dim: '定位层次', jr: '完整的<strong>开发者框架</strong>（npm 包）', a2ui: '<strong>Agent 协议</strong>（开放标准）' },
+  { dim: '主导方', jr: 'vercel-labs（Vercel 研究院）', a2ui: 'Google · Apache 2.0' },
+  { dim: '目标平台', jr: '✅ 超全：Web/Mobile/Video/PDF/Email/3D/Terminal', a2ui: '✅ 跨平台但偏 Flutter/Angular/Lit' },
+  { dim: '状态管理', jr: '✅ 内置 StateStore（支持 Redux/Zustand/Jotai）', a2ui: '⚠️ 通过 dataModelUpdate 消息处理' },
+  { dim: '数据绑定', jr: '✅ $state/$item/$cond/$template/$computed', a2ui: '✅ dataPath 绑定（较简单）' },
+  { dim: '流式渲染', jr: '✅ SpecStream + JSONL patch 增量', a2ui: '✅ JSONL 增量流' },
+  { dim: '代码导出', jr: '✅ 导出为独立 Next.js 项目', a2ui: '❌ 无此能力' },
+  { dim: '多 Agent', jr: '⚠️ 单 App 场景，无 A2A 设计', a2ui: '✅ 专为多 Agent 网格设计' },
+  { dim: 'MCP 集成', jr: '✅ @json-render/mcp 包', a2ui: '⚠️ 无专门 MCP 包' },
+  { dim: '开箱即用', jr: '✅ 36 shadcn/ui + 25 RN 组件', a2ui: '❌ 需自行实现 Renderer' },
 ]
 </script>
 
@@ -739,7 +1019,45 @@ const dimensions = [
 /* TAG */
 .tag { font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 6px; }
 .tag-blue { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+.tag-green { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
 .text-blue { color: var(--blue); }
+
+/* JSON-RENDER SPECIFIC */
+.jr-pkg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+}
+.jr-pkg {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--bg-subtle); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 8px 12px;
+}
+.jr-pkg-icon { font-size: 16px; flex-shrink: 0; }
+.jr-pkg-name { font-size: 12px; font-weight: 600; font-family: var(--font-mono); }
+.jr-pkg-desc { font-size: 11px; }
+
+.jr-steps { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.jr-step {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: var(--bg-subtle); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 14px 16px;
+}
+.js-num {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--green); color: white;
+  font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.js-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.js-desc { font-size: 13px; line-height: 1.5; }
+
+.jr-cap-code {
+  display: block; margin-top: 8px;
+  font-family: var(--font-mono); font-size: 11px;
+  background: #1e1e2e; color: #89dceb; padding: 6px 10px;
+  border-radius: 4px; overflow-x: auto; white-space: pre;
+}
 
 @media (max-width: 640px) {
   .stats-bar { flex-wrap: wrap; gap: 16px; }
