@@ -173,21 +173,44 @@
 
       <div class="section-divider"></div>
 
-      <!-- Best practices summary -->
+      <!-- Best practices full inline -->
       <section class="content-section">
-        <h2 class="section-title">当前最佳实践摘要</h2>
-        <div class="bp-grid">
-          <div class="bp-card" v-for="bp in bestPractices" :key="bp.title">
-            <div class="bp-icon">{{ bp.icon }}</div>
-            <div class="bp-title">{{ bp.title }}</div>
-            <div class="bp-desc text-3">{{ bp.desc }}</div>
+        <div class="bp-header">
+          <h2 class="section-title" style="margin-bottom:0">最佳实践文档</h2>
+          <span class="tag tag-green">第 1 批 · 持续更新</span>
+        </div>
+        <p class="text-3" style="font-size:13px;margin:12px 0 28px;line-height:1.6">
+          从本批 Skill 研究中提炼的可复用模式，每次新分析完成后追加到这里。
+        </p>
+
+        <div class="bp-list">
+          <div class="bp-item" v-for="bp in bestPractices" :key="bp.id">
+            <div class="bpi-header">
+              <div class="bpi-left">
+                <span class="bpi-icon">{{ bp.icon }}</span>
+                <div>
+                  <div class="bpi-num text-3">模式 {{ String(bp.id).padStart(2, '0') }}</div>
+                  <div class="bpi-title">{{ bp.title }}</div>
+                </div>
+              </div>
+              <div class="bpi-tags">
+                <span class="tag tag-gray" style="font-size:11px">来自 {{ bp.from }}</span>
+                <span class="tag tag-blue" style="font-size:11px">{{ bp.scope }}</span>
+              </div>
+            </div>
+            <div class="bpi-summary">{{ bp.summary }}</div>
+            <div class="bpi-points">
+              <div class="bpi-point" v-for="(pt, i) in bp.points" :key="i">
+                <span class="bpi-dot"></span>
+                <span>{{ pt }}</span>
+              </div>
+            </div>
+            <div v-if="bp.example" class="bpi-example">
+              <div class="bpi-ex-label text-3">示例写法</div>
+              <pre class="bpi-code">{{ bp.example }}</pre>
+            </div>
           </div>
         </div>
-        <p class="bp-note text-3">
-          📁 完整文档维护在
-          <a href="https://git.corp.kuaishou.com/design/designskill/-/blob/master/research/best-practices.md" target="_blank" rel="noopener" class="text-purple">designskill 仓库 / research / best-practices.md</a>
-          · 每批研究后更新
-        </p>
       </section>
 
     </div>
@@ -332,34 +355,95 @@ const insightColor = (type) => {
 
 const bestPractices = [
   {
+    id: 1,
     icon: '🚫',
     title: '反例禁止清单',
-    desc: '明确列出「不要做什么」，比「要做什么」对 AI 约束更有效，尤其是视觉 Skill',
+    from: 'frontend-design',
+    scope: '视觉输出类',
+    summary: '告诉 AI「不要做什么」，比「要做什么」效果更稳定。明确的负向约束能避免 AI 输出趋向通用审美。',
+    points: [
+      '明确列出禁用字体：Inter、Arial、Roboto、system-ui',
+      '明确列出禁用配色：紫色渐变白底等高频 AI 通病',
+      '明确列出禁用布局模式：居中 Hero + 3 列 Feature 等千篇一律格局',
+    ],
+    example: `NEVER use:
+- Generic fonts: Inter, Roboto, Arial, system-ui
+- Cliché gradients: purple-to-blue on white background
+- Predictable layouts: centered hero + 3-column features grid`,
   },
   {
+    id: 2,
     icon: '📊',
     title: '规范优先级分层',
-    desc: '大型知识 Skill 必须有 Critical / High / Medium 优先级，AI 先满足高优先级',
+    from: 'ui-ux-pro-max',
+    scope: '大型知识型',
+    summary: '把规范条目按优先级分层，AI 在上下文有限时优先满足高优先级规则，而不是在海量规范中迷失。',
+    points: [
+      'CRITICAL：用户安全与可访问性（色彩对比度 ≥ 4.5:1）',
+      'HIGH：核心体验路径（触摸目标 ≥ 44px）',
+      'MEDIUM：视觉质量提升（字体配对规范）',
+      '每条规范用唯一 slug 标识，方便 AI 精准引用',
+    ],
+    example: null,
   },
   {
+    id: 3,
     icon: '🌐',
     title: '规范外置动态拉取',
-    desc: '频繁更新的规范内容建议外部托管，Skill 通过 URL 拉取，保持同步',
+    from: 'web-design-guidelines',
+    scope: '审查类',
+    summary: 'Skill 本身不内嵌规范内容，而是每次从远端 URL 动态拉取最新版本，使 Skill 永远轻量且同步。',
+    points: [
+      'Skill 文件保持 40 行以内，核心逻辑极简',
+      '规范更新无需修改 Skill 本身',
+      '始终使用最新版标准，不会版本脱节',
+    ],
+    example: `## Guidelines Source
+Fetch fresh guidelines before each review:
+https://raw.githubusercontent.com/[org]/[repo]/main/guidelines.md`,
   },
   {
+    id: 4,
     icon: '🎭',
     title: '哲学先行两步法',
-    desc: '创意类 Skill：先用 Step 1 建立美学意图/约束，再用 Step 2 在边界内自由创作',
+    from: 'canvas-design',
+    scope: '创意输出类',
+    summary: '先用 Step 1 建立美学意图与约束（设计哲学宣言），再用 Step 2 在边界内自由创作，防止 AI 输出趋向平均值。',
+    points: [
+      'Step 1：命名一个艺术运动（如 "Brutalist Joy"），写 4-6 段宣言，明确形/色/空间/节奏',
+      'Step 2：基于宣言进行视觉创作，90% 视觉 + 10% 关键文字',
+      'Step 1 的约束让 Step 2 的自由表达有了锚点，质量远优于直接描述需求',
+    ],
+    example: null,
   },
   {
+    id: 5,
     icon: '🏷️',
     title: 'AI 推断内容标注',
-    desc: '分析或推断得出的内容要与真实数据视觉区分，保持透明诚信',
+    from: 'ux-journey-map',
+    scope: '分析推断类',
+    summary: 'AI 推断得出的内容要与真实数据视觉区分，保持透明诚信，让用户清楚哪些是推断、哪些是实测。',
+    points: [
+      '用特殊视觉符号标注 AI 推断内容（如 ✦ 虚线边框）',
+      '在输出物中提供「数据来源」说明',
+      '区分实测数据与 AI 推断的视觉边界',
+    ],
+    example: null,
   },
   {
+    id: 6,
     icon: '📐',
     title: '交付格式标准化',
-    desc: '审查类 Skill 输出要面向工具链（file:line 格式），而非只面向人类阅读',
+    from: 'web-design-guidelines',
+    scope: '审查类',
+    summary: '审查类 Skill 的输出格式应面向工具链，而非只面向人类阅读，让 CI/CD 和 IDE 插件可以直接消费。',
+    points: [
+      '输出格式：file:line slug: 问题描述',
+      'CI/CD 管道可以直接消费，IDE 插件可解析定位',
+      '人类与工具链都能高效使用同一份报告',
+    ],
+    example: `src/components/Button.vue:42 color-contrast: 对比度 3.2:1 低于 4.5:1
+src/pages/Home.vue:18 touch-target-size: 按钮高度 32px 低于 44px`,
   },
 ]
 </script>
@@ -563,38 +647,95 @@ const bestPractices = [
   font-size: 13px;
 }
 
-/* Best practices */
-.bp-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+/* Best practices inline list */
+.bp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 0;
 }
-.bp-card {
-  padding: 16px 18px;
+
+.bp-list { display: flex; flex-direction: column; gap: 14px; }
+
+.bp-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.bpi-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.bpi-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.bpi-icon { font-size: 20px; flex-shrink: 0; padding-top: 2px; }
+.bpi-num { font-size: 11px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; }
+.bpi-title { font-size: 15px; font-weight: 700; }
+.bpi-tags { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+
+.bpi-summary {
+  font-size: 14px;
+  line-height: 1.65;
+  margin-bottom: 12px;
+}
+
+.bpi-points { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.bpi-point {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+.bpi-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--text-3);
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+.bpi-example {
+  margin-top: 4px;
+}
+.bpi-ex-label {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+}
+.bpi-code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
   background: var(--bg-subtle);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
+  padding: 12px 14px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin: 0;
 }
-.bp-icon { font-size: 18px; margin-bottom: 8px; }
-.bp-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
-.bp-desc { font-size: 13px; line-height: 1.55; }
-
-.bp-note {
-  font-size: 13px;
-  line-height: 1.6;
-}
-.bp-note a { text-decoration: underline; text-underline-offset: 2px; }
-.bp-note a:hover { opacity: 0.8; }
 
 @media (max-width: 768px) {
   .method-grid { grid-template-columns: 1fr 1fr; }
-  .bp-grid { grid-template-columns: 1fr 1fr; }
   .stats-bar { gap: 16px; }
   .stat-divider { display: none; }
 }
 @media (max-width: 480px) {
   .method-grid { grid-template-columns: 1fr; }
-  .bp-grid { grid-template-columns: 1fr; }
 }
 </style>
