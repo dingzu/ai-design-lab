@@ -1,0 +1,16 @@
+import { createRouter, createWebHistory } from 'vue-router'
+import HomePage from '../pages/HomePage.vue'
+import SkillPage from '../pages/SkillPage.vue'
+import GenUIPage from '../pages/GenUIPage.vue'
+
+const routes = [
+  { path: '/', component: HomePage },
+  { path: '/skill', component: SkillPage },
+  { path: '/genui', component: GenUIPage },
+]
+
+export default createRouter({
+  history: createWebHistory(),
+  routes,
+  scrollBehavior: () => ({ top: 0 }),
+})
