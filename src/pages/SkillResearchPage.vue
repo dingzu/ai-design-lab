@@ -593,6 +593,9 @@ src/pages/Home.vue:18 touch-target-size: 按钮高度 32px 低于 44px`,
 .cat-tabs {
   display: flex;
   gap: 4px;
+  flex-wrap: wrap;
+  flex: 1;
+  min-width: 0;
 }
 .cat-tab {
   font-size: 13px;
