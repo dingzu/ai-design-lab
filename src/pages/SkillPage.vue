@@ -186,6 +186,21 @@
           </div>
         </RouterLink>
 
+        <!-- Hub entry -->
+        <RouterLink to="/skill/hub" class="research-card" style="margin-top:10px">
+          <div class="rc-left">
+            <div class="rc-icon">📚</div>
+            <div>
+              <div class="rc-title">研究汇总</div>
+              <div class="rc-desc text-3">OpenClaw 对话特殊渲染机制全览等深度研究报告，左侧目录 + 右侧详细内容</div>
+            </div>
+          </div>
+          <div class="rc-meta">
+            <span class="tag tag-blue">1 篇文章</span>
+            <span class="rc-arrow">→</span>
+          </div>
+        </RouterLink>
+
         <div class="empty-state" style="margin-top:14px">
           <div class="cs-icon">🌱</div>
           <div class="cs-title">第一批 Skill 建设中</div>
