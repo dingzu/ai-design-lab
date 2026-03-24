@@ -53,7 +53,7 @@
           </div>
         </div>
         <a
-          href="https://git.corp.kuaishou.com/design/designskill/-/blob/main/research/best-practices.md"
+          href="https://git.corp.kuaishou.com/design/designskill/-/blob/master/research/best-practices.md"
           target="_blank"
           rel="noopener"
           class="source-link"
@@ -185,7 +185,7 @@
         </div>
         <p class="bp-note text-3">
           📁 完整文档维护在
-          <a href="https://git.corp.kuaishou.com/design/designskill/-/blob/main/research/best-practices.md" target="_blank" rel="noopener" class="text-purple">designskill 仓库 / research / best-practices.md</a>
+          <a href="https://git.corp.kuaishou.com/design/designskill/-/blob/master/research/best-practices.md" target="_blank" rel="noopener" class="text-purple">designskill 仓库 / research / best-practices.md</a>
           · 每批研究后更新
         </p>
       </section>
