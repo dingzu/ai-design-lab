@@ -23,12 +23,12 @@
       <!-- Stats bar -->
       <div class="stats-bar">
         <div class="stat-item">
-          <div class="stat-num">5</div>
+          <div class="stat-num">6</div>
           <div class="stat-label text-3">本批研究的 Skill</div>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item">
-          <div class="stat-num">4</div>
+          <div class="stat-num">5</div>
           <div class="stat-label text-3">设计子类</div>
         </div>
         <div class="stat-divider"></div>
@@ -228,6 +228,37 @@ const categories = [
   { id: 'ux', label: 'UX 体验' },
   { id: 'content', label: '内容输出' },
   { id: 'system', label: '设计系统' },
+  { id: 'conversation', label: '对话式 UI' },
+  {
+    id: 7,
+    icon: '🌊',
+    title: '统一 IR + 渠道适配器',
+    from: 'openclaw-conversation-rendering',
+    scope: '对话式 UI',
+    summary: '对话系统的跨渠道格式化，核心是建立统一中间表示（IR），再按渠道输出对应格式，而不是为每个渠道单独实现一次格式化逻辑。',
+    points: [
+      'Markdown 源文本 → markdownToIR() → 统一 IR → renderMarkdownWithMarkers() → 渠道格式',
+      '不同渠道的适配器独立写，核心逻辑不重复',
+      '跨渠道能力差异（Slack mrkdwn / Telegram HTML / Signal ranges）对上层透明',
+    ],
+    example: `// 应用场景：设计 Skill 的跨环境输出时
+同一个 Skill 输出到 HTML / 终端 / 文档，都应考虑类似的 IR 模式
+定义一次语义，多次渲染`,
+  },
+  {
+    id: 8,
+    icon: '🔇',
+    title: 'NO_REPLY 静默 Token 模式',
+    from: 'openclaw-conversation-rendering',
+    scope: '对话式 UI',
+    summary: 'Agent 需要执行工具但不应发送消息时，用静默 token（NO_REPLY）表达意图，而不是让 Agent 生成空消息或异常。',
+    points: [
+      'Agent 输出包含 NO_REPLY 时，渲染层过滤该 payload，不向用户发送任何内容',
+      '适合背景操作、定时自动化、消息过滤等场景',
+      '是一种「意图明确化」的设计模式：静默是明确意图，而非异常或缺省',
+    ],
+    example: null,
+  },
 ]
 
 const skills = [
@@ -300,6 +331,25 @@ const skills = [
     takeaway: '「规范外置」是一个非常值得推广的模式，尤其是对于频繁更新的标准类内容',
   },
   {
+    id: 6,
+    name: 'openclaw-conversation-rendering',
+    en: 'OpenClaw 对话特殊渲染机制',
+    icon: '💬',
+    category: 'conversation',
+    status: 'done',
+    source: 'OpenClaw 仓库源码分析 / docs.openclaw.ai',
+    desc: '对 OpenClaw 对话系统中全部特殊渲染机制的系统性分析，涵盖 7 大类：流式渲染、Canvas/A2UI 可视化面板、Markdown 跨渠道格式化、媒体内容、Emoji Reactions、Slash 命令、WebChat 专属特性。',
+    insights: [
+      { type: '核心理念', text: '对话系统的渲染层是多通道的：同一条输出在 Slack/Telegram/WebChat 上格式完全不同，统一中间表示（IR）是关键' },
+      { type: '架构设计', text: 'Agent Loop 有三路独立 Event Stream：lifecycle stream / assistant stream / tool stream，分别控制不同渲染时机' },
+      { type: '差异点', text: 'Canvas/A2UI 是对话中最强大的渲染能力：WKWebView 沙箱 + A2UI 声明式协议（JSONL），Agent 可完全控制可视化工作区' },
+      { type: '差异点', text: '流式渲染是「消息级」而非「字符级」—— 两套流：Block Streaming（按块推送多条消息）+ Preview Streaming（更新单条预览消息）' },
+      { type: '可借鉴', text: 'NO_REPLY 静默 token 机制：Agent 可在不发送任何消息的情况下完成工具调用，适合背景操作场景' },
+      { type: '可借鉴', text: 'Plugin Hook 的 6 个拦截点（before_tool_call / after_tool_call / message_sending 等）覆盖完整渲染链路' },
+    ],
+    takeaway: '对话式 UI 设计的核心矛盾：渲染能力越丰富，跨渠道一致性越难保证。解决方案是「统一 IR + 渠道适配器」模式，而非为每个渠道单独实现',
+  },
+  {
     id: 5,
     name: 'ux-journey-map',
     en: 'UX Journey Map Skill',
@@ -323,12 +373,12 @@ const filteredSkills = computed(() => {
 })
 
 const catLabel = (cat) => {
-  const map = { visual: '视觉界面', ux: 'UX 体验', content: '内容输出', system: '设计系统' }
+  const map = { visual: '视觉界面', ux: 'UX 体验', content: '内容输出', system: '设计系统', conversation: '对话式 UI' }
   return map[cat] || cat
 }
 
 const catTagClass = (cat) => {
-  const map = { visual: 'tag-blue', ux: 'tag-green', content: 'tag-orange', system: 'tag-gray' }
+  const map = { visual: 'tag-blue', ux: 'tag-green', content: 'tag-orange', system: 'tag-gray', conversation: 'tag-purple' }
   return `tag ${map[cat] || 'tag-gray'}`
 }
 
