@@ -5,6 +5,7 @@
       <div class="nav-links">
         <RouterLink to="/" class="nav-link" :class="{ active: route.path === '/' }">首页</RouterLink>
         <RouterLink to="/skill" class="nav-link" :class="{ active: route.path === '/skill' }">SKILL 开发</RouterLink>
+        <RouterLink to="/hub" class="nav-link" :class="{ active: route.path.startsWith('/hub') }">研究汇总</RouterLink>
         <RouterLink to="/genui" class="nav-link" :class="{ active: route.path === '/genui' }">GenUI</RouterLink>
       </div>
     </div>

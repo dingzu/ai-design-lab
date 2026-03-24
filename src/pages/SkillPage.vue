@@ -187,7 +187,7 @@
         </RouterLink>
 
         <!-- Hub entry -->
-        <RouterLink to="/skill/hub" class="research-card" style="margin-top:10px">
+        <RouterLink to="/hub" class="research-card" style="margin-top:10px">
           <div class="rc-left">
             <div class="rc-icon">📚</div>
             <div>

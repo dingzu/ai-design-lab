@@ -5,7 +5,7 @@
       <!-- LEFT SIDEBAR -->
       <aside class="hub-sidebar">
         <div class="sidebar-header">
-          <RouterLink to="/skill" class="back-link text-3">← SKILL 开发</RouterLink>
+          <RouterLink to="/" class="back-link text-3">← 首页</RouterLink>
           <div class="sidebar-title">研究汇总</div>
         </div>
 
@@ -725,8 +725,13 @@ const channelSummary = [
 .hub-content {
   flex: 1;
   min-width: 0;
+  display: flex;
+  justify-content: center;
   padding: 40px 48px 80px;
-  max-width: 860px;
+}
+.article {
+  width: 100%;
+  max-width: 820px;
 }
 
 /* ARTICLE HEADER */
@@ -876,5 +881,6 @@ code { font-family: var(--font-mono); font-size: 12px; background: var(--bg-subt
   .hub-content { padding: 24px 16px 60px; }
   .code-demo { grid-template-columns: 1fr; }
   .r-card-grid { grid-template-columns: 1fr; }
+  .article { max-width: 100%; }
 }
 </style>

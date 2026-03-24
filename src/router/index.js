@@ -9,7 +9,7 @@ const routes = [
   { path: '/', component: HomePage },
   { path: '/skill', component: SkillPage },
   { path: '/skill/research', component: SkillResearchPage },
-  { path: '/skill/hub', component: SkillHubPage },
+  { path: '/hub', component: SkillHubPage },
   { path: '/genui', component: GenUIPage },
 ]
 
