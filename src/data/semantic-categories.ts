@@ -847,5 +847,573 @@ export const semanticCategories: SemanticCategory[] = [
         ]
       }
     ]
+  },
+
+  // ═══════════════════════════════════════════════════
+  // Category 06: 流动 Flow
+  // ═══════════════════════════════════════════════════
+  {
+    id: 'flow',
+    name: '流动',
+    nameEn: 'Flow',
+    icon: '🌊',
+    color: 'oklch(58% 0.17 55)',
+    purpose: '路径、转化、流向关系。核心问题：从哪里来到哪里去？每步损耗多少？流向如何分配？',
+    subcategories: [
+      {
+        id: 'basic-flow',
+        name: '基础流动',
+        charts: [
+          {
+            id: 'sankey',
+            name: '桑基图',
+            nameEn: 'Sankey Diagram',
+            use: '多节点流量分配，能量/资金/用户流向',
+            tag: '高频',
+            svgCode: `<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="16" width="12" height="36" rx="2" fill="oklch(58% 0.19 25)"/>
+          <rect x="8" y="58" width="12" height="28" rx="2" fill="oklch(58% 0.18 200)"/>
+          <rect x="8" y="90" width="12" height="22" rx="2" fill="oklch(55% 0.16 150)"/>
+          <path d="M20,16 C60,16 60,18 100,18 L100,38 C60,38 60,52 20,52 Z" fill="oklch(58% 0.19 25 / 0.4)"/>
+          <path d="M20,58 C60,58 60,42 100,40 L100,54 C60,54 60,72 20,72 Z" fill="oklch(58% 0.18 200 / 0.4)"/>
+          <path d="M20,86 C60,86 60,62 100,56 L100,68 C60,68 60,96 20,100 Z" fill="oklch(55% 0.16 150 / 0.4)"/>
+          <path d="M20,28 C60,28 60,78 100,72 L100,88 C60,88 60,42 20,40 Z" fill="oklch(56% 0.18 290 / 0.3)"/>
+          <rect x="100" y="16" width="12" height="26" rx="2" fill="oklch(58% 0.19 25)"/>
+          <rect x="100" y="44" width="12" height="28" rx="2" fill="oklch(58% 0.18 200)"/>
+          <rect x="100" y="74" width="12" height="34" rx="2" fill="oklch(55% 0.16 150)"/>
+          <rect x="140" y="20" width="12" height="20" rx="2" fill="oklch(56% 0.18 290)"/>
+          <rect x="140" y="44" width="12" height="32" rx="2" fill="oklch(58% 0.17 55)"/>
+          <rect x="140" y="80" width="12" height="26" rx="2" fill="oklch(52% 0.18 175)"/>
+        </svg>`
+          },
+          {
+            id: 'funnel',
+            name: '漏斗图',
+            nameEn: 'Funnel Chart',
+            use: '线性转化率，用户转化/销售漏斗',
+            tag: '高频',
+            svgCode: `<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10,10 L150,10 L150,28 L10,28 Z" fill="oklch(58% 0.17 55)"/>
+          <path d="M22,32 L138,32 L138,50 L22,50 Z" fill="oklch(62% 0.15 55)"/>
+          <path d="M38,54 L122,54 L122,72 L38,72 Z" fill="oklch(68% 0.12 55)"/>
+          <path d="M55,76 L105,76 L105,94 L55,94 Z" fill="oklch(74% 0.09 55)"/>
+          <path d="M70,98 L90,98 L90,112 L70,112 Z" fill="oklch(80% 0.07 55)"/>
+          <text x="80" y="23" font-size="8" fill="white" font-weight="600" font-family="Inter" text-anchor="middle">100%</text>
+          <text x="80" y="45" font-size="8" fill="white" font-weight="600" font-family="Inter" text-anchor="middle">65%</text>
+          <text x="80" y="67" font-size="8" fill="oklch(28% 0.02 260)" font-weight="600" font-family="Inter" text-anchor="middle">38%</text>
+          <text x="80" y="89" font-size="8" fill="oklch(28% 0.02 260)" font-weight="600" font-family="Inter" text-anchor="middle">20%</text>
+          <text x="80" y="109" font-size="8" fill="oklch(28% 0.02 260)" font-weight="600" font-family="Inter" text-anchor="middle">8%</text>
+        </svg>`
+          },
+          {
+            id: 'chord',
+            name: '和弦图',
+            nameEn: 'Chord Diagram',
+            use: '矩阵流量双向关系，贸易/迁移矩阵',
+            tag: '视觉型',
+            svgCode: `<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(80,60)">
+            <path d="M0,-50 A50,50 0 0,1 43.3,25" fill="none" stroke="oklch(58% 0.19 25)" stroke-width="8"/>
+            <path d="M43.3,25 A50,50 0 0,1 -12.9,48.3" fill="none" stroke="oklch(58% 0.18 200)" stroke-width="8"/>
+            <path d="M-12.9,48.3 A50,50 0 0,1 -43.3,-25" fill="none" stroke="oklch(55% 0.16 150)" stroke-width="8"/>
+            <path d="M-43.3,-25 A50,50 0 0,1 0,-50" fill="none" stroke="oklch(56% 0.18 290)" stroke-width="8"/>
+            <path d="M0,-44 Q0,0 38,22" fill="oklch(58% 0.19 25 / 0.3)" stroke="none"/>
+            <path d="M38,22 Q0,0 -11,42" fill="oklch(58% 0.18 200 / 0.3)" stroke="none"/>
+            <path d="M-11,42 Q0,0 -38,-22" fill="oklch(55% 0.16 150 / 0.3)" stroke="none"/>
+            <path d="M-38,-22 Q0,0 0,-44" fill="oklch(56% 0.18 290 / 0.3)" stroke="none"/>
+            <path d="M0,-44 Q0,0 -38,-22" fill="oklch(58% 0.19 25 / 0.15)" stroke="none"/>
+            <path d="M38,22 Q0,0 -38,-22" fill="oklch(58% 0.18 200 / 0.15)" stroke="none"/>
+          </g>
+        </svg>`
+          },
+          {
+            id: 'alluvial',
+            name: '冲积图',
+            nameEn: 'Alluvial Diagram',
+            use: '分类流向变化，用户行为路径迁移',
+            tag: '进阶',
+            svgCode: `<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="10" width="22" height="40" rx="2" fill="oklch(58% 0.19 25)"/>
+          <rect x="8" y="54" width="22" height="30" rx="2" fill="oklch(58% 0.18 200)"/>
+          <rect x="8" y="88" width="22" height="20" rx="2" fill="oklch(55% 0.16 150)"/>
+          <path d="M30,10 C70,10 70,14 110,14 L110,44 C70,44 70,50 30,50 Z" fill="oklch(58% 0.19 25 / 0.4)"/>
+          <path d="M30,54 C70,54 70,46 110,46 L110,68 C70,68 70,64 30,64 Z" fill="oklch(58% 0.18 200 / 0.4)"/>
+          <path d="M30,68 C70,68 70,76 110,72 L110,88 C70,88 70,84 30,84 Z" fill="oklch(55% 0.16 150 / 0.35)"/>
+          <path d="M30,88 C70,88 70,90 110,90 L110,104 C70,104 70,102 30,100 Z" fill="oklch(56% 0.18 290 / 0.4)"/>
+          <rect x="110" y="12" width="22" height="36" rx="2" fill="oklch(58% 0.19 25)"/>
+          <rect x="110" y="50" width="22" height="20" rx="2" fill="oklch(58% 0.18 200)"/>
+          <rect x="110" y="72" width="22" height="18" rx="2" fill="oklch(55% 0.16 150)"/>
+          <rect x="110" y="92" width="22" height="14" rx="2" fill="oklch(56% 0.18 290)"/>
+        </svg>`
+          },
+          {
+            id: 'flowchart',
+            name: '流程图',
+            nameEn: 'Flowchart',
+            use: '逻辑路径与决策分支，SOP流程',
+            tag: '高频',
+            svgCode: `<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+          <rect x="54" y="8" width="52" height="20" rx="10" fill="oklch(58% 0.17 55)"/>
+          <text x="80" y="21" font-size="8" fill="white" text-anchor="middle" font-family="Inter">开始</text>
+          <rect x="54" y="42" width="52" height="20" rx="4" fill="oklch(62% 0.15 55)"/>
+          <text x="80" y="55" font-size="8" fill="white" text-anchor="middle" font-family="Inter">处理步骤</text>
+          <polygon points="80,76 110,88 80,100 50,88" fill="oklch(68% 0.12 55)"/>
+          <text x="80" y="91" font-size="7" fill="white" text-anchor="middle" font-family="Inter">判断?</text>
+          <rect x="8" y="82" width="32" height="14" rx="7" fill="oklch(52% 0.18 175)"/>
+          <text x="24" y="92" font-size="7" fill="white" text-anchor="middle" font-family="Inter">是</text>
+          <rect x="120" y="82" width="32" height="14" rx="7" fill="oklch(58% 0.19 25)"/>
+          <text x="136" y="92" font-size="7" fill="white" text-anchor="middle" font-family="Inter">否</text>
+          <line x1="80" y1="28" x2="80" y2="42" stroke="oklch(65% 0.05 260)" stroke-width="1.5" marker-end="url(#arr)"/>
+          <line x1="80" y1="62" x2="80" y2="76" stroke="oklch(65% 0.05 260)" stroke-width="1.5"/>
+          <line x1="50" y1="88" x2="40" y2="88" stroke="oklch(65% 0.05 260)" stroke-width="1.5"/>
+          <line x1="110" y1="88" x2="120" y2="88" stroke="oklch(65% 0.05 260)" stroke-width="1.5"/>
+          <defs><marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="oklch(65% 0.05 260)"/></marker></defs>
+        </svg>`
+          },
+          {
+            id: 'user-journey',
+            name: '用户旅程图',
+            nameEn: 'User Journey Map',
+            use: '全程用户体验阶段+情绪变化+触点',
+            tag: '设计型',
+            svgCode: `<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="6" width="28" height="18" rx="3" fill="oklch(60% 0.18 200)"/>
+          <rect x="38" y="6" width="28" height="18" rx="3" fill="oklch(60% 0.18 200)"/>
+          <rect x="70" y="6" width="28" height="18" rx="3" fill="oklch(60% 0.18 200)"/>
+          <rect x="102" y="6" width="28" height="18" rx="3" fill="oklch(60% 0.18 200)"/>
+          <rect x="134" y="6" width="20" height="18" rx="3" fill="oklch(60% 0.18 200)"/>
+          <polyline points="20,58 52,46 84,70 116,38 144,48"
+            fill="none" stroke="oklch(58% 0.19 25)" stroke-width="2.5" stroke-linejoin="round"/>
+          <circle cx="20" cy="58" r="4" fill="oklch(58% 0.19 25)"/>
+          <circle cx="52" cy="46" r="4" fill="oklch(58% 0.19 25)"/>
+          <circle cx="84" cy="70" r="4" fill="oklch(58% 0.19 25)"/>
+          <circle cx="116" cy="38" r="4" fill="oklch(58% 0.19 25)"/>
+          <circle cx="144" cy="48" r="4" fill="oklch(58% 0.19 25)"/>
+          <rect x="8" y="84" width="22" height="10" rx="2" fill="oklch(88% 0.04 260)"/>
+          <rect x="40" y="84" width="22" height="10" rx="2" fill="oklch(88% 0.04 260)"/>
+          <rect x="72" y="84" width="22" height="10" rx="2" fill="oklch(88% 0.04 260)"/>
+          <rect x="104" y="84" width="22" height="10" rx="2" fill="oklch(88% 0.04 260)"/>
+          <rect x="134" y="84" width="18" height="10" rx="2" fill="oklch(88% 0.04 260)"/>
+          <line x1="6" y1="28" x2="154" y2="28" stroke="oklch(88% 0.02 260)" stroke-width="0.8"/>
+          <line x1="6" y1="80" x2="154" y2="80" stroke="oklch(88% 0.02 260)" stroke-width="0.8"/>
+          <line x1="6" y1="98" x2="154" y2="98" stroke="oklch(88% 0.02 260)" stroke-width="0.8"/>
+        </svg>`
+          }
+        ]
+      }
+    ]
+  },
+
+  // ═══════════════════════════════════════════════════
+  // Category 07: 地理空间 Geo-spatial
+  // ═══════════════════════════════════════════════════
+  {
+    id: 'geo',
+    name: '地理空间',
+    nameEn: 'Geo-spatial',
+    icon: '🗺️',
+    color: 'oklch(52% 0.18 175)',
+    purpose: '地理位置与空间分布关系。核心问题：哪个地区最多？空间密度如何？流向何处？',
+    subcategories: [
+      {
+        id: 'basic-geo',
+        name: '基础地理',
+        charts: [
+          {
+            id: 'choropleth',
+            name: '填色地图',
+            nameEn: 'Choropleth Map',
+            use: '区域数值分布，颜色深浅编码量级',
+            tag: '高频',
+            svgCode: `<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20,20 L60,15 L80,30 L70,55 L40,58 L18,45 Z" fill="oklch(52% 0.18 175)"/>
+          <path d="M60,15 L100,12 L115,35 L95,52 L70,55 L80,30 Z" fill="oklch(68% 0.12 175)"/>
+          <path d="M115,35 L145,30 L148,60 L120,65 L95,52 Z" fill="oklch(78% 0.08 175)"/>
+          <path d="M18,45 L40,58 L35,80 L12,82 Z" fill="oklch(60% 0.15 175)"/>
+          <path d="M40,58 L70,55 L75,78 L50,88 L35,80 Z" fill="oklch(88% 0.04 175)"/>
+          <path d="M70,55 L95,52 L105,72 L85,90 L75,78 Z" fill="oklch(72% 0.10 175)"/>
+          <path d="M95,52 L120,65 L118,85 L100,92 L85,90 L105,72 Z" fill="oklch(44% 0.20 175)"/>
+          <path d="M120,65 L148,60 L145,90 L118,85 Z" fill="oklch(82% 0.06 175)"/>
+          <path d="M20,20 L60,15 L80,30 L70,55 L40,58 L18,45 Z" fill="none" stroke="white" stroke-width="1"/>
+          <path d="M60,15 L100,12 L115,35 L95,52 L70,55 L80,30 Z" fill="none" stroke="white" stroke-width="1"/>
+          <path d="M115,35 L145,30 L148,60 L120,65 L95,52 Z" fill="none" stroke="white" stroke-width="1"/>
+          <rect x="20" y="100" width="40" height="4" fill="oklch(52% 0.18 175)"/>
+          <rect x="60" y="100" width="40" height="4" fill="oklch(82% 0.06 175)"/>
+          <text x="20" y="112" font-size="7" fill="oklch(55% 0.02 260)" font-family="Inter">低</text>
+          <text x="96" y="112" font-size="7" fill="oklch(55% 0.02 260)" font-family="Inter">高</text>
+        </svg>`
+          },
+          {
+            id: 'bubble-map',
+            name: '气泡地图',
+            nameEn: 'Bubble Map',
+            use: '位置+量级，气泡大小编码数值',
+            tag: '常用',
+            svgCode: `<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20,20 L60,15 L80,30 L70,55 L40,58 L18,45 Z" fill="oklch(94% 0.02 260)" stroke="oklch(85% 0.02 260)" stroke-width="0.8"/>
+          <path d="M60,15 L100,12 L115,35 L95,52 L70,55 L80,30 Z" fill="oklch(94% 0.02 260)" stroke="oklch(85% 0.02 260)" stroke-width="0.8"/>
+          <path d="M115,35 L145,30 L148,60 L120,65 L95,52 Z" fill="oklch(94% 0.02 260)" stroke="oklch(85% 0.02 260)" stroke-width="0.8"/>
+          <path d="M18,45 L40,58 L35,80 L12,82 Z" fill="oklch(94% 0.02 260)" stroke="oklch(85% 0.02 260)" stroke-width="0.8"/>
+          <path d="M40,58 L70,55 L75,78 L50,88 L35,80 Z" fill="oklch(94% 0.02 260)" stroke="oklch(85% 0.02 260)" stroke-width="0.8"/>
+          <path d="M70,55 L95,52 L105,72 L85,90 L75,78 Z" fill="oklch(94% 0.02 260)" stroke="oklch(85% 0.02 260)" stroke-width="0.8"/>
+          <path d="M95,52 L120,65 L118,85 L100,92 L85,90 L105,72 Z" fill="oklch(94% 0.02 260)" stroke="oklch(85% 0.02 260)" stroke-width="0.8"/>
+          <path d="M120,65 L148,60 L145,90 L118,85 Z" fill="oklch(94% 0.02 260)" stroke="oklch(85% 0.02 260)" stroke-width="0.8"/>
+          <circle cx="40" cy="36" r="18" fill="oklch(52% 0.18 175 / 0.5)" stroke="oklch(52% 0.18 175)" stroke-width="1.5"/>
+          <circle cx="82" cy="32" r="10" fill="oklch(52% 0.18 175 / 0.5)" stroke="oklch(52% 0.18 175)" stroke-width="1.5"/>
+          <circle cx="128" cy="46" r="6" fill="oklch(52% 0.18 175 / 0.5)" stroke="oklch(52% 0.18 175)" stroke-width="1.5"/>
+          <circle cx="88" cy="72" r="13" fill="oklch(52% 0.18 175 / 0.5)" stroke="oklch(52% 0.18 175)" stroke-width="1.5"/>
+          <circle cx="26" cy="64" r="8" fill="oklch(52% 0.18 175 / 0.5)" stroke="oklch(52% 0.18 175)" stroke-width="1.5"/>
+        </svg>`
+          },
+          {
+            id: 'heatmap-geo',
+            name: '热力地图',
+            nameEn: 'Geographic Heatmap',
+            use: '空间密度热点，事件/点击分布',
+            tag: '常用',
+            svgCode: `<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="h1" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="oklch(52% 0.18 175)" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="oklch(52% 0.18 175)" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="h2" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="oklch(58% 0.19 25)" stop-opacity="0.85"/>
+              <stop offset="100%" stop-color="oklch(58% 0.19 25)" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="h3" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="oklch(55% 0.17 55)" stop-opacity="0.8"/>
+              <stop offset="100%" stop-color="oklch(55% 0.17 55)" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <rect x="4" y="4" width="152" height="112" rx="4" fill="oklch(22% 0.04 260)"/>
+          <ellipse cx="52" cy="48" rx="38" ry="32" fill="url(#h1)"/>
+          <ellipse cx="108" cy="72" rx="30" ry="26" fill="url(#h2)"/>
+          <ellipse cx="72" cy="88" rx="22" ry="18" fill="url(#h3)"/>
+          <path d="M20,20 L80,14 L140,25 L148,95 L12,100 Z" fill="none" stroke="oklch(60% 0.02 260)" stroke-width="0.6"/>
+        </svg>`
+          },
+          {
+            id: 'flow-map',
+            name: '流向地图',
+            nameEn: 'Flow Map',
+            use: '地理流动路径，贸易/移民/物流',
+            tag: '专用',
+            svgCode: `<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="4" width="152" height="112" rx="4" fill="oklch(25% 0.04 220)"/>
+          <path d="M15,30 C35,25 55,20 90,22 C120,24 140,32 150,50" fill="none" stroke="oklch(55% 0.05 220)" stroke-width="0.8"/>
+          <path d="M15,60 C30,55 50,60 70,65 C90,70 120,75 150,70" fill="none" stroke="oklch(55% 0.05 220)" stroke-width="0.8"/>
+          <path d="M25,35 C50,10 100,15 130,38" fill="none" stroke="oklch(58% 0.18 200)" stroke-width="2.5" opacity="0.8"/>
+          <path d="M30,80 C60,60 100,55 135,68" fill="none" stroke="oklch(58% 0.19 25)" stroke-width="1.8" opacity="0.75"/>
+          <path d="M130,38 C115,60 85,80 40,75" fill="none" stroke="oklch(55% 0.16 150)" stroke-width="1.5" opacity="0.7"/>
+          <circle cx="25" cy="35" r="5" fill="oklch(58% 0.18 200)"/>
+          <circle cx="30" cy="80" r="4" fill="oklch(58% 0.19 25)"/>
+          <circle cx="130" cy="38" r="6" fill="oklch(55% 0.16 150)"/>
+          <circle cx="130" cy="38" r="3" fill="white" opacity="0.8"/>
+          <circle cx="135" cy="68" r="3" fill="white" opacity="0.8"/>
+          <circle cx="40" cy="75" r="3" fill="white" opacity="0.8"/>
+        </svg>`
+          },
+          {
+            id: 'dot-density-map',
+            name: '点密度地图',
+            nameEn: 'Dot Density Map',
+            use: '事件位置密度，每点代表N个事件',
+            tag: '专用',
+            svgCode: `<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="4" width="152" height="112" rx="4" fill="oklch(22% 0.03 260)"/>
+          <circle cx="50" cy="40" r="1.8" fill="oklch(52% 0.18 175)"/><circle cx="55" cy="36" r="1.8" fill="oklch(52% 0.18 175)"/>
+          <circle cx="44" cy="44" r="1.8" fill="oklch(52% 0.18 175)"/><circle cx="58" cy="42" r="1.8" fill="oklch(52% 0.18 175)"/>
+          <circle cx="48" cy="50" r="1.8" fill="oklch(52% 0.18 175)"/><circle cx="52" cy="46" r="1.8" fill="oklch(52% 0.18 175)"/>
+          <circle cx="62" cy="38" r="1.8" fill="oklch(52% 0.18 175)"/><circle cx="46" cy="34" r="1.8" fill="oklch(52% 0.18 175)"/>
+          <circle cx="40" cy="38" r="1.8" fill="oklch(52% 0.18 175)"/><circle cx="56" cy="50" r="1.8" fill="oklch(52% 0.18 175)"/>
+          <circle cx="110" cy="70" r="1.8" fill="oklch(52% 0.18 175)"/><circle cx="115" cy="66" r="1.8" fill="oklch(52% 0.18 175)"/>
+          <circle cx="104" cy="74" r="1.8" fill="oklch(52% 0.18 175)"/><circle cx="118" cy="72" r="1.8" fill="oklch(52% 0.18 175)"/>
+          <circle cx="108" cy="80" r="1.8" fill="oklch(52% 0.18 175)"/><circle cx="112" cy="76" r="1.8" fill="oklch(52% 0.18 175)"/>
+          <circle cx="122" cy="68" r="1.8" fill="oklch(52% 0.18 175)"/><circle cx="106" cy="64" r="1.8" fill="oklch(52% 0.18 175)"/>
+          <circle cx="80" cy="55" r="1.8" fill="oklch(52% 0.18 175 / 0.6)"/>
+          <circle cx="30" cy="80" r="1.8" fill="oklch(52% 0.18 175 / 0.6)"/>
+          <circle cx="140" cy="40" r="1.8" fill="oklch(52% 0.18 175 / 0.6)"/>
+          <circle cx="90" cy="90" r="1.8" fill="oklch(52% 0.18 175 / 0.6)"/>
+          <path d="M15,15 L80,10 L145,20 L150,105 L10,108 Z" fill="none" stroke="oklch(50% 0.04 220)" stroke-width="0.8"/>
+        </svg>`
+          }
+        ]
+      }
+    ]
+  },
+
+  // ═══════════════════════════════════════════════════
+  // Category 08: 层级结构 Hierarchy
+  // ═══════════════════════════════════════════════════
+  {
+    id: 'hierarchy',
+    name: '层级结构',
+    nameEn: 'Hierarchy',
+    icon: '🌳',
+    color: 'oklch(54% 0.17 330)',
+    purpose: '树形、隶属、嵌套关系。核心问题：谁包含谁？层级深度是多少？如何下钻？',
+    subcategories: [
+      {
+        id: 'basic-hierarchy',
+        name: '基础层级',
+        charts: [
+          {
+            id: 'tree-diagram',
+            name: '树状图',
+            nameEn: 'Tree Diagram',
+            use: '父子层级关系，组织架构/分类体系',
+            tag: '高频',
+            svgCode: `<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+          <rect x="60" y="8" width="40" height="16" rx="4" fill="oklch(54% 0.17 330)"/>
+          <rect x="20" y="44" width="36" height="14" rx="3" fill="oklch(65% 0.13 330)"/>
+          <rect x="62" y="44" width="36" height="14" rx="3" fill="oklch(65% 0.13 330)"/>
+          <rect x="104" y="44" width="36" height="14" rx="3" fill="oklch(65% 0.13 330)"/>
+          <rect x="6" y="80" width="26" height="12" rx="2" fill="oklch(76% 0.09 330)"/>
+          <rect x="36" y="80" width="26" height="12" rx="2" fill="oklch(76% 0.09 330)"/>
+          <rect x="64" y="80" width="26" height="12" rx="2" fill="oklch(76% 0.09 330)"/>
+          <rect x="94" y="80" width="26" height="12" rx="2" fill="oklch(76% 0.09 330)"/>
+          <rect x="124" y="80" width="26" height="12" rx="2" fill="oklch(76% 0.09 330)"/>
+          <line x1="80" y1="24" x2="38" y2="44" stroke="oklch(70% 0.08 330)" stroke-width="1.5"/>
+          <line x1="80" y1="24" x2="80" y2="44" stroke="oklch(70% 0.08 330)" stroke-width="1.5"/>
+          <line x1="80" y1="24" x2="122" y2="44" stroke="oklch(70% 0.08 330)" stroke-width="1.5"/>
+          <line x1="38" y1="58" x2="19" y2="80" stroke="oklch(78% 0.06 330)" stroke-width="1.2"/>
+          <line x1="38" y1="58" x2="49" y2="80" stroke="oklch(78% 0.06 330)" stroke-width="1.2"/>
+          <line x1="80" y1="58" x2="77" y2="80" stroke="oklch(78% 0.06 330)" stroke-width="1.2"/>
+          <line x1="122" y1="58" x2="107" y2="80" stroke="oklch(78% 0.06 330)" stroke-width="1.2"/>
+          <line x1="122" y1="58" x2="137" y2="80" stroke="oklch(78% 0.06 330)" stroke-width="1.2"/>
+        </svg>`
+          },
+          {
+            id: 'mind-map',
+            name: '思维导图',
+            nameEn: 'Mind Map',
+            use: '发散型层级，头脑风暴/知识梳理',
+            tag: '高频',
+            svgCode: `<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="80" cy="60" rx="22" ry="14" fill="oklch(54% 0.17 330)"/>
+          <text x="80" y="64" font-size="8" fill="white" text-anchor="middle" font-family="Inter" font-weight="600">核心</text>
+          <line x1="58" y1="52" x2="22" y2="32" stroke="oklch(65% 0.13 330)" stroke-width="2.5"/>
+          <ellipse cx="16" cy="28" rx="14" ry="10" fill="oklch(65% 0.13 330)"/>
+          <text x="16" y="31" font-size="7" fill="white" text-anchor="middle" font-family="Inter">主题A</text>
+          <line x1="80" y1="46" x2="80" y2="18" stroke="oklch(65% 0.13 330)" stroke-width="2.5"/>
+          <ellipse cx="80" cy="12" rx="16" ry="9" fill="oklch(65% 0.13 330)"/>
+          <text x="80" y="15" font-size="7" fill="white" text-anchor="middle" font-family="Inter">主题B</text>
+          <line x1="102" y1="52" x2="138" y2="32" stroke="oklch(65% 0.13 330)" stroke-width="2.5"/>
+          <ellipse cx="144" cy="28" rx="14" ry="10" fill="oklch(65% 0.13 330)"/>
+          <text x="144" y="31" font-size="7" fill="white" text-anchor="middle" font-family="Inter">主题C</text>
+          <line x1="58" y1="68" x2="22" y2="88" stroke="oklch(65% 0.13 330)" stroke-width="2.5"/>
+          <ellipse cx="16" cy="92" rx="14" ry="10" fill="oklch(65% 0.13 330)"/>
+          <text x="16" y="95" font-size="7" fill="white" text-anchor="middle" font-family="Inter">主题D</text>
+          <line x1="102" y1="68" x2="138" y2="88" stroke="oklch(65% 0.13 330)" stroke-width="2.5"/>
+          <ellipse cx="144" cy="92" rx="14" ry="10" fill="oklch(65% 0.13 330)"/>
+          <text x="144" y="95" font-size="7" fill="white" text-anchor="middle" font-family="Inter">主题E</text>
+          <line x1="16" y1="18" x2="24" y2="8" stroke="oklch(78% 0.08 330)" stroke-width="1.5"/>
+          <rect x="24" y="4" width="22" height="8" rx="3" fill="oklch(82% 0.06 330)"/>
+          <line x1="16" y1="38" x2="8" y2="48" stroke="oklch(78% 0.08 330)" stroke-width="1.5"/>
+          <rect x="2" y="44" width="18" height="8" rx="3" fill="oklch(82% 0.06 330)"/>
+        </svg>`
+          },
+          {
+            id: 'org-chart',
+            name: '组织架构图',
+            nameEn: 'Org Chart',
+            use: '公司/团队层级汇报关系',
+            tag: '高频',
+            svgCode: `<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+          <rect x="55" y="8" width="50" height="18" rx="4" fill="oklch(54% 0.17 330)"/>
+          <text x="80" y="20" font-size="8" fill="white" text-anchor="middle" font-family="Inter" font-weight="600">CEO</text>
+          <line x1="80" y1="26" x2="80" y2="36" stroke="oklch(70% 0.10 330)" stroke-width="1.5"/>
+          <line x1="26" y1="36" x2="134" y2="36" stroke="oklch(70% 0.10 330)" stroke-width="1.5"/>
+          <line x1="26" y1="36" x2="26" y2="46" stroke="oklch(70% 0.10 330)" stroke-width="1.5"/>
+          <line x1="80" y1="36" x2="80" y2="46" stroke="oklch(70% 0.10 330)" stroke-width="1.5"/>
+          <line x1="134" y1="36" x2="134" y2="46" stroke="oklch(70% 0.10 330)" stroke-width="1.5"/>
+          <rect x="6" y="46" width="40" height="16" rx="3" fill="oklch(65% 0.13 330)"/>
+          <text x="26" y="57" font-size="7" fill="white" text-anchor="middle" font-family="Inter">CTO</text>
+          <rect x="60" y="46" width="40" height="16" rx="3" fill="oklch(65% 0.13 330)"/>
+          <text x="80" y="57" font-size="7" fill="white" text-anchor="middle" font-family="Inter">COO</text>
+          <rect x="114" y="46" width="40" height="16" rx="3" fill="oklch(65% 0.13 330)"/>
+          <text x="134" y="57" font-size="7" fill="white" text-anchor="middle" font-family="Inter">CFO</text>
+          <line x1="26" y1="62" x2="26" y2="72" stroke="oklch(78% 0.08 330)" stroke-width="1.2"/>
+          <line x1="10" y1="72" x2="42" y2="72" stroke="oklch(78% 0.08 330)" stroke-width="1.2"/>
+          <line x1="10" y1="72" x2="10" y2="82" stroke="oklch(78% 0.08 330)" stroke-width="1.2"/>
+          <line x1="42" y1="72" x2="42" y2="82" stroke="oklch(78% 0.08 330)" stroke-width="1.2"/>
+          <rect x="2" y="82" width="18" height="12" rx="2" fill="oklch(78% 0.08 330)"/>
+          <rect x="24" y="82" width="18" height="12" rx="2" fill="oklch(78% 0.08 330)"/>
+          <line x1="80" y1="62" x2="80" y2="72" stroke="oklch(78% 0.08 330)" stroke-width="1.2"/>
+          <line x1="68" y1="72" x2="92" y2="72" stroke="oklch(78% 0.08 330)" stroke-width="1.2"/>
+          <line x1="68" y1="72" x2="68" y2="82" stroke="oklch(78% 0.08 330)" stroke-width="1.2"/>
+          <line x1="92" y1="72" x2="92" y2="82" stroke="oklch(78% 0.08 330)" stroke-width="1.2"/>
+          <rect x="60" y="82" width="18" height="12" rx="2" fill="oklch(78% 0.08 330)"/>
+          <rect x="84" y="82" width="18" height="12" rx="2" fill="oklch(78% 0.08 330)"/>
+        </svg>`
+          }
+        ]
+      }
+    ]
+  },
+
+  // ═══════════════════════════════════════════════════
+  // Category 09: 网络关系 Network
+  // ═══════════════════════════════════════════════════
+  {
+    id: 'network',
+    name: '网络关系',
+    nameEn: 'Network',
+    icon: '🕸️',
+    color: 'oklch(50% 0.16 270)',
+    purpose: '节点与边的关联拓扑。核心问题：谁与谁相连？谁是关键节点？集群如何形成？',
+    subcategories: [
+      {
+        id: 'basic-network',
+        name: '基础网络',
+        charts: [
+          {
+            id: 'force-directed',
+            name: '力导向图',
+            nameEn: 'Force-Directed Graph',
+            use: '自由拓扑网络，社交网络/知识图谱',
+            tag: '核心',
+            svgCode: `<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+          <line x1="80" y1="58" x2="40" y2="30" stroke="oklch(68% 0.10 270)" stroke-width="1.5" opacity="0.6"/>
+          <line x1="80" y1="58" x2="118" y2="28" stroke="oklch(68% 0.10 270)" stroke-width="1.5" opacity="0.6"/>
+          <line x1="80" y1="58" x2="50" y2="80" stroke="oklch(68% 0.10 270)" stroke-width="1.5" opacity="0.6"/>
+          <line x1="80" y1="58" x2="115" y2="78" stroke="oklch(68% 0.10 270)" stroke-width="1.5" opacity="0.6"/>
+          <line x1="80" y1="58" x2="80" y2="96" stroke="oklch(68% 0.10 270)" stroke-width="1.5" opacity="0.6"/>
+          <line x1="40" y1="30" x2="20" y2="52" stroke="oklch(78% 0.07 270)" stroke-width="1.2" opacity="0.5"/>
+          <line x1="40" y1="30" x2="58" y2="14" stroke="oklch(78% 0.07 270)" stroke-width="1.2" opacity="0.5"/>
+          <line x1="118" y1="28" x2="140" y2="44" stroke="oklch(78% 0.07 270)" stroke-width="1.2" opacity="0.5"/>
+          <line x1="50" y1="80" x2="28" y2="96" stroke="oklch(78% 0.07 270)" stroke-width="1.2" opacity="0.5"/>
+          <line x1="115" y1="78" x2="138" y2="90" stroke="oklch(78% 0.07 270)" stroke-width="1.2" opacity="0.5"/>
+          <circle cx="80" cy="58" r="10" fill="oklch(50% 0.16 270)"/>
+          <circle cx="40" cy="30" r="7" fill="oklch(60% 0.13 270)"/>
+          <circle cx="118" cy="28" r="7" fill="oklch(60% 0.13 270)"/>
+          <circle cx="50" cy="80" r="7" fill="oklch(60% 0.13 270)"/>
+          <circle cx="115" cy="78" r="7" fill="oklch(60% 0.13 270)"/>
+          <circle cx="80" cy="96" r="7" fill="oklch(60% 0.13 270)"/>
+          <circle cx="20" cy="52" r="5" fill="oklch(72% 0.09 270)"/>
+          <circle cx="58" cy="14" r="5" fill="oklch(72% 0.09 270)"/>
+          <circle cx="140" cy="44" r="5" fill="oklch(72% 0.09 270)"/>
+          <circle cx="28" cy="96" r="5" fill="oklch(72% 0.09 270)"/>
+          <circle cx="138" cy="90" r="5" fill="oklch(72% 0.09 270)"/>
+        </svg>`
+          },
+          {
+            id: 'knowledge-graph',
+            name: '知识图谱',
+            nameEn: 'Knowledge Graph',
+            use: '实体-关系网络，异构节点+带标签边',
+            tag: 'AI应用',
+            svgCode: `<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+          <line x1="50" y1="40" x2="90" y2="60" stroke="oklch(68% 0.10 270)" stroke-width="1.5"/>
+          <line x1="90" y1="60" x2="130" y2="40" stroke="oklch(68% 0.10 270)" stroke-width="1.5"/>
+          <line x1="90" y1="60" x2="90" y2="95" stroke="oklch(68% 0.10 270)" stroke-width="1.5"/>
+          <line x1="50" y1="40" x2="20" y2="70" stroke="oklch(78% 0.07 270)" stroke-width="1.2"/>
+          <line x1="130" y1="40" x2="148" y2="70" stroke="oklch(78% 0.07 270)" stroke-width="1.2"/>
+          <line x1="90" y1="95" x2="60" y2="110" stroke="oklch(78% 0.07 270)" stroke-width="1.2"/>
+          <line x1="90" y1="95" x2="120" y2="110" stroke="oklch(78% 0.07 270)" stroke-width="1.2"/>
+          <rect x="60" y="46" width="24" height="8" rx="2" fill="oklch(92% 0.03 270)"/>
+          <text x="72" y="52" font-size="6" fill="oklch(45% 0.12 270)" text-anchor="middle" font-family="Inter">关联</text>
+          <ellipse cx="50" cy="40" rx="18" ry="10" fill="oklch(52% 0.18 200)"/>
+          <text x="50" y="43" font-size="7" fill="white" text-anchor="middle" font-family="Inter">人物</text>
+          <ellipse cx="130" cy="40" rx="18" ry="10" fill="oklch(52% 0.18 175)"/>
+          <text x="130" y="43" font-size="7" fill="white" text-anchor="middle" font-family="Inter">机构</text>
+          <ellipse cx="90" cy="60" rx="18" ry="10" fill="oklch(58% 0.19 25)"/>
+          <text x="90" y="63" font-size="7" fill="white" text-anchor="middle" font-family="Inter">事件</text>
+          <ellipse cx="90" cy="95" rx="18" ry="10" fill="oklch(56% 0.18 290)"/>
+          <text x="90" y="98" font-size="7" fill="white" text-anchor="middle" font-family="Inter">地点</text>
+          <circle cx="20" cy="70" r="7" fill="oklch(65% 0.13 200)"/>
+          <circle cx="148" cy="70" r="7" fill="oklch(65% 0.13 175)"/>
+          <circle cx="60" cy="110" r="7" fill="oklch(68% 0.12 290)"/>
+          <circle cx="120" cy="110" r="7" fill="oklch(68% 0.12 290)"/>
+        </svg>`
+          }
+        ]
+      }
+    ]
+  },
+
+  // ═══════════════════════════════════════════════════
+  // Category 10: 文本信息 Text/Info (精简版)
+  // ═══════════════════════════════════════════════════
+  {
+    id: 'text',
+    name: '文本信息',
+    nameEn: 'Text/Info',
+    icon: '📋',
+    color: 'oklch(50% 0.02 260)',
+    purpose: '非结构化内容的视觉化。核心问题：如何让文字/概念变得可读、可理解、可记忆？',
+    subcategories: [
+      {
+        id: 'basic-text',
+        name: '基础展示',
+        charts: [
+          {
+            id: 'word-cloud',
+            name: '词云',
+            nameEn: 'Word Cloud',
+            use: '文本词频/权重对比，NLP结果展示',
+            tag: '常用',
+            svgCode: `<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+          <text x="80" y="50" font-size="22" font-weight="700" font-family="Inter" fill="oklch(50% 0.16 270)" text-anchor="middle">创新</text>
+          <text x="40" y="35" font-size="14" font-weight="600" font-family="Inter" fill="oklch(58% 0.19 25)" text-anchor="middle">设计</text>
+          <text x="128" y="42" font-size="12" font-weight="600" font-family="Inter" fill="oklch(55% 0.16 150)" text-anchor="middle">体验</text>
+          <text x="30" y="68" font-size="10" font-family="Inter" fill="oklch(56% 0.18 290)" text-anchor="middle">数据</text>
+          <text x="128" y="72" font-size="10" font-family="Inter" fill="oklch(58% 0.17 55)" text-anchor="middle">战略</text>
+          <text x="80" y="80" font-size="8" font-family="Inter" fill="oklch(52% 0.18 175)" text-anchor="middle">协作</text>
+          <text x="50" y="90" font-size="7" font-family="Inter" fill="oklch(60% 0.14 330)" text-anchor="middle">产品</text>
+          <text x="110" y="90" font-size="9" font-family="Inter" fill="oklch(58% 0.14 200)" text-anchor="middle">增长</text>
+          <text x="20" y="96" font-size="7" font-family="Inter" fill="oklch(62% 0.12 55)" text-anchor="middle">技术</text>
+          <text x="138" y="96" font-size="7" font-family="Inter" fill="oklch(60% 0.12 290)" text-anchor="middle">用户</text>
+          <text x="80" y="110" font-size="7" font-family="Inter" fill="oklch(65% 0.10 260)" text-anchor="middle">运营</text>
+        </svg>`
+          },
+          {
+            id: 'timeline',
+            name: '时间轴',
+            nameEn: 'Timeline',
+            use: '事件序列，历史/里程碑/路线图',
+            tag: '高频',
+            svgCode: `<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+          <line x1="80" y1="10" x2="80" y2="110" stroke="oklch(75% 0.04 260)" stroke-width="2"/>
+          <line x1="80" y1="24" x2="50" y2="24" stroke="oklch(82% 0.03 260)" stroke-width="1.2"/>
+          <circle cx="80" cy="24" r="5" fill="oklch(58% 0.19 25)"/>
+          <rect x="12" y="18" width="36" height="12" rx="3" fill="oklch(94% 0.03 25)"/>
+          <line x1="80" y1="46" x2="110" y2="46" stroke="oklch(82% 0.03 260)" stroke-width="1.2"/>
+          <circle cx="80" cy="46" r="5" fill="oklch(55% 0.16 150)"/>
+          <rect x="112" y="40" width="36" height="12" rx="3" fill="oklch(93% 0.03 150)"/>
+          <line x1="80" y1="68" x2="50" y2="68" stroke="oklch(82% 0.03 260)" stroke-width="1.2"/>
+          <circle cx="80" cy="68" r="5" fill="oklch(58% 0.18 200)"/>
+          <rect x="12" y="62" width="36" height="12" rx="3" fill="oklch(93% 0.03 200)"/>
+          <line x1="80" y1="90" x2="110" y2="90" stroke="oklch(82% 0.03 260)" stroke-width="1.2"/>
+          <circle cx="80" cy="90" r="5" fill="oklch(56% 0.18 290)"/>
+          <rect x="112" y="84" width="36" height="12" rx="3" fill="oklch(92% 0.03 290)"/>
+        </svg>`
+          },
+          {
+            id: 'kpi-card',
+            name: '统计卡片',
+            nameEn: 'KPI Card',
+            use: '核心数字突出展示，仪表盘首选',
+            tag: '高频',
+            svgCode: `<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="8" width="68" height="52" rx="6" fill="oklch(96% 0.01 260)" stroke="oklch(88% 0.02 260)" stroke-width="1"/>
+          <text x="42" y="34" font-size="18" font-weight="700" font-family="Inter" fill="oklch(30% 0.02 260)" text-anchor="middle">8.2k</text>
+          <text x="42" y="46" font-size="8" font-family="Inter" fill="oklch(60% 0.02 260)" text-anchor="middle">日活用户</text>
+          <rect x="10" y="50" width="18" height="5" rx="2" fill="oklch(55% 0.16 150)"/>
+          <text x="32" y="55" font-size="7" font-family="Inter" fill="oklch(55% 0.16 150)">+12%</text>
+          <rect x="84" y="8" width="68" height="52" rx="6" fill="oklch(96% 0.01 260)" stroke="oklch(88% 0.02 260)" stroke-width="1"/>
+          <text x="118" y="34" font-size="18" font-weight="700" font-family="Inter" fill="oklch(30% 0.02 260)" text-anchor="middle">94%</text>
+          <text x="118" y="46" font-size="8" font-family="Inter" fill="oklch(60% 0.02 260)" text-anchor="middle">满意度</text>
+          <rect x="86" y="50" width="14" height="5" rx="2" fill="oklch(58% 0.19 25)"/>
+          <text x="104" y="55" font-size="7" font-family="Inter" fill="oklch(58% 0.19 25)">-2%</text>
+          <rect x="8" y="68" width="144" height="44" rx="6" fill="oklch(96% 0.01 260)" stroke="oklch(88% 0.02 260)" stroke-width="1"/>
+          <text x="80" y="90" font-size="22" font-weight="700" font-family="Inter" fill="oklch(50% 0.16 270)" text-anchor="middle">¥ 1.28亿</text>
+          <text x="80" y="104" font-size="8" font-family="Inter" fill="oklch(60% 0.02 260)" text-anchor="middle">Q3 总收入</text>
+        </svg>`
+          }
+        ]
+      }
+    ]
   }
 ]
