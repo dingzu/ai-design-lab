@@ -48,8 +48,8 @@
   --shadow-lg: 0 10px 30px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04);
 
   --nav-h: 56px;
-  --content-w: 900px;
-  --pad-x: 24px;
+  --content-w: 1200px;
+  --pad-x: 32px;
 }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }

@@ -12,11 +12,16 @@
       <!-- Header -->
       <header class="page-hero">
         <span class="tag tag-blue" style="margin-bottom:16px;display:inline-flex">02 · Generative UI</span>
-        <h1>GenUI</h1>
+        <h1>GenUI 方案研究</h1>
         <p class="text-2" style="font-size:16px;max-width:560px;line-height:1.7;margin-top:16px">
-          从 Prompt 到可用组件，探索 AI 生成界面的边界，重新定义设计到代码的生产路径。
+          探索 AI 界面生成的多种技术路径——从声明式协议到代码直出，研究不同方案的优势与适用场景。
         </p>
       </header>
+
+      <!-- Hero Image -->
+      <div class="hero-image">
+        <img src="/images/genui-hero.jpg" alt="GenUI 方案研究" />
+      </div>
 
       <!-- Stats bar -->
       <div class="stats-bar">
@@ -38,12 +43,12 @@
 
       <div class="section-divider"></div>
 
-      <!-- A2UI RESEARCH SECTION -->
+      <!-- RESEARCH SECTIONS -->
       <section class="content-section">
         <div class="section-header">
           <div>
-            <h2 class="section-title">A2UI 协议深度研究</h2>
-            <p class="text-3" style="font-size:13px;margin-top:4px">来源：a2ui.org · Google · Apache 2.0 · v0.8 Stable</p>
+            <h2 class="section-title">方案一：A2UI 声明式协议</h2>
+            <p class="text-3" style="font-size:13px;margin-top:4px">来源：a2ui.org · Google · Apache 2.0 · v0.8 Stable · 安全可控的声明式方案</p>
           </div>
           <a href="https://a2ui.org" target="_blank" class="tag tag-blue" style="display:inline-flex;align-items:center;gap:4px;font-size:12px">a2ui.org ↗</a>
         </div>
@@ -1021,6 +1026,20 @@ const jrVsA2UI = [
 .tag-blue { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
 .tag-green { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
 .text-blue { color: var(--blue); }
+
+/* HERO IMAGE */
+.hero-image {
+  margin: 32px 0 40px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border);
+}
+.hero-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
 
 /* JSON-RENDER SPECIFIC */
 .jr-pkg-grid {

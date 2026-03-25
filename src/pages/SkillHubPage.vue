@@ -661,16 +661,9 @@
             </div>
           </section>
 
-          <!-- iframe 嵌入 -->
+          <!-- 信息可视化分类体系组件 -->
           <section id="inf-tech" class="art-section" style="padding:0">
-            <div class="infovis-iframe-wrap">
-              <iframe
-                src="/infovis-taxonomy/"
-                class="infovis-iframe"
-                title="信息可视化图表分类体系"
-                allow="same-origin"
-              ></iframe>
-            </div>
+            <InfoVisTaxonomy />
           </section>
 
           <!-- Skill 路径锚点占位 -->
@@ -1043,6 +1036,7 @@ bazel build --config=remote-ubuntu-22-04 @abseil-hello//:hello_main</pre>
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import InfoVisTaxonomy from '../components/InfoVisTaxonomy.vue'
 
 const route = useRoute()
 const router = useRouter()

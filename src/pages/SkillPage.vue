@@ -50,63 +50,6 @@
 
       <div class="section-divider"></div>
 
-      <!-- 项目定位 -->
-      <section class="content-section">
-        <h2 class="section-title">项目定位</h2>
-        <div class="goal-grid">
-          <div class="goal-card">
-            <div class="goal-label text-3">核心目标</div>
-            <div class="goal-val">提升团队 Agent Skill 的整体设计质量与复用率</div>
-          </div>
-          <div class="goal-card">
-            <div class="goal-label text-3">主要受众</div>
-            <div class="goal-val">设计师、产品经理、开发同学、AI 助手的 Owner</div>
-          </div>
-          <div class="goal-card">
-            <div class="goal-label text-3">协作模式</div>
-            <div class="goal-val">提案 → 评审 → 沉淀 → 发布</div>
-          </div>
-          <div class="goal-card">
-            <div class="goal-label text-3">维护归属</div>
-            <div class="goal-val">【质量与研发效能部】设计团队</div>
-          </div>
-        </div>
-      </section>
-
-      <div class="section-divider"></div>
-
-      <!-- 工作流 -->
-      <section class="content-section">
-        <h2 class="section-title">工作流</h2>
-        <div class="workflow-row">
-          <div class="wf-step">
-            <div class="wf-num">01</div>
-            <div class="wf-name">提案</div>
-            <div class="wf-desc text-3">proposals/ 目录提交新 Skill 提案</div>
-          </div>
-          <div class="wf-arrow">→</div>
-          <div class="wf-step">
-            <div class="wf-num">02</div>
-            <div class="wf-name">评审</div>
-            <div class="wf-desc text-3">MR 评审 · 设计讨论 · 修改迭代</div>
-          </div>
-          <div class="wf-arrow">→</div>
-          <div class="wf-step">
-            <div class="wf-num">03</div>
-            <div class="wf-name">沉淀</div>
-            <div class="wf-desc text-3">评审通过后入库 skills/ 目录</div>
-          </div>
-          <div class="wf-arrow">→</div>
-          <div class="wf-step">
-            <div class="wf-num">04</div>
-            <div class="wf-name">发布</div>
-            <div class="wf-desc text-3">同步安装到 ~/.codeflicker/skills/</div>
-          </div>
-        </div>
-      </section>
-
-      <div class="section-divider"></div>
-
       <!-- Skill 规范 -->
       <section class="content-section">
         <h2 class="section-title">核心规范</h2>
@@ -154,6 +97,489 @@
           <div class="qt-row">
             <span class="qt-level level-0">❌ 不合格</span>
             <span class="qt-desc text-2">不符合基本结构规范，退回修改</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- 设计 Skill 分类体系 -->
+      <section class="content-section">
+        <h2 class="section-title">设计 Skill 分层架构</h2>
+        <p class="section-desc text-2">
+          类比软件架构设计，将 Skills 划分为意图层、路由层、编排层、原子层，建立清晰的调用关系
+        </p>
+
+        <!-- 架构可视化 -->
+        <div class="arch-viz">
+          <div class="arch-header">
+            <span class="arch-title">Skill 调用链路示例</span>
+            <div class="arch-legend">
+              <span class="legend-item"><span class="legend-dot dot-intent"></span>意图层</span>
+              <span class="legend-item"><span class="legend-dot dot-router"></span>路由层</span>
+              <span class="legend-item"><span class="legend-dot dot-orch"></span>编排层</span>
+              <span class="legend-item"><span class="legend-dot dot-atomic"></span>原子层</span>
+            </div>
+          </div>
+
+          <div class="arch-layers">
+            <!-- 意图层 -->
+            <div class="arch-layer layer-intent">
+              <div class="layer-label">
+                <span class="layer-icon">💬</span>
+                <span class="layer-name">意图层</span>
+                <span class="layer-desc">用户原始需求</span>
+              </div>
+              <div class="layer-nodes">
+                <div class="arch-node node-intent">
+                  <div class="node-text">"做一个 PPT"</div>
+                </div>
+                <div class="arch-node node-intent">
+                  <div class="node-text">"生成一张图"</div>
+                </div>
+                <div class="arch-node node-intent">
+                  <div class="node-text">"创建信息图"</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 路由层 -->
+            <div class="arch-layer layer-router">
+              <div class="layer-label">
+                <span class="layer-icon">🔀</span>
+                <span class="layer-name">路由层</span>
+                <span class="layer-desc">意图识别与分流</span>
+              </div>
+              <div class="layer-nodes">
+                <div class="arch-node node-router" @click="selectNode('router-ppt')">
+                  <div class="node-header">
+                    <span class="node-type">PPT 需求路由</span>
+                  </div>
+                  <div class="node-routes">
+                    <div class="route-item">工作汇报 → work-report-ppt</div>
+                    <div class="route-item">艺术创意 → artistic-ppt</div>
+                    <div class="route-item">文件操作 → pptx</div>
+                  </div>
+                </div>
+                <div class="arch-node node-router" @click="selectNode('router-image')">
+                  <div class="node-header">
+                    <span class="node-type">图像需求路由</span>
+                  </div>
+                  <div class="node-routes">
+                    <div class="route-item">技术架构图 → ai-image-generator</div>
+                    <div class="route-item">艺术海报 → canvas-design</div>
+                    <div class="route-item">信息图 → 编排层处理</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 编排层 -->
+            <div class="arch-layer layer-orch">
+              <div class="layer-label">
+                <span class="layer-icon">🎭</span>
+                <span class="layer-name">编排层</span>
+                <span class="layer-desc">组合原子能力</span>
+              </div>
+              <div class="layer-nodes">
+                <div class="arch-node node-orch clickable" @click="selectSkill('artistic-ppt')">
+                  <div class="node-icon">📊</div>
+                  <div class="node-name">artistic-ppt</div>
+                  <div class="node-meta">艺术风格PPT</div>
+                  <div class="node-deps">
+                    <span class="dep-badge">→ pptx</span>
+                    <span class="dep-badge">→ ai-image-generator</span>
+                  </div>
+                </div>
+                <div class="arch-node node-orch clickable" @click="selectSkill('work-report-ppt')">
+                  <div class="node-icon">📊</div>
+                  <div class="node-name">work-report-ppt</div>
+                  <div class="node-meta">商务汇报PPT</div>
+                  <div class="node-deps">
+                    <span class="dep-badge">→ pptx</span>
+                  </div>
+                </div>
+                <div class="arch-node node-orch clickable" @click="selectSkill('infographic')">
+                  <div class="node-icon">📈</div>
+                  <div class="node-name">ks-design-infographic</div>
+                  <div class="node-meta">信息图生成</div>
+                  <div class="node-deps">
+                    <span class="dep-badge">→ ai-image-generator</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 原子层 -->
+            <div class="arch-layer layer-atomic">
+              <div class="layer-label">
+                <span class="layer-icon">⚛️</span>
+                <span class="layer-name">原子层</span>
+                <span class="layer-desc">不可再分的基础能力</span>
+              </div>
+              <div class="layer-nodes">
+                <div class="arch-node node-atomic clickable" @click="selectSkill('pptx')">
+                  <div class="node-icon">📄</div>
+                  <div class="node-name">pptx / keynote</div>
+                  <div class="node-meta">PPTX 文件操作</div>
+                  <div class="node-tech">PptxGenJS</div>
+                </div>
+                <div class="arch-node node-atomic clickable" @click="selectSkill('ai-image-generator')">
+                  <div class="node-icon">🎨</div>
+                  <div class="node-name">ai-image-generator</div>
+                  <div class="node-meta">AI 图像生成</div>
+                  <div class="node-tech">FLUX.1-dev</div>
+                </div>
+                <div class="arch-node node-atomic clickable" @click="selectSkill('ppt-style-manager')">
+                  <div class="node-icon">🎨</div>
+                  <div class="node-name">ppt-style-manager</div>
+                  <div class="node-meta">PPT 风格管理</div>
+                  <div class="node-tech">风格配置</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skill 详情面板 -->
+        <div v-if="selectedSkillId" class="skill-detail-panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <span class="panel-icon">{{ skillDetails[selectedSkillId].icon }}</span>
+              <span class="panel-name">{{ skillDetails[selectedSkillId].name }}</span>
+              <span :class="['panel-badge', 'badge-' + skillDetails[selectedSkillId].layer]">
+                {{ skillDetails[selectedSkillId].layerName }}
+              </span>
+            </div>
+            <button class="panel-close" @click="selectedSkillId = null">✕</button>
+          </div>
+          <div class="panel-body">
+            <div class="panel-section">
+              <div class="section-label">场景</div>
+              <div class="section-value">{{ skillDetails[selectedSkillId].scenario }}</div>
+            </div>
+            <div class="panel-section">
+              <div class="section-label">触发词</div>
+              <div class="section-value">
+                <span v-for="(word, idx) in skillDetails[selectedSkillId].triggers" :key="idx" class="trigger-word">
+                  {{ word }}
+                </span>
+              </div>
+            </div>
+            <div class="panel-section" v-if="skillDetails[selectedSkillId].dependencies.length > 0">
+              <div class="section-label">调用关系</div>
+              <div class="section-value">
+                <div v-for="(dep, idx) in skillDetails[selectedSkillId].dependencies" :key="idx" class="dep-item">
+                  <span class="dep-arrow">→</span>
+                  <span class="dep-name">{{ dep.name }}</span>
+                  <span class="dep-desc">{{ dep.desc }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="panel-section" v-if="skillDetails[selectedSkillId].tech">
+              <div class="section-label">底层技术</div>
+              <div class="section-value">
+                <code>{{ skillDetails[selectedSkillId].tech }}</code>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 分类全景图 -->
+        <div class="taxonomy-overview">
+          <div class="taxonomy-header">
+            <span class="taxonomy-title">7 大分类 · 24 个 Skills</span>
+            <span class="taxonomy-badge">v1.0</span>
+          </div>
+          
+          <div class="taxonomy-grid">
+            <!-- 静态视觉设计 -->
+            <div class="tax-category">
+              <div class="tax-cat-header">
+                <span class="tax-icon">🎨</span>
+                <span class="tax-name">静态视觉设计</span>
+                <span class="tax-count">3</span>
+              </div>
+              <div class="tax-skills">
+                <div class="tax-skill">
+                  <span class="skill-name">ai-image-generator</span>
+                  <span class="skill-badge badge-medium">中</span>
+                </div>
+                <div class="tax-skill">
+                  <span class="skill-name">canvas-design</span>
+                  <span class="skill-badge badge-high">高</span>
+                </div>
+                <div class="tax-skill">
+                  <span class="skill-name">algorithmic-art</span>
+                  <span class="skill-badge badge-high">高</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 界面设计与开发 -->
+            <div class="tax-category">
+              <div class="tax-cat-header">
+                <span class="tax-icon">💻</span>
+                <span class="tax-name">界面设计与开发</span>
+                <span class="tax-count">4</span>
+              </div>
+              <div class="tax-skills">
+                <div class="tax-skill">
+                  <span class="skill-name">frontend-design</span>
+                  <span class="skill-badge badge-medium">中</span>
+                </div>
+                <div class="tax-skill">
+                  <span class="skill-name">ui-ux-pro-max</span>
+                  <span class="skill-badge badge-high">高</span>
+                </div>
+                <div class="tax-skill">
+                  <span class="skill-name">web-design-guidelines</span>
+                  <span class="skill-badge badge-low">低</span>
+                </div>
+                <div class="tax-skill">
+                  <span class="skill-name">web-artifacts-builder</span>
+                  <span class="skill-badge badge-ultra">超高</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 演示文稿设计 -->
+            <div class="tax-category">
+              <div class="tax-cat-header">
+                <span class="tax-icon">📊</span>
+                <span class="tax-name">演示文稿设计</span>
+                <span class="tax-count">3</span>
+              </div>
+              <div class="tax-skills">
+                <div class="tax-skill">
+                  <span class="skill-name">pptx</span>
+                  <span class="skill-badge badge-low">低</span>
+                </div>
+                <div class="tax-skill">
+                  <span class="skill-name">work-report-ppt</span>
+                  <span class="skill-badge badge-medium">中</span>
+                </div>
+                <div class="tax-skill">
+                  <span class="skill-name">artistic-ppt</span>
+                  <span class="skill-badge badge-ultra">超高</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 主题与风格系统 -->
+            <div class="tax-category">
+              <div class="tax-cat-header">
+                <span class="tax-icon">🎭</span>
+                <span class="tax-name">主题与风格系统</span>
+                <span class="tax-count">3</span>
+              </div>
+              <div class="tax-skills">
+                <div class="tax-skill">
+                  <span class="skill-name">theme-factory</span>
+                  <span class="skill-badge badge-low">低</span>
+                </div>
+                <div class="tax-skill">
+                  <span class="skill-name">zelda-style</span>
+                  <span class="skill-badge badge-low">低</span>
+                </div>
+                <div class="tax-skill">
+                  <span class="skill-name">brand-guidelines</span>
+                  <span class="skill-badge badge-low">低</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 用户体验研究 -->
+            <div class="tax-category">
+              <div class="tax-cat-header">
+                <span class="tax-icon">🔍</span>
+                <span class="tax-name">用户体验研究</span>
+                <span class="tax-count">2</span>
+              </div>
+              <div class="tax-skills">
+                <div class="tax-skill">
+                  <span class="skill-name">ux-journey-map</span>
+                  <span class="skill-badge badge-medium">中</span>
+                </div>
+                <div class="tax-skill">
+                  <span class="skill-name">web-design-guidelines</span>
+                  <span class="skill-badge badge-low">低</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 专项设计能力 -->
+            <div class="tax-category">
+              <div class="tax-cat-header">
+                <span class="tax-icon">⚡</span>
+                <span class="tax-name">专项设计能力</span>
+                <span class="tax-count">3</span>
+              </div>
+              <div class="tax-skills">
+                <div class="tax-skill">
+                  <span class="skill-name">pixel-action-game</span>
+                  <span class="skill-badge badge-high">高</span>
+                </div>
+                <div class="tax-skill">
+                  <span class="skill-name">slack-gif-creator</span>
+                  <span class="skill-badge badge-medium">中</span>
+                </div>
+                <div class="tax-skill">
+                  <span class="skill-name">product-thinking</span>
+                  <span class="skill-badge badge-internal">内置</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 文档设计 -->
+            <div class="tax-category">
+              <div class="tax-cat-header">
+                <span class="tax-icon">📄</span>
+                <span class="tax-name">文档设计</span>
+                <span class="tax-count">6</span>
+              </div>
+              <div class="tax-skills">
+                <div class="tax-skill">
+                  <span class="skill-name">docx</span>
+                  <span class="skill-badge badge-low">低</span>
+                </div>
+                <div class="tax-skill">
+                  <span class="skill-name">pdf</span>
+                  <span class="skill-badge badge-low">低</span>
+                </div>
+                <div class="tax-skill">
+                  <span class="skill-name">xlsx</span>
+                  <span class="skill-badge badge-low">低</span>
+                </div>
+                <div class="tax-skill text-3" style="font-size:11px">+ 3 个其他...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 三大调用决策树 -->
+        <div class="decision-trees">
+          <h3 class="dt-title">调用决策树</h3>
+          <div class="dt-grid">
+            <!-- 图像类决策树 -->
+            <div class="dt-card">
+              <div class="dt-header">
+                <span class="dt-icon">🖼️</span>
+                <span class="dt-name">图像类需求</span>
+              </div>
+              <div class="dt-flow">
+                <div class="dt-node dt-root">用户说："帮我做一张图"</div>
+                <div class="dt-branches">
+                  <div class="dt-branch">
+                    <div class="dt-condition">技术架构/流程图？</div>
+                    <div class="dt-result result-green">→ ai-image-generator</div>
+                  </div>
+                  <div class="dt-branch">
+                    <div class="dt-condition">艺术级海报/作品？</div>
+                    <div class="dt-result result-purple">→ canvas-design</div>
+                  </div>
+                  <div class="dt-branch">
+                    <div class="dt-condition">算法艺术/可交互？</div>
+                    <div class="dt-result result-blue">→ algorithmic-art</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 界面类决策树 -->
+            <div class="dt-card">
+              <div class="dt-header">
+                <span class="dt-icon">💻</span>
+                <span class="dt-name">界面设计需求</span>
+              </div>
+              <div class="dt-flow">
+                <div class="dt-node dt-root">用户说："做一个网页/组件"</div>
+                <div class="dt-branches">
+                  <div class="dt-branch">
+                    <div class="dt-condition">独特视觉、避免 AI 感？</div>
+                    <div class="dt-result result-green">→ frontend-design</div>
+                  </div>
+                  <div class="dt-branch">
+                    <div class="dt-condition">特定风格（Glassmorphism）？</div>
+                    <div class="dt-result result-purple">→ ui-ux-pro-max</div>
+                  </div>
+                  <div class="dt-branch">
+                    <div class="dt-condition">复杂应用（shadcn/ui）？</div>
+                    <div class="dt-result result-blue">→ web-artifacts-builder</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PPT类决策树 -->
+            <div class="dt-card">
+              <div class="dt-header">
+                <span class="dt-icon">📊</span>
+                <span class="dt-name">演示文稿需求</span>
+              </div>
+              <div class="dt-flow">
+                <div class="dt-node dt-root">用户说："做一个 PPT"</div>
+                <div class="dt-branches">
+                  <div class="dt-branch">
+                    <div class="dt-condition">工作汇报/数据报告？</div>
+                    <div class="dt-result result-green">→ work-report-ppt</div>
+                  </div>
+                  <div class="dt-branch">
+                    <div class="dt-condition">纪念册/相册/手账？</div>
+                    <div class="dt-result result-purple">→ artistic-ppt</div>
+                  </div>
+                  <div class="dt-branch">
+                    <div class="dt-condition">文件操作（打开/编辑）？</div>
+                    <div class="dt-result result-blue">→ pptx</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 核心维度对比 -->
+        <div class="dimensions-section">
+          <h3 class="dim-title">核心分类维度</h3>
+          <div class="dimensions-grid">
+            <div class="dim-card">
+              <div class="dim-header">
+                <span class="dim-icon">📦</span>
+                <span class="dim-label">按输出介质</span>
+              </div>
+              <div class="dim-tags">
+                <span class="dim-tag">图像类 (PNG/PDF)</span>
+                <span class="dim-tag">代码类 (HTML/React)</span>
+                <span class="dim-tag">文档类 (PPTX/DOCX)</span>
+                <span class="dim-tag">规范类 (审查反馈)</span>
+              </div>
+            </div>
+
+            <div class="dim-card">
+              <div class="dim-header">
+                <span class="dim-icon">📈</span>
+                <span class="dim-label">按设计复杂度</span>
+              </div>
+              <div class="dim-tags">
+                <span class="dim-tag tag-low">低复杂度 (应用主题)</span>
+                <span class="dim-tag tag-medium">中复杂度 (定制设计)</span>
+                <span class="dim-tag tag-high">高复杂度 (创意设计)</span>
+                <span class="dim-tag tag-ultra">超高复杂度 (多技术栈)</span>
+              </div>
+            </div>
+
+            <div class="dim-card">
+              <div class="dim-header">
+                <span class="dim-icon">🎨</span>
+                <span class="dim-label">按设计风格</span>
+              </div>
+              <div class="dim-tags">
+                <span class="dim-tag">商务/专业风格</span>
+                <span class="dim-tag">艺术/创意风格</span>
+                <span class="dim-tag">主题化风格</span>
+                <span class="dim-tag">现代互联网风格</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -218,15 +644,115 @@
   </main>
 </template>
 
+<script setup>
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+const selectedSkillId = ref(null)
+
+const skillDetails = {
+  'artistic-ppt': {
+    icon: '📊',
+    name: 'artistic-ppt',
+    layer: 'orch',
+    layerName: '编排层',
+    scenario: '家庭纪念册、旅行相册、生日祝福、成长记录等艺术创意场景',
+    triggers: ['艺术风格PPT', '纪念册PPT', '相册PPT', '手账风格', 'artistic presentation'],
+    dependencies: [
+      { name: 'ai-image-generator', desc: '生成 4K 艺术背景图' },
+      { name: 'pptx', desc: 'PPTX 文件操作' }
+    ],
+    tech: 'PptxGenJS + FLUX.1-dev'
+  },
+  'work-report-ppt': {
+    icon: '📊',
+    name: 'work-report-ppt',
+    layer: 'orch',
+    layerName: '编排层',
+    scenario: '工作汇报、团队分享、技术分享、季度总结等商务场景',
+    triggers: ['工作汇报PPT', '团队分享', '技术分享PPT', 'work report'],
+    dependencies: [
+      { name: 'pptx', desc: 'PPTX 文件操作' }
+    ],
+    tech: 'PptxGenJS'
+  },
+  'infographic': {
+    icon: '📈',
+    name: 'ks-design-infographic',
+    layer: 'orch',
+    layerName: '编排层',
+    scenario: '生成专业信息图（21 布局 × 20 风格）',
+    triggers: ['infographic', '信息图', '可视化', '高密度信息大图'],
+    dependencies: [
+      { name: 'ai-image-generator', desc: '生成图片' }
+    ],
+    tech: 'FLUX.1-dev'
+  },
+  'pptx': {
+    icon: '📄',
+    name: 'pptx / keynote',
+    layer: 'atomic',
+    layerName: '原子层',
+    scenario: '读写 PPTX 文件、支持增删改查、样式、图片、图表、动画、母版、主题、转换',
+    triggers: ['pptx', 'keynote'],
+    dependencies: [],
+    tech: 'PptxGenJS (底层工具)'
+  },
+  'ai-image-generator': {
+    icon: '🎨',
+    name: 'ai-image-generator',
+    layer: 'atomic',
+    layerName: '原子层',
+    scenario: 'AI生图/图生图，支持架构图、流程图、信息图、艺术作品',
+    triggers: ['生成图片', 'AI生图', '图生图', 'image generation', '以图生成'],
+    dependencies: [],
+    tech: 'FLUX.1-dev / SiliconFlow API'
+  },
+  'ppt-style-manager': {
+    icon: '🎨',
+    name: 'ppt-style-manager',
+    layer: 'atomic',
+    layerName: '原子层',
+    scenario: '幻灯片风格管理与复用：预设配置、应用、导出/导入、一键切换',
+    triggers: ['幻灯片风格', '切换风格', '应用风格', '风格配置'],
+    dependencies: [],
+    tech: '风格配置引擎'
+  }
+}
+
+function selectSkill(skillId) {
+  selectedSkillId.value = skillId
+}
+
+function selectNode(nodeId) {
+  console.log('Node selected:', nodeId)
+}
+</script>
+
 <style scoped>
 .page {
   padding-top: calc(var(--nav-h) + 40px);
   padding-bottom: 80px;
+  background: linear-gradient(180deg, #FAFBFC 0%, #FFFFFF 100%);
+}
+
+.content-section {
+  background: white;
+  padding: 40px;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 24px;
+}
+
+.content-section:nth-child(even) {
+  background: linear-gradient(135deg, #FAFBFC 0%, #F8FAFC 100%);
 }
 
 .breadcrumb {
   font-size: 13px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   display: flex;
   gap: 4px;
   align-items: center;
@@ -234,9 +760,23 @@
 .breadcrumb a:hover { color: var(--text); }
 
 .page-hero {
-  margin-bottom: 32px;
-  padding-bottom: 32px;
-  border-bottom: 1px solid var(--border);
+  margin-bottom: 40px;
+  padding: 40px;
+  background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 50%, #F0FDFA 100%);
+  border-radius: var(--radius-xl);
+  border: 1px solid #BAE6FD;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+.page-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #3B82F6, #06B6D4, #10B981);
 }
 
 /* Info bar */
@@ -246,11 +786,12 @@
   justify-content: space-between;
   gap: 24px;
   padding: 20px 24px;
-  background: var(--bg-subtle);
+  background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  margin-bottom: 48px;
+  margin-bottom: 24px;
   flex-wrap: wrap;
+  box-shadow: var(--shadow-sm);
 }
 
 .info-stats {
@@ -286,7 +827,11 @@
 .repo-icon { font-size: 15px; }
 .repo-arrow { color: var(--text-3); font-size: 12px; }
 
-.section-divider { height: 1px; background: var(--border); margin: 48px 0; }
+.section-divider { 
+  height: 0; 
+  margin: 40px 0;
+  border: none;
+}
 
 .section-title {
   font-size: 18px;
@@ -494,12 +1039,692 @@
 }
 .submit-btn:hover { opacity: 0.88; }
 
+/* Taxonomy overview */
+.taxonomy-overview {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.taxonomy-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 50%, #E0E7FF 100%);
+  border-bottom: 1px solid var(--border);
+}
+.taxonomy-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+.taxonomy-badge {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: #0369A1;
+  background: white;
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid #BAE6FD;
+  font-weight: 600;
+}
+
+.taxonomy-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--border);
+}
+.tax-category {
+  background: var(--bg-card);
+  padding: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.tax-category::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #3B82F6, #8B5CF6);
+}
+.tax-category:nth-child(1)::before { background: linear-gradient(90deg, #F59E0B, #F97316); }
+.tax-category:nth-child(2)::before { background: linear-gradient(90deg, #10B981, #14B8A6); }
+.tax-category:nth-child(3)::before { background: linear-gradient(90deg, #EC4899, #F43F5E); }
+.tax-category:nth-child(4)::before { background: linear-gradient(90deg, #8B5CF6, #A855F7); }
+.tax-category:nth-child(5)::before { background: linear-gradient(90deg, #06B6D4, #0EA5E9); }
+.tax-category:nth-child(6)::before { background: linear-gradient(90deg, #EF4444, #F97316); }
+.tax-category:nth-child(7)::before { background: linear-gradient(90deg, #6366F1, #8B5CF6); }
+
+.tax-cat-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.tax-icon { font-size: 16px; }
+.tax-name { font-size: 13px; font-weight: 600; flex: 1; }
+.tax-count {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  background: linear-gradient(135deg, #F0F9FF, #E0F2FE);
+  padding: 3px 9px;
+  border-radius: 12px;
+  color: #0369A1;
+  font-weight: 600;
+  border: 1px solid #BAE6FD;
+}
+
+.tax-skills {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tax-skill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 10px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 12px;
+  transition: border-color 150ms;
+}
+.tax-skill:hover { border-color: var(--green); }
+.skill-name {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  flex: 1;
+}
+.skill-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.badge-low { 
+  background: linear-gradient(135deg, #DBEAFE, #BFDBFE); 
+  color: #1E40AF;
+  border: 1px solid #93C5FD;
+}
+.badge-medium { 
+  background: linear-gradient(135deg, #FEF3C7, #FDE68A); 
+  color: #92400E;
+  border: 1px solid #FCD34D;
+}
+.badge-high { 
+  background: linear-gradient(135deg, #FCE7F3, #FBCFE8); 
+  color: #9F1239;
+  border: 1px solid #F9A8D4;
+}
+.badge-ultra { 
+  background: linear-gradient(135deg, #EDE9FE, #DDD6FE); 
+  color: #6B21A8;
+  border: 1px solid #C4B5FD;
+}
+.badge-internal { 
+  background: linear-gradient(135deg, #F9FAFB, #F3F4F6); 
+  color: var(--text-3); 
+  border: 1px solid var(--border); 
+}
+
+/* Decision trees */
+.decision-trees {
+  margin-top: 32px;
+}
+.dt-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+.dt-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.dt-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+.dt-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #10B981, #14B8A6);
+}
+.dt-card:nth-child(2)::before {
+  background: linear-gradient(90deg, #8B5CF6, #A855F7);
+}
+.dt-card:nth-child(3)::before {
+  background: linear-gradient(90deg, #EC4899, #F43F5E);
+}
+.dt-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
+  border-bottom: 1px solid var(--border);
+}
+.dt-card:nth-child(2) .dt-header {
+  background: linear-gradient(135deg, #FAF5FF 0%, #F3E8FF 100%);
+}
+.dt-card:nth-child(3) .dt-header {
+  background: linear-gradient(135deg, #FDF2F8 0%, #FCE7F3 100%);
+}
+.dt-icon { font-size: 16px; }
+.dt-name { font-size: 13px; font-weight: 600; }
+
+.dt-flow {
+  padding: 16px;
+}
+.dt-node {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 12px;
+  background: var(--bg-subtle);
+  border-radius: 6px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+.dt-root {
+  background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+  border: 1px solid #93C5FD;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.08);
+}
+
+.dt-branches {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.dt-branch {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.dt-condition {
+  font-size: 11px;
+  color: var(--text-2);
+  padding-left: 12px;
+  position: relative;
+}
+.dt-condition::before {
+  content: '↳';
+  position: absolute;
+  left: 0;
+  color: var(--text-3);
+}
+.dt-result {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 5px;
+  margin-left: 12px;
+  border: 1px solid;
+}
+.result-green { 
+  background: linear-gradient(135deg, #D1FAE5, #A7F3D0); 
+  color: #065F46;
+  border-color: #6EE7B7;
+}
+.result-purple { 
+  background: linear-gradient(135deg, #F3E8FF, #E9D5FF); 
+  color: #6B21A8;
+  border-color: #C4B5FD;
+}
+.result-blue { 
+  background: linear-gradient(135deg, #DBEAFE, #BFDBFE); 
+  color: #1E40AF;
+  border-color: #93C5FD;
+}
+
+/* Dimensions */
+.dimensions-section {
+  margin-top: 32px;
+}
+.dim-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.dimensions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.dim-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.dim-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #F59E0B, #F97316);
+}
+.dim-card:nth-child(2)::before {
+  background: linear-gradient(90deg, #10B981, #14B8A6);
+}
+.dim-card:nth-child(3)::before {
+  background: linear-gradient(90deg, #8B5CF6, #A855F7);
+}
+.dim-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.dim-icon { font-size: 16px; }
+.dim-label { font-size: 13px; font-weight: 600; }
+
+.dim-tags {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.dim-tag {
+  font-size: 11px;
+  padding: 6px 10px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  color: var(--text-2);
+  border-left-width: 3px;
+}
+.dim-tag.tag-low { 
+  border-left-color: #3B82F6;
+  background: linear-gradient(135deg, #EFF6FF, #DBEAFE);
+}
+.dim-tag.tag-medium { 
+  border-left-color: #F59E0B;
+  background: linear-gradient(135deg, #FFFBEB, #FEF3C7);
+}
+.dim-tag.tag-high { 
+  border-left-color: #EC4899;
+  background: linear-gradient(135deg, #FDF2F8, #FCE7F3);
+}
+.dim-tag.tag-ultra { 
+  border-left-color: #8B5CF6;
+  background: linear-gradient(135deg, #FAF5FF, #F3E8FF);
+}
+
+/* Architecture Visualization */
+.arch-viz {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+.arch-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, #FAFBFC 0%, #F5F7FA 100%);
+  border-bottom: 1px solid var(--border);
+}
+.arch-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+.arch-legend {
+  display: flex;
+  gap: 16px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-2);
+}
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid;
+}
+.dot-intent { background: #FEF3C7; border-color: #F59E0B; }
+.dot-router { background: #DBEAFE; border-color: #3B82F6; }
+.dot-orch { background: #F3E8FF; border-color: #A855F7; }
+.dot-atomic { background: #FEE2E2; border-color: #EF4444; }
+
+.arch-layers {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.arch-layer {
+  position: relative;
+}
+.layer-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+}
+.layer-icon { font-size: 18px; }
+.layer-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+.layer-desc {
+  font-size: 11px;
+  color: var(--text-3);
+  margin-left: auto;
+  font-family: var(--font-mono);
+}
+
+.layer-nodes {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Nodes */
+.arch-node {
+  background: white;
+  border: 2px solid;
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  min-width: 180px;
+  transition: all 200ms;
+  position: relative;
+}
+
+.node-intent {
+  border-color: #FCD34D;
+  background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+}
+.node-intent .node-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #92400E;
+  text-align: center;
+}
+
+.node-router {
+  border-color: #93C5FD;
+  background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+  flex: 1;
+  cursor: pointer;
+}
+.node-router:hover {
+  border-color: #3B82F6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+.node-router .node-header {
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #BFDBFE;
+}
+.node-router .node-type {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1E40AF;
+}
+.node-router .node-routes {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.route-item {
+  font-size: 11px;
+  color: #475569;
+  padding: 3px 0;
+}
+
+.node-orch {
+  border-color: #C4B5FD;
+  background: linear-gradient(135deg, #FAF5FF 0%, #F3E8FF 100%);
+}
+.node-orch.clickable {
+  cursor: pointer;
+}
+.node-orch.clickable:hover {
+  border-color: #A855F7;
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.15);
+  transform: translateY(-2px);
+}
+
+.node-atomic {
+  border-color: #FECACA;
+  background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
+}
+.node-atomic.clickable {
+  cursor: pointer;
+}
+.node-atomic.clickable:hover {
+  border-color: #EF4444;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+  transform: translateY(-2px);
+}
+
+.node-icon {
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+.node-name {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.node-meta {
+  font-size: 11px;
+  color: var(--text-2);
+  margin-bottom: 8px;
+}
+.node-deps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.dep-badge {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  background: rgba(255, 255, 255, 0.8);
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: var(--text-2);
+}
+.node-tech {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: var(--text-3);
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* Skill Detail Panel */
+.skill-detail-panel {
+  background: white;
+  border: 2px solid var(--purple);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 24px;
+  animation: slideDown 200ms ease-out;
+}
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #FAF5FF 0%, #F3E8FF 100%);
+  border-bottom: 1px solid var(--border);
+}
+.panel-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.panel-icon { font-size: 22px; }
+.panel-name {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 700;
+}
+.panel-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.badge-orch {
+  background: linear-gradient(135deg, #F3E8FF, #E9D5FF);
+  color: #6B21A8;
+  border: 1px solid #C4B5FD;
+}
+.badge-atomic {
+  background: linear-gradient(135deg, #FEE2E2, #FECACA);
+  color: #991B1B;
+  border: 1px solid #FCA5A5;
+}
+.panel-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: var(--text-3);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 150ms;
+}
+.panel-close:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--text);
+}
+
+.panel-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.panel-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-3);
+}
+.section-value {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.6;
+}
+.section-value code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: var(--bg-subtle);
+  padding: 2px 6px;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+}
+.trigger-word {
+  display: inline-block;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  background: var(--bg-subtle);
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  margin-right: 6px;
+  margin-bottom: 6px;
+}
+.dep-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--bg-subtle);
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  font-size: 12px;
+}
+.dep-arrow {
+  color: var(--purple);
+  font-weight: 700;
+}
+.dep-name {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--text);
+}
+.dep-desc {
+  color: var(--text-2);
+  margin-left: auto;
+}
+
 @media (max-width: 640px) {
   .info-bar { flex-direction: column; align-items: flex-start; }
   .goal-grid { grid-template-columns: 1fr; }
   .spec-grid { grid-template-columns: 1fr 1fr; }
   .workflow-row { flex-direction: column; }
   .wf-arrow { display: none; }
+  .taxonomy-grid { grid-template-columns: 1fr; }
+  .dt-grid { grid-template-columns: 1fr; }
+  .dimensions-grid { grid-template-columns: 1fr; }
+  .layer-nodes { flex-direction: column; }
+  .arch-node { min-width: 100%; }
+  .arch-legend { flex-direction: column; gap: 8px; }
 }
 @media (max-width: 480px) {
   .spec-grid { grid-template-columns: 1fr; }
