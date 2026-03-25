@@ -625,14 +625,16 @@
             <div class="article-badges">
               <span class="tag tag-blue">设计研究</span>
               <span class="tag tag-green">10 大语义类</span>
-              <span class="tag" style="background:#f0f4ff;border-color:#a5b4fc;color:#4338ca">三维分类</span>
+              <span class="tag" style="background:#f0f4ff;border-color:#a5b4fc;color:#4338ca">四维分类</span>
+              <span class="tag" style="background:#fff7ed;border-color:#fed7aa;color:#c2410c">L1→L5 评测</span>
             </div>
             <h1 class="article-title">信息可视化图表分类体系</h1>
-            <p class="article-desc">语义维度 × 技术路径 × Skill 工程路径，涵盖全量图表类型，精细到品牌屋层级</p>
+            <p class="article-desc">语义维度 × 技术路径 × Skill 工程路径 × 质量评测维度，涵盖 11 种图表类型全量 L1→L5 分级标准</p>
             <div class="article-meta">
               <span class="meta-item">📊 10 大语义类 · 60+ 图表类型</span>
               <span class="meta-item">📅 研究日期: 2026年3月</span>
               <span class="meta-item">🧩 含 Skill 工程路径</span>
+              <span class="meta-item">🎯 11 种图表 L1→L5 评测标准</span>
             </div>
           </header>
 
@@ -641,11 +643,11 @@
             <div class="art-section-header">
               <div class="art-icon" style="background:#eef6f1">🗂️</div>
               <div>
-                <h2>三维分类体系说明</h2>
-                <p class="text-3">语义 × 技术 × Skill 三个维度，点击下方维度按钮切换视角</p>
+                <h2>四维分类体系说明</h2>
+                <p class="text-3">语义 × 技术 × Skill × 质量评测，点击下方维度按钮切换视角</p>
               </div>
             </div>
-            <div class="r-card-grid" style="grid-template-columns:repeat(3,1fr)">
+            <div class="r-card-grid" style="grid-template-columns:repeat(4,1fr)">
               <div class="r-card" style="border-top:3px solid var(--green)">
                 <div class="r-card-title">🗂 语义分类</div>
                 <div class="r-card-body">按「表达什么信息」分类，10 大语义类覆盖 60+ 图表类型，含品牌屋等概念框架图</div>
@@ -657,6 +659,10 @@
               <div class="r-card" style="border-top:3px solid #a78bfa">
                 <div class="r-card-title">🧩 Skill 路径</div>
                 <div class="r-card-body">按「用哪个 Skill 工程化实现」分类，从单点生成到自进化闭环五条工程路径</div>
+              </div>
+              <div class="r-card" style="border-top:3px solid #f97316">
+                <div class="r-card-title">🎯 质量评测</div>
+                <div class="r-card-body">11 种图表类型全量 L1→L5 分级标准，每类含 SVG 示例图、评分准则与差异对比</div>
               </div>
             </div>
           </section>
