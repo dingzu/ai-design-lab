@@ -1033,6 +1033,257 @@ bazel build --config=remote-ubuntu-22-04 @abseil-hello//:hello_main</pre>
           </section>
 
         </article>
+
+        <!-- article: design-skills-report -->
+        <article v-if="activeArticle === 'design-skills-report'" class="article">
+
+          <header class="article-header">
+            <div class="article-breadcrumb">
+              <RouterLink to="/" class="text-3">首页</RouterLink>
+              <span class="text-3"> / </span>
+              <RouterLink to="/hub" class="text-3">研究汇总</RouterLink>
+              <span class="text-3"> / </span>
+              <span class="text-2">设计类 Skill 评测</span>
+            </div>
+            <div class="article-badges">
+              <span class="tag tag-purple">设计研究</span>
+              <span class="tag tag-green">6 款精选</span>
+              <span class="tag tag-blue">skills.sh 全量扫描</span>
+            </div>
+            <h1 class="article-title">业内最佳设计类 Skill 深度评测报告</h1>
+            <p class="article-desc">从 skills.sh（86K+ 技能库）全量扫描，筛选出安装量最高、质量最优的 6 款 UI/UX/Design 类 Skill，多维评分 + 逐项深度评测 + 选型指南</p>
+            <div class="article-meta">
+              <span class="meta-item">📊 研究技能数：6 款</span>
+              <span class="meta-item">📅 研究日期：2026年3月</span>
+              <span class="meta-item">⬇️ Top6 合计周安装量：481K</span>
+            </div>
+          </header>
+
+          <!-- 全景概览 -->
+          <section id="dsr-overview" class="art-section">
+            <div class="art-section-header">
+              <div class="art-icon" style="background:#f0f4ff">🗺️</div>
+              <div>
+                <h2>技能全景概览</h2>
+                <p class="text-3">6 款精选技能定位速查，按综合评分排序</p>
+              </div>
+            </div>
+            <div class="r-card-grid" style="grid-template-columns: repeat(3, 1fr)">
+              <div class="r-card" style="border-top: 2px solid #6c8fff">
+                <div class="r-card-title">🎨 ui-ux-pro-max</div>
+                <div class="r-card-body">全栈 UI/UX 设计智能体。50+ 风格、161 种调色板、99 条 UX 准则、可搜索数据库驱动。周装 71.1K，综合评分 <strong>9.1 / S级</strong></div>
+                <div class="r-card-tags"><span class="tag tag-blue">全栈设计</span><span class="tag tag-blue">可搜索DB</span></div>
+              </div>
+              <div class="r-card" style="border-top: 2px solid #34d399">
+                <div class="r-card-title">⚡ web-design-guidelines</div>
+                <div class="r-card-body">Vercel 官方 Web 设计规范审计工具，实时拉取最新规则，file:line 格式输出问题。周装 181.7K，综合评分 <strong>8.7 / S级</strong></div>
+                <div class="r-card-tags"><span class="tag tag-green">Vercel官方</span><span class="tag tag-green">代码审计</span></div>
+              </div>
+              <div class="r-card" style="border-top: 2px solid #a78bfa">
+                <div class="r-card-title">✦ frontend-design</div>
+                <div class="r-card-body">Anthropic 官方前端美学准则，反"AI平庸感"宣言，97.8K Stars。周装 177.4K，综合评分 <strong>8.7 / S级</strong></div>
+                <div class="r-card-tags"><span class="tag tag-purple">Anthropic官方</span><span class="tag tag-purple">反AI平庸感</span></div>
+              </div>
+              <div class="r-card" style="border-top: 2px solid #f59e0b">
+                <div class="r-card-title">🖼 canvas-design</div>
+                <div class="r-card-body">哲学美学驱动的视觉艺术创作，先写设计宣言再输出博物馆级 PDF/PNG。周装 22.0K，综合评分 <strong>8.0 / A级</strong></div>
+                <div class="r-card-tags"><span class="tag" style="background:#fff7ed;border-color:#fed7aa;color:#c2410c">艺术创作</span></div>
+              </div>
+              <div class="r-card" style="border-top: 2px solid #f472b6">
+                <div class="r-card-title">◈ interface-design</div>
+                <div class="r-card-body">仪表盘与工具类 App 专项设计，领域探索 + Token 架构 + 产品签名。周装 8.7K，综合评分 <strong>8.2 / A级</strong></div>
+                <div class="r-card-tags"><span class="tag" style="background:#fdf2f8;border-color:#f9a8d4;color:#be185d">仪表盘专项</span></div>
+              </div>
+              <div class="r-card" style="border-top: 2px solid #94a3b8">
+                <div class="r-card-title">📱 sleek-design-mobile-apps</div>
+                <div class="r-card-body">REST API 驱动的移动端设计，自然语言生成 App 截图。需 Pro+ 订阅。周装 21.5K，综合评分 <strong>6.8 / B级</strong></div>
+                <div class="r-card-tags"><span class="tag tag-gray">移动端专项</span><span class="tag tag-gray">需付费</span></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 多维评分 -->
+          <section id="dsr-scores" class="art-section">
+            <div class="art-section-header">
+              <div class="art-icon" style="background:#eef6f1">📊</div>
+              <div>
+                <h2>多维评分矩阵</h2>
+                <p class="text-3">内容深度 × 实用性 × 差异性 × 完整度 × 可维护性，满分 10.0</p>
+              </div>
+            </div>
+            <div style="overflow-x:auto">
+              <table style="width:100%;border-collapse:collapse;font-size:13px">
+                <thead>
+                  <tr style="background:var(--bg-subtle)">
+                    <th style="padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3)">技能名称</th>
+                    <th style="padding:10px 14px;text-align:center;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3)">内容深度</th>
+                    <th style="padding:10px 14px;text-align:center;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3)">实用性</th>
+                    <th style="padding:10px 14px;text-align:center;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3)">差异性</th>
+                    <th style="padding:10px 14px;text-align:center;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3)">完整度</th>
+                    <th style="padding:10px 14px;text-align:center;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3)">可维护性</th>
+                    <th style="padding:10px 14px;text-align:center;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3)">综合分</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="row in dsrScores" :key="row.name">
+                    <td style="padding:10px 14px;border-bottom:1px solid var(--border);font-weight:600;font-family:var(--font-mono);font-size:12px">{{ row.name }}</td>
+                    <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:center;color:var(--text-2)">{{ row.depth }}</td>
+                    <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:center;color:var(--text-2)">{{ row.practical }}</td>
+                    <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:center;color:var(--text-2)">{{ row.diff }}</td>
+                    <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:center;color:var(--text-2)">{{ row.complete }}</td>
+                    <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:center;color:var(--text-2)">{{ row.maintain }}</td>
+                    <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:center;font-weight:700" :style="{ color: row.color }">{{ row.total }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- S 级技能 -->
+          <section id="dsr-top3" class="art-section">
+            <div class="art-section-header">
+              <div class="art-icon" style="background:#f0f4ff">⭐</div>
+              <div>
+                <h2>S 级技能深度解析</h2>
+                <p class="text-3">ui-ux-pro-max · web-design-guidelines · frontend-design</p>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:16px">
+              <div v-for="sk in dsrTop3" :key="sk.name" style="padding:20px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);border-top:3px solid" :style="{ borderTopColor: sk.color }">
+                <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px">
+                  <div>
+                    <div style="font-size:16px;font-weight:700;font-family:var(--font-mono)">{{ sk.icon }} {{ sk.name }}</div>
+                    <div style="font-size:12px;color:var(--text-3);margin-top:3px">{{ sk.pkg }}</div>
+                  </div>
+                  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                    <span class="tag tag-green">↓ {{ sk.installs }}</span>
+                    <span class="tag tag-orange" v-if="sk.stars">★ {{ sk.stars }}</span>
+                    <span class="tag" :style="{ background: sk.color + '15', borderColor: sk.color + '40', color: sk.color }">{{ sk.score }} / S级</span>
+                  </div>
+                </div>
+                <div style="font-size:13px;color:var(--text-2);line-height:1.7;margin-bottom:12px">{{ sk.desc }}</div>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <div v-for="(pt, i) in sk.points" :key="i" style="display:flex;gap:8px;font-size:12px;color:var(--text-2)">
+                    <span style="color:var(--green);flex-shrink:0">→</span>
+                    <span>{{ pt }}</span>
+                  </div>
+                </div>
+                <div style="margin-top:12px;padding:10px 14px;border-radius:var(--radius-md);font-size:12px;font-weight:500" :style="{ background: sk.color + '0d', border: '1px solid ' + sk.color + '30', color: sk.color }">
+                  💡 {{ sk.conclusion }}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- A/B 级 -->
+          <section id="dsr-a-level" class="art-section">
+            <div class="art-section-header">
+              <div class="art-icon" style="background:#fff7ed">🔶</div>
+              <div>
+                <h2>A / B 级技能</h2>
+                <p class="text-3">canvas-design · interface-design · sleek-design-mobile-apps</p>
+              </div>
+            </div>
+            <div class="r-card-grid">
+              <div class="r-card" v-for="sk in dsrALevel" :key="sk.name" :style="{ borderTop: '2px solid ' + sk.color }">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:8px;flex-wrap:wrap">
+                  <div class="r-card-title" style="margin-bottom:0">{{ sk.icon }} {{ sk.name }}</div>
+                  <span style="font-size:12px;font-weight:700;padding:2px 8px;border-radius:4px" :style="{ background: sk.color + '15', color: sk.color, border: '1px solid ' + sk.color + '30' }">{{ sk.score }} / {{ sk.level }}</span>
+                </div>
+                <div class="r-card-body">{{ sk.desc }}</div>
+                <div style="margin-top:10px;font-size:11px;font-weight:600;color:var(--text-3)">核心优势</div>
+                <div v-for="(pt, i) in sk.pros" :key="i" style="font-size:12px;color:var(--text-2);padding:2px 0;display:flex;gap:6px">
+                  <span style="color:var(--green)">✓</span><span>{{ pt }}</span>
+                </div>
+                <div style="margin-top:8px;font-size:11px;font-weight:600;color:var(--text-3)">主要局限</div>
+                <div v-for="(pt, i) in sk.cons" :key="i" style="font-size:12px;color:var(--text-2);padding:2px 0;display:flex;gap:6px">
+                  <span style="color:var(--text-3)">×</span><span>{{ pt }}</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 横向对比 -->
+          <section id="dsr-compare" class="art-section">
+            <div class="art-section-header">
+              <div class="art-icon" style="background:#eef6f1">⚖️</div>
+              <div>
+                <h2>横向对比矩阵</h2>
+                <p class="text-3">关键维度一览，快速找到适合你场景的技能</p>
+              </div>
+            </div>
+            <div style="overflow-x:auto">
+              <table style="width:100%;border-collapse:collapse;font-size:13px">
+                <thead>
+                  <tr style="background:var(--bg-subtle)">
+                    <th style="padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3)">技能</th>
+                    <th style="padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3)">定位</th>
+                    <th style="padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3)">最适场景</th>
+                    <th style="padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3)">核心独特机制</th>
+                    <th style="padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-3)">局限</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="row in dsrCompare" :key="row.name">
+                    <td style="padding:10px 14px;border-bottom:1px solid var(--border);font-weight:600;font-family:var(--font-mono);font-size:12px" :style="{ color: row.color }">{{ row.name }}</td>
+                    <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text-2)">{{ row.role }}</td>
+                    <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--green);font-weight:500">{{ row.scene }}</td>
+                    <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text-2)">{{ row.mechanism }}</td>
+                    <td style="padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text-3)">{{ row.limit }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- 选型指南 -->
+          <section id="dsr-guide" class="art-section">
+            <div class="art-section-header">
+              <div class="art-icon" style="background:#fef3e8">🧭</div>
+              <div>
+                <h2>场景选型指南</h2>
+                <p class="text-3">推荐组合方案</p>
+              </div>
+            </div>
+            <div class="r-card-grid">
+              <div class="r-card" style="border-top:2px solid var(--green)">
+                <div class="r-card-title">🚀 基础组合（推荐）</div>
+                <div class="r-card-body">ui-ux-pro-max + frontend-design<br>覆盖设计规范 + 美学方向，适合大多数 Web 项目</div>
+              </div>
+              <div class="r-card" style="border-top:2px solid var(--blue)">
+                <div class="r-card-title">⚡ 全栈 Web 组合</div>
+                <div class="r-card-body">ui-ux-pro-max + web-design-guidelines + frontend-design<br>规范制定 + 合规审查 + 美学把控，最完整方案</div>
+              </div>
+              <div class="r-card" style="border-top:2px solid #f472b6">
+                <div class="r-card-title">◈ B2B 仪表盘组合</div>
+                <div class="r-card-body">interface-design + web-design-guidelines<br>领域专项设计 + 规范审计，适合管理后台</div>
+              </div>
+            </div>
+
+            <!-- 外链入口 -->
+            <div class="info-box" style="margin-top:24px;background:var(--purple-bg);border-color:var(--purple-border)">
+              <span class="ib-icon">📋</span>
+              <div style="flex:1">
+                <div style="font-weight:600;color:var(--purple);margin-bottom:4px">查看完整评测报告</div>
+                <div style="font-size:13px;color:var(--text-2)">包含雷达图评分矩阵、逐项深度评测（含安装命令）、完整选型建议</div>
+              </div>
+              <a
+                href="https://huwenji1215-ai.github.io/design-skills-report/"
+                target="_blank"
+                rel="noopener"
+                style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--purple);color:#fff;border-radius:var(--radius-md);font-size:13px;font-weight:600;white-space:nowrap;text-decoration:none;transition:opacity 150ms;"
+                @mouseover="$event.target.style.opacity='0.85'"
+                @mouseout="$event.target.style.opacity='1'"
+              >完整报告 ↗</a>
+            </div>
+
+            <div class="info-box info-blue" style="margin-top:14px">
+              <span class="ib-icon">📌</span>
+              <span>本研究于 2026-03-20 完成，数据来源：skills.sh 全量扫描 + 各技能官方页面深度研读。研究员：huwenji @ AI Design Lab</span>
+            </div>
+          </section>
+
+        </article>
       </div>
 
     </div>
@@ -1102,6 +1353,13 @@ const articles = [
     date: '2026-03',
     readTime: '~8 min',
   },
+  {
+    id: 'design-skills-report',
+    icon: '🎨',
+    title: '业内最佳设计类 Skill 深度评测',
+    date: '2026-03',
+    readTime: '完整报告 ↗',
+  },
 ]
 
 const tocMap = {
@@ -1137,9 +1395,95 @@ const tocMap = {
     { id: 'bb-deployment', label: '快速部署', level: 1 },
     { id: 'bb-eval', label: '优势与局限', level: 1 },
   ],
+  'design-skills-report': [
+    { id: 'dsr-overview', label: '全景概览', level: 1 },
+    { id: 'dsr-scores', label: '多维评分矩阵', level: 1 },
+    { id: 'dsr-top3', label: 'S 级技能详解', level: 1 },
+    { id: 'dsr-a-level', label: 'A / B 级技能', level: 1 },
+    { id: 'dsr-compare', label: '横向对比', level: 1 },
+    { id: 'dsr-guide', label: '选型指南', level: 1 },
+  ],
 }
 
 const activeToc = computed(() => tocMap[activeArticle.value] || [])
+
+const dsrScores = [
+  { name: 'ui-ux-pro-max',             depth: '9.2', practical: '9.5', diff: '9.0', complete: '9.3', maintain: '8.5', total: '9.1', color: '#6c8fff' },
+  { name: 'web-design-guidelines',     depth: '8.0', practical: '9.0', diff: '8.5', complete: '8.5', maintain: '9.5', total: '8.7', color: '#34d399' },
+  { name: 'frontend-design',           depth: '8.5', practical: '9.0', diff: '9.5', complete: '8.0', maintain: '8.0', total: '8.7', color: '#a78bfa' },
+  { name: 'interface-design',          depth: '8.6', practical: '8.5', diff: '8.8', complete: '8.0', maintain: '7.2', total: '8.2', color: '#f472b6' },
+  { name: 'canvas-design',             depth: '8.2', practical: '7.0', diff: '9.5', complete: '7.8', maintain: '7.5', total: '8.0', color: '#f59e0b' },
+  { name: 'sleek-design-mobile-apps',  depth: '5.5', practical: '7.5', diff: '8.5', complete: '6.0', maintain: '5.5', total: '6.8', color: '#94a3b8' },
+]
+
+const dsrTop3 = [
+  {
+    name: 'ui-ux-pro-max', pkg: 'nextlevelbuilder/ui-ux-pro-max-skill', icon: '🎨',
+    installs: '71.1K/周', stars: '46.1K', score: '9.1', color: '#6c8fff',
+    desc: '全栈 UI/UX 设计智能体，定位为设计知识数据库。内置 50+ 设计风格、161 种调色板、57 种字体配对、99 条有优先级的 UX 准则，通过 Python 搜索脚本实现按产品类型精准检索。',
+    points: [
+      '可搜索数据库驱动：search.py --domain 按产品类型、风格、字体、颜色分域检索',
+      '设计系统持久化（--persist）：写入 design-system/MASTER.md，跨会话保持一致性',
+      '10 大技术栈覆盖：React/Next.js/Vue/Svelte/SwiftUI/RN/Flutter/Tailwind/shadcn/HTML',
+      '10 大规则类别带优先级：无障碍(CRITICAL)→触控(CRITICAL)→性能(HIGH)…',
+    ],
+    conclusion: '如果只安装一个设计类 Skill，选这个。覆盖最全、社区验证最充分。',
+  },
+  {
+    name: 'web-design-guidelines', pkg: 'vercel-labs/agent-skills', icon: '⚡',
+    installs: '181.7K/周', stars: '23.4K', score: '8.7', color: '#34d399',
+    desc: 'Vercel 官方 Web 设计规范审计工具。不生成设计，而是检查现有代码是否符合 Vercel Web Interface Guidelines。每次调用前实时从 GitHub raw 拉取最新规则，输出精确到行号的问题报告。',
+    points: [
+      '动态规则拉取：每次执行都从 GitHub raw URL 获取最新版，永不过时',
+      '精准 file:line 输出：组件路径:行号 - 问题描述，直接可定位修复',
+      'Vercel 官方背书：Next.js 生态最权威的 Web 设计标准',
+      '周装 181.7K —— 全设计类安装量第一',
+    ],
+    conclusion: '与 ui-ux-pro-max 完美互补：一个制定规范，一个检查执行。建议配合使用。',
+  },
+  {
+    name: 'frontend-design', pkg: 'anthropics/skills', icon: '✦',
+    installs: '177.4K/周', stars: '97.8K', score: '8.7', color: '#a78bfa',
+    desc: 'Anthropic 官方前端美学宣言，不是规范手册，而是反"AI Slop"宣言。强制要求在编码前回答四问（Purpose/Tone/Constraints/Differentiation），然后选定大胆的美学方向，精准执行。',
+    points: [
+      '明确禁止：Inter/Roboto/Arial 字体、白底紫渐变、可预测的千篇一律布局',
+      '四问框架：编码前必须确立美学方向，解决"先写代码再考虑设计"的坏习惯',
+      'GitHub Stars 最高（97.8K）：触达大量开发者对 AI 平庸设计的痛点',
+      '三项安全审计全绿（Gen Agent Trust Hub + Socket + Snyk），唯一完全通过',
+    ],
+    conclusion: '解决的不是"怎么做对"，而是"怎么做独特"。适合追求设计品位的团队。',
+  },
+]
+
+const dsrALevel = [
+  {
+    name: 'canvas-design', icon: '🖼', score: '8.0', level: 'A级', color: '#f59e0b',
+    desc: '哲学美学驱动的视觉艺术创作。创作前必须先发明专属的"设计哲学运动"（如"Brutalist Joy"），撰写4-6段设计宣言，再输出博物馆级 PDF/PNG 艺术作品。',
+    pros: ['差异性最强（9.5），作品独一无二', '哲学先行框架，输出必然有思想深度', '支持多页 PDF，可交付完整作品集'],
+    cons: ['实用性偏低，不适合 Web 开发场景', '产出周期长，不适合快速迭代'],
+  },
+  {
+    name: 'interface-design', icon: '◈', score: '8.2', level: 'A级', color: '#f472b6',
+    desc: '专为仪表盘、管理后台和工具类 App 设计。通过领域探索（5+概念词汇/5+领域色彩/1个签名元素）和 Token 架构，让每个界面从产品世界中独立涌现。',
+    pros: ['领域探索机制独一无二，强制建立产品世界观', 'Token 命名哲学：--ink/--parchment 而非 --gray-700', '挤眼测试 / 签名测试等独特验证方法'],
+    cons: ['仅适用于仪表盘/工具类，场景窄', '非官方出品，Stars 较少（4.1K）'],
+  },
+  {
+    name: 'sleek-design-mobile-apps', icon: '📱', score: '6.8', level: 'B级', color: '#94a3b8',
+    desc: '通过 sleek.design REST API，自然语言描述即可生成移动端 App 界面截图。完全自然语言驱动，输出真实渲染的 PNG/WebP。需要 Pro+ 订阅 + API Key。',
+    pros: ['唯一能输出真实渲染截图的技能', '自然语言操作门槛极低', '适合快速原型演示、PRD 配图'],
+    cons: ['依赖外部付费 API（Pro+ 订阅）', 'Stars 仅 14，社区积累极少', '本质是 API 封装，无设计理念深度'],
+  },
+]
+
+const dsrCompare = [
+  { name: 'ui-ux-pro-max',            color: '#6c8fff', role: '全栈设计知识库',     scene: '通用 UI/UX，任何技术栈',   mechanism: '可搜索数据库 + 设计系统持久化',  limit: 'Python 依赖，Token 重' },
+  { name: 'web-design-guidelines',    color: '#34d399', role: '设计规范审计工具',   scene: '代码合规检查，CI 集成',     mechanism: '规则动态拉取，永不过时',         limit: '仅审查不生成；依赖网络' },
+  { name: 'frontend-design',          color: '#a78bfa', role: '前端美学方向指南',   scene: '追求独特设计感的项目',     mechanism: '反 AI 平庸感宣言 + 四问框架',   limit: '无具体规范数值' },
+  { name: 'canvas-design',            color: '#f59e0b', role: '艺术视觉创作',       scene: '海报、品牌物料、艺术作品',  mechanism: '设计哲学运动 + 宣言先行',       limit: '不适合 Web 开发' },
+  { name: 'interface-design',         color: '#f472b6', role: '仪表盘/工具类专项',  scene: 'B2B 仪表盘、管理后台',    mechanism: '领域探索 + Token 命名哲学',     limit: '场景窄，不适合落地页' },
+  { name: 'sleek-design-mobile',      color: '#94a3b8', role: '移动端原型截图生成', scene: '快速原型演示、PRD 配图',   mechanism: '真实渲染截图输出',               limit: '付费依赖，Stars 极少' },
+]
 
 const overviewItems = [
   { icon: '🌊', title: '流式渲染（Block Streaming）', desc: '助手输出在生成过程中以"块"为单位逐步推送，而非等全部完成后一次发送。支持 text_end / message_end 两种边界策略。', tags: ['Telegram', 'Discord', 'Slack'] },

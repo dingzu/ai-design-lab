@@ -622,7 +622,23 @@
             </div>
           </div>
           <div class="rc-meta">
-            <span class="tag tag-blue">1 篇文章</span>
+            <span class="tag tag-blue">4 篇文章</span>
+            <span class="rc-arrow">→</span>
+          </div>
+        </RouterLink>
+
+        <!-- Design Skills Report direct link -->
+        <RouterLink to="/hub/design-skills-report" class="research-card" style="margin-top:10px;border-color:rgba(108,143,255,0.3)">
+          <div class="rc-left">
+            <div class="rc-icon">🎨</div>
+            <div>
+              <div class="rc-title">业内最佳设计类 Skill 评测报告</div>
+              <div class="rc-desc text-3">6 款精选技能 · S/A/B 三级评定 · 选型指南 · 含外链完整报告</div>
+            </div>
+          </div>
+          <div class="rc-meta">
+            <span class="tag tag-purple">设计研究</span>
+            <span class="tag tag-green">NEW</span>
             <span class="rc-arrow">→</span>
           </div>
         </RouterLink>
