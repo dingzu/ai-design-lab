@@ -101,92 +101,593 @@
 
       <!-- 技术实现维度 -->
       <div v-show="activeDimension === 'tech'" class="view-tech">
-        <p class="tech-intro">
-          从技术实现角度重新组织 — 21 种图表按实现难度、技术栈、计算复杂度分为 5 层
-        </p>
-        
-        <div v-for="tier in techTiers" :key="tier.id" class="tech-tier">
-          <div class="tier-header">
-            <div class="tier-badge" :style="{ background: tier.color, color: 'white' }">
-              {{ tier.level }}
-            </div>
-            <div>
-              <div class="tier-title">{{ tier.name }}</div>
-              <div class="tier-desc">{{ tier.desc }}</div>
+
+  <!-- 维度说明 -->
+  <div style="background: oklch(96% 0.01 260); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin-bottom: 40px; display: flex; gap: 20px; align-items: flex-start;">
+    <div style="font-size: 28px; flex-shrink: 0;">⚙️</div>
+    <div>
+      <div style="font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px;">技术实现路径维度 · How to Build</div>
+      <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.7;">
+        按<strong>开发方式与工具链</strong>对图表实现路径分类。不同路径在<em>灵活度、学习成本、定制能力、部署效率</em>上存在显著差异。选路径前先回答：<br>
+        <span style="color: oklch(50% 0.15 240); font-weight: 500;">谁来做？</span>（工程师/设计师/分析师）&nbsp;·&nbsp;
+        <span style="color: oklch(50% 0.15 150); font-weight: 500;">多复杂？</span>（标准图 vs 高度定制）&nbsp;·&nbsp;
+        <span style="color: oklch(50% 0.15 25); font-weight: 500;">多实时？</span>（静态 vs 动态数据）
+      </div>
+    </div>
+  </div>
+
+  <!-- ── T1: 原生代码路径 ── -->
+  <div class="tech-path" id="t1">
+    <div class="tech-path-header" style="background: oklch(95% 0.03 240); border-left-color: oklch(52% 0.20 240);">
+      <div style="flex: 1">
+        <div class="tech-path-number" style="color: oklch(52% 0.20 240)">PATH 01</div>
+        <div class="tech-path-title" style="color: oklch(25% 0.04 260)">
+          原生代码
+          <span class="tech-path-title-en">Native Code (SVG / Canvas / WebGL)</span>
+        </div>
+        <div class="tech-path-desc">直接操作浏览器底层渲染 API，最高灵活度，适合深度定制与超大数据量场景</div>
+      </div>
+      <div class="tech-path-count" style="background: oklch(88% 0.08 240); color: oklch(38% 0.16 240); border: 1px solid oklch(78% 0.10 240)">
+        3 种技术栈
+      </div>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-card">
+        <div class="tech-card-header">
+          <div class="tech-card-name">
+            <span style="font-size:18px">📐</span> SVG
+            <div class="complexity-dot" title="实现复杂度：中">
+              <div class="cd" style="background:oklch(52% 0.20 240)"></div>
+              <div class="cd" style="background:oklch(52% 0.20 240)"></div>
+              <div class="cd" style="background:oklch(85% 0.03 260)"></div>
             </div>
           </div>
-          
-          <div class="tech-chart-list">
-            <div v-for="chart in tier.charts" :key="chart.id" class="tech-chart-card">
-              <div class="tcc-name">{{ chart.name }}</div>
-              <div class="tcc-tags">
-                <span class="tcc-tag" v-for="tag in chart.tags" :key="tag">{{ tag }}</span>
-              </div>
+          <div class="tech-card-name-en">Scalable Vector Graphics</div>
+        </div>
+        <div class="tech-card-body">
+          <div class="tech-card-desc">基于 XML 的矢量图形标准，DOM 可操控，天然支持无限缩放与 CSS 动画。适合节点数 &lt; 10,000 的精细图表。</div>
+          <div class="tech-stack-row">
+            <span class="ts-pill" style="background:oklch(92% 0.04 240);border-color:oklch(78% 0.08 240);color:oklch(38% 0.14 240)">原生 SVG</span>
+            <span class="ts-pill" style="background:oklch(92% 0.04 240);border-color:oklch(78% 0.08 240);color:oklch(38% 0.14 240)">D3.js</span>
+            <span class="ts-pill" style="background:oklch(92% 0.04 240);border-color:oklch(78% 0.08 240);color:oklch(38% 0.14 240)">Snap.svg</span>
+            <span class="ts-pill" style="background:oklch(92% 0.04 240);border-color:oklch(78% 0.08 240);color:oklch(38% 0.14 240)">GSAP</span>
+          </div>
+          <div class="tech-chart-types">
+            <div class="tech-chart-types-label">适合图型</div>
+            <div class="tech-chart-tags">
+              <span class="tct">柱状图</span><span class="tct">折线图</span><span class="tct">散点图</span>
+              <span class="tct">力导向图</span><span class="tct">桑基图</span><span class="tct">树状图</span>
+              <span class="tct">雷达图</span><span class="tct">旭日图</span>
             </div>
+          </div>
+          <div class="tech-pros-cons">
+            <div class="pros-col"><strong>优势</strong><li>无限矢量缩放</li><li>DOM 可访问性好</li><li>CSS/JS 动画自由</li><li>调试工具友好</li></div>
+            <div class="cons-col"><strong>局限</strong><li>万级节点性能差</li><li>学习曲线陡峭</li><li>开发成本高</li></div>
           </div>
         </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-header">
+          <div class="tech-card-name">
+            <span style="font-size:18px">🎨</span> Canvas 2D
+            <div class="complexity-dot" title="实现复杂度：中高">
+              <div class="cd" style="background:oklch(52% 0.20 240)"></div>
+              <div class="cd" style="background:oklch(52% 0.20 240)"></div>
+              <div class="cd" style="background:oklch(52% 0.20 240)"></div>
+            </div>
+          </div>
+          <div class="tech-card-name-en">HTML5 Canvas 2D Context</div>
+        </div>
+        <div class="tech-card-body">
+          <div class="tech-card-desc">像素级光栅渲染，GPU 加速，大数据量下性能远优于 SVG。适合实时数据流、热力图、百万级散点等高密度场景。</div>
+          <div class="tech-stack-row">
+            <span class="ts-pill" style="background:oklch(92% 0.04 240);border-color:oklch(78% 0.08 240);color:oklch(38% 0.14 240)">Canvas API</span>
+            <span class="ts-pill" style="background:oklch(92% 0.04 240);border-color:oklch(78% 0.08 240);color:oklch(38% 0.14 240)">Fabric.js</span>
+            <span class="ts-pill" style="background:oklch(92% 0.04 240);border-color:oklch(78% 0.08 240);color:oklch(38% 0.14 240)">Konva.js</span>
+            <span class="ts-pill" style="background:oklch(92% 0.04 240);border-color:oklch(78% 0.08 240);color:oklch(38% 0.14 240)">ZRender</span>
+          </div>
+          <div class="tech-chart-types">
+            <div class="tech-chart-types-label">适合图型</div>
+            <div class="tech-chart-tags">
+              <span class="tct">热力图</span><span class="tct">大规模散点</span><span class="tct">密度图</span>
+              <span class="tct">实时折线</span><span class="tct">蜡烛图</span><span class="tct">粒子动效</span>
+            </div>
+          </div>
+          <div class="tech-pros-cons">
+            <div class="pros-col"><strong>优势</strong><li>百万级数据流畅</li><li>实时动画性能佳</li><li>像素级控制</li></div>
+            <div class="cons-col"><strong>局限</strong><li>不可矢量缩放</li><li>无 DOM，交互复杂</li><li>可访问性差</li></div>
+          </div>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-header">
+          <div class="tech-card-name">
+            <span style="font-size:18px">⚡</span> WebGL / GPU
+            <div class="complexity-dot" title="实现复杂度：高">
+              <div class="cd" style="background:oklch(52% 0.20 240)"></div>
+              <div class="cd" style="background:oklch(52% 0.20 240)"></div>
+              <div class="cd" style="background:oklch(52% 0.20 240)"></div>
+            </div>
+          </div>
+          <div class="tech-card-name-en">WebGL / WebGPU</div>
+        </div>
+        <div class="tech-card-body">
+          <div class="tech-card-desc">GPU 着色器级渲染，亿级数据点可视化的唯一选择。适合 3D 地理可视化、实时大屏、科学可视化等极端场景。</div>
+          <div class="tech-stack-row">
+            <span class="ts-pill" style="background:oklch(92% 0.04 240);border-color:oklch(78% 0.08 240);color:oklch(38% 0.14 240)">Three.js</span>
+            <span class="ts-pill" style="background:oklch(92% 0.04 240);border-color:oklch(78% 0.08 240);color:oklch(38% 0.14 240)">deck.gl</span>
+            <span class="ts-pill" style="background:oklch(92% 0.04 240);border-color:oklch(78% 0.08 240);color:oklch(38% 0.14 240)">Luma.gl</span>
+            <span class="ts-pill" style="background:oklch(92% 0.04 240);border-color:oklch(78% 0.08 240);color:oklch(38% 0.14 240)">Regl</span>
+          </div>
+          <div class="tech-chart-types">
+            <div class="tech-chart-types-label">适合图型</div>
+            <div class="tech-chart-tags">
+              <span class="tct">3D 地图</span><span class="tct">大屏可视化</span><span class="tct">亿级散点</span>
+              <span class="tct">实时流图</span><span class="tct">体渲染</span><span class="tct">GIS 分析</span>
+            </div>
+          </div>
+          <div class="tech-pros-cons">
+            <div class="pros-col"><strong>优势</strong><li>极限数据量</li><li>3D 原生支持</li><li>实时 60fps</li></div>
+            <div class="cons-col"><strong>局限</strong><li>门槛极高</li><li>调试困难</li><li>移动端功耗大</li></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── T2: 可视化库路径 ── -->
+  <div class="tech-path" id="t2">
+    <div class="tech-path-header" style="background: oklch(95% 0.03 175); border-left-color: oklch(50% 0.18 175);">
+      <div style="flex: 1">
+        <div class="tech-path-number" style="color: oklch(50% 0.18 175)">PATH 02</div>
+        <div class="tech-path-title" style="color: oklch(25% 0.04 260)">
+          可视化库
+          <span class="tech-path-title-en">Chart Library / Visualization Framework</span>
+        </div>
+        <div class="tech-path-desc">封装好的图表组件库，声明式配置驱动，工程师首选路径，平衡灵活度与开发效率</div>
+      </div>
+      <div class="tech-path-count" style="background: oklch(88% 0.07 175); color: oklch(36% 0.15 175); border: 1px solid oklch(76% 0.09 175)">
+        5 个主流库
+      </div>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-card">
+        <div class="tech-card-header">
+          <div class="tech-card-name"><span style="font-size:18px">🔴</span> Apache ECharts<div class="complexity-dot"><div class="cd" style="background:oklch(50% 0.18 175)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div></div></div>
+          <div class="tech-card-name-en">百度开源 · Apache 顶级项目</div>
+        </div>
+        <div class="tech-card-body">
+          <div class="tech-card-desc">国内最广泛的前端图表库，JSON 配置驱动，内置 Canvas/SVG 双渲染，图型覆盖最全，中文文档完善，大屏场景首选。</div>
+          <div class="tech-stack-row"><span class="ts-pill" style="background:oklch(92% 0.04 175);border-color:oklch(76% 0.08 175);color:oklch(36% 0.12 175)">echarts</span><span class="ts-pill" style="background:oklch(92% 0.04 175);border-color:oklch(76% 0.08 175);color:oklch(36% 0.12 175)">echarts-gl</span><span class="ts-pill" style="background:oklch(92% 0.04 175);border-color:oklch(76% 0.08 175);color:oklch(36% 0.12 175)">vue-echarts</span></div>
+          <div class="tech-chart-types"><div class="tech-chart-types-label">强项图型</div><div class="tech-chart-tags"><span class="tct">全类型覆盖</span><span class="tct">大屏组合</span><span class="tct">地图</span><span class="tct">3D图表</span><span class="tct">关系图</span></div></div>
+          <div class="tech-pros-cons"><div class="pros-col"><strong>优势</strong><li>图型最全面</li><li>中文社区强</li><li>大屏场景成熟</li><li>免费开源</li></div><div class="cons-col"><strong>局限</strong><li>配置项极繁</li><li>定制化成本高</li><li>包体积较大</li></div></div>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-header">
+          <div class="tech-card-name"><span style="font-size:18px">🟠</span> D3.js<div class="complexity-dot"><div class="cd" style="background:oklch(50% 0.18 175)"></div><div class="cd" style="background:oklch(50% 0.18 175)"></div><div class="cd" style="background:oklch(50% 0.18 175)"></div></div></div>
+          <div class="tech-card-name-en">Data-Driven Documents · Mike Bostock</div>
+        </div>
+        <div class="tech-card-body">
+          <div class="tech-card-desc">可视化工具库而非图表库，提供数学映射、DOM 绑定等底层原语。任何图型皆可实现，是定制可视化的事实标准，但学习曲线最陡。</div>
+          <div class="tech-stack-row"><span class="ts-pill" style="background:oklch(92% 0.04 175);border-color:oklch(76% 0.08 175);color:oklch(36% 0.12 175)">d3-scale</span><span class="ts-pill" style="background:oklch(92% 0.04 175);border-color:oklch(76% 0.08 175);color:oklch(36% 0.12 175)">d3-shape</span><span class="ts-pill" style="background:oklch(92% 0.04 175);border-color:oklch(76% 0.08 175);color:oklch(36% 0.12 175)">d3-force</span><span class="ts-pill" style="background:oklch(92% 0.04 175);border-color:oklch(76% 0.08 175);color:oklch(36% 0.12 175)">Observable</span></div>
+          <div class="tech-chart-types"><div class="tech-chart-types-label">强项图型</div><div class="tech-chart-tags"><span class="tct">任意定制图型</span><span class="tct">力导向图</span><span class="tct">桑基图</span><span class="tct">弦图</span><span class="tct">地理投影</span></div></div>
+          <div class="tech-pros-cons"><div class="pros-col"><strong>优势</strong><li>无限定制自由</li><li>数学映射强大</li><li>生态极丰富</li></div><div class="cons-col"><strong>局限</strong><li>学习成本最高</li><li>无开箱即用</li><li>React 集成繁</li></div></div>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-header">
+          <div class="tech-card-name"><span style="font-size:18px">🟡</span> Vega / Vega-Lite<div class="complexity-dot"><div class="cd" style="background:oklch(50% 0.18 175)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div></div></div>
+          <div class="tech-card-name-en">Grammar of Graphics · UW Interactive Data Lab</div>
+        </div>
+        <div class="tech-card-body">
+          <div class="tech-card-desc">图形语法（Grammar of Graphics）实现，JSON schema 声明式规范，Vega-Lite 是其高层语法糖。LLM 生成可视化首选（结构化输出友好）。</div>
+          <div class="tech-stack-row"><span class="ts-pill" style="background:oklch(92% 0.04 175);border-color:oklch(76% 0.08 175);color:oklch(36% 0.12 175)">vega-lite</span><span class="ts-pill" style="background:oklch(92% 0.04 175);border-color:oklch(76% 0.08 175);color:oklch(36% 0.12 175)">altair(Python)</span><span class="ts-pill" style="background:oklch(92% 0.04 175);border-color:oklch(76% 0.08 175);color:oklch(36% 0.12 175)">vegafusion</span></div>
+          <div class="tech-chart-types"><div class="tech-chart-types-label">强项图型</div><div class="tech-chart-tags"><span class="tct">统计图表</span><span class="tct">多视图联动</span><span class="tct">探索分析</span><span class="tct">AI生成图表</span></div></div>
+          <div class="tech-pros-cons"><div class="pros-col"><strong>优势</strong><li>AI生成友好</li><li>声明式简洁</li><li>多视图联动内置</li></div><div class="cons-col"><strong>局限</strong><li>图型覆盖有限</li><li>定制化较难</li><li>国内资料少</li></div></div>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-header">
+          <div class="tech-card-name"><span style="font-size:18px">⚛️</span> React 生态图表库<div class="complexity-dot"><div class="cd" style="background:oklch(50% 0.18 175)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div></div></div>
+          <div class="tech-card-name-en">Recharts / Nivo / Victory / Tremor</div>
+        </div>
+        <div class="tech-card-body">
+          <div class="tech-card-desc">React 组件封装的图表库，声明式 JSX 组合，与 React 状态/生命周期深度集成，适合 SaaS 产品和数据仪表盘应用。</div>
+          <div class="tech-stack-row"><span class="ts-pill" style="background:oklch(92% 0.04 175);border-color:oklch(76% 0.08 175);color:oklch(36% 0.12 175)">recharts</span><span class="ts-pill" style="background:oklch(92% 0.04 175);border-color:oklch(76% 0.08 175);color:oklch(36% 0.12 175)">nivo</span><span class="ts-pill" style="background:oklch(92% 0.04 175);border-color:oklch(76% 0.08 175);color:oklch(36% 0.12 175)">tremor</span><span class="ts-pill" style="background:oklch(92% 0.04 175);border-color:oklch(76% 0.08 175);color:oklch(36% 0.12 175)">visx</span></div>
+          <div class="tech-chart-types"><div class="tech-chart-types-label">强项图型</div><div class="tech-chart-tags"><span class="tct">折线/柱状/饼图</span><span class="tct">组合图</span><span class="tct">仪表盘组件</span><span class="tct">KPI卡片</span></div></div>
+          <div class="tech-pros-cons"><div class="pros-col"><strong>优势</strong><li>React 集成无缝</li><li>TypeScript 友好</li><li>开箱即用美观</li></div><div class="cons-col"><strong>局限</strong><li>绑定 React 生态</li><li>复杂图型缺失</li><li>性能中等</li></div></div>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-header">
+          <div class="tech-card-name"><span style="font-size:18px">📊</span> 科学/商业图表库<div class="complexity-dot"><div class="cd" style="background:oklch(50% 0.18 175)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div></div></div>
+          <div class="tech-card-name-en">Plotly / Highcharts / Chart.js</div>
+        </div>
+        <div class="tech-card-body">
+          <div class="tech-card-desc">注重开箱即用与交互体验，Plotly 覆盖科学图型（3D曲面/等高线），Highcharts 注重商业美观，Chart.js 轻量易上手。</div>
+          <div class="tech-stack-row"><span class="ts-pill" style="background:oklch(92% 0.04 175);border-color:oklch(76% 0.08 175);color:oklch(36% 0.12 175)">plotly.js</span><span class="ts-pill" style="background:oklch(92% 0.04 175);border-color:oklch(76% 0.08 175);color:oklch(36% 0.12 175)">highcharts</span><span class="ts-pill" style="background:oklch(92% 0.04 175);border-color:oklch(76% 0.08 175);color:oklch(36% 0.12 175)">chart.js</span></div>
+          <div class="tech-chart-types"><div class="tech-chart-types-label">强项图型</div><div class="tech-chart-tags"><span class="tct">统计图表全家桶</span><span class="tct">3D曲面</span><span class="tct">等高线</span><span class="tct">金融图表</span></div></div>
+          <div class="tech-pros-cons"><div class="pros-col"><strong>优势</strong><li>交互内置完善</li><li>多语言 SDK</li><li>企业支持好</li></div><div class="cons-col"><strong>局限</strong><li>Highcharts 商业收费</li><li>定制灵活度中等</li></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── T3: BI & 无代码路径 ── -->
+  <div class="tech-path" id="t3">
+    <div class="tech-path-header" style="background: oklch(95% 0.03 55); border-left-color: oklch(52% 0.18 55);">
+      <div style="flex: 1">
+        <div class="tech-path-number" style="color: oklch(52% 0.18 55)">PATH 03</div>
+        <div class="tech-path-title" style="color: oklch(25% 0.04 260)">BI &amp; 无代码工具<span class="tech-path-title-en">Business Intelligence / No-Code Platform</span></div>
+        <div class="tech-path-desc">拖拽配置驱动，数据分析师和业务人员首选，快速搭建数据看板，无需编写代码</div>
+      </div>
+      <div class="tech-path-count" style="background: oklch(90% 0.06 55); color: oklch(36% 0.14 55); border: 1px solid oklch(78% 0.09 55)">4 类工具</div>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-card">
+        <div class="tech-card-header"><div class="tech-card-name"><span style="font-size:18px">📈</span> 企业 BI 平台<div class="complexity-dot"><div class="cd" style="background:oklch(52% 0.18 55)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div></div></div><div class="tech-card-name-en">Tableau / Power BI / Qlik</div></div>
+        <div class="tech-card-body">
+          <div class="tech-card-desc">拖拽式可视化分析平台，内置数十种图表类型，支持数据源直连、多表关联和分享发布。适合数据团队日常分析报告。</div>
+          <div class="tech-stack-row"><span class="ts-pill" style="background:oklch(92% 0.04 55);border-color:oklch(78% 0.08 55);color:oklch(36% 0.12 55)">Tableau</span><span class="ts-pill" style="background:oklch(92% 0.04 55);border-color:oklch(78% 0.08 55);color:oklch(36% 0.12 55)">Power BI</span><span class="ts-pill" style="background:oklch(92% 0.04 55);border-color:oklch(78% 0.08 55);color:oklch(36% 0.12 55)">Qlik Sense</span></div>
+          <div class="tech-chart-types"><div class="tech-chart-types-label">覆盖图型</div><div class="tech-chart-tags"><span class="tct">标准统计图表</span><span class="tct">地理图</span><span class="tct">热力图</span><span class="tct">表格</span><span class="tct">KPI卡片</span></div></div>
+          <div class="tech-pros-cons"><div class="pros-col"><strong>优势</strong><li>零代码快速出图</li><li>数据源生态丰富</li><li>企业权限管理</li></div><div class="cons-col"><strong>局限</strong><li>许可证费用高</li><li>定制化受限</li><li>嵌入集成复杂</li></div></div>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-header"><div class="tech-card-name"><span style="font-size:18px">🇨🇳</span> 国产 BI 平台<div class="complexity-dot"><div class="cd" style="background:oklch(52% 0.18 55)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div></div></div><div class="tech-card-name-en">帆软 FineReport / 阿里 DataV / 腾讯 RayData</div></div>
+        <div class="tech-card-body">
+          <div class="tech-card-desc">国产化替代方案，深度支持国内数据源（MaxCompute/TiDB），DataV 专注大屏可视化，FineReport 专注报表导出，私有化部署友好。</div>
+          <div class="tech-stack-row"><span class="ts-pill" style="background:oklch(92% 0.04 55);border-color:oklch(78% 0.08 55);color:oklch(36% 0.12 55)">DataV</span><span class="ts-pill" style="background:oklch(92% 0.04 55);border-color:oklch(78% 0.08 55);color:oklch(36% 0.12 55)">FineReport</span><span class="ts-pill" style="background:oklch(92% 0.04 55);border-color:oklch(78% 0.08 55);color:oklch(36% 0.12 55)">Sugar BI</span><span class="ts-pill" style="background:oklch(92% 0.04 55);border-color:oklch(78% 0.08 55);color:oklch(36% 0.12 55)">RayData</span></div>
+          <div class="tech-chart-types"><div class="tech-chart-types-label">强项场景</div><div class="tech-chart-tags"><span class="tct">大屏可视化</span><span class="tct">报表导出</span><span class="tct">地理热力</span><span class="tct">实时数据看板</span></div></div>
+          <div class="tech-pros-cons"><div class="pros-col"><strong>优势</strong><li>国内数据源兼容</li><li>私有化部署</li><li>大屏模板丰富</li></div><div class="cons-col"><strong>局限</strong><li>国际化能力弱</li><li>定制仍需代码</li></div></div>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-header"><div class="tech-card-name"><span style="font-size:18px">🔓</span> 开源 BI / 监控<div class="complexity-dot"><div class="cd" style="background:oklch(52% 0.18 55)"></div><div class="cd" style="background:oklch(52% 0.18 55)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div></div></div><div class="tech-card-name-en">Grafana / Metabase / Superset / Redash</div></div>
+        <div class="tech-card-body">
+          <div class="tech-card-desc">开源免费，Grafana 专注时序监控，Metabase 适合业务人员自助查询，Superset 支持大数据源，均可自托管部署。</div>
+          <div class="tech-stack-row"><span class="ts-pill" style="background:oklch(92% 0.04 55);border-color:oklch(78% 0.08 55);color:oklch(36% 0.12 55)">Grafana</span><span class="ts-pill" style="background:oklch(92% 0.04 55);border-color:oklch(78% 0.08 55);color:oklch(36% 0.12 55)">Metabase</span><span class="ts-pill" style="background:oklch(92% 0.04 55);border-color:oklch(78% 0.08 55);color:oklch(36% 0.12 55)">Superset</span><span class="ts-pill" style="background:oklch(92% 0.04 55);border-color:oklch(78% 0.08 55);color:oklch(36% 0.12 55)">Redash</span></div>
+          <div class="tech-chart-types"><div class="tech-chart-types-label">强项场景</div><div class="tech-chart-tags"><span class="tct">时序折线</span><span class="tct">监控看板</span><span class="tct">SQL 自助分析</span><span class="tct">告警图</span></div></div>
+          <div class="tech-pros-cons"><div class="pros-col"><strong>优势</strong><li>完全免费</li><li>自托管可控</li><li>插件生态丰富</li></div><div class="cons-col"><strong>局限</strong><li>运维成本</li><li>高级功能需企业版</li></div></div>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-header"><div class="tech-card-name"><span style="font-size:18px">📋</span> 电子表格工具<div class="complexity-dot"><div class="cd" style="background:oklch(52% 0.18 55)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div></div></div><div class="tech-card-name-en">Excel / Google Sheets / WPS 表格</div></div>
+        <div class="tech-card-body">
+          <div class="tech-card-desc">最普及的数据可视化工具，零编程门槛，适合临时分析和小规模数据。内置图表向导，一键生成标准图表，离线可用。</div>
+          <div class="tech-stack-row"><span class="ts-pill" style="background:oklch(92% 0.04 55);border-color:oklch(78% 0.08 55);color:oklch(36% 0.12 55)">Excel</span><span class="ts-pill" style="background:oklch(92% 0.04 55);border-color:oklch(78% 0.08 55);color:oklch(36% 0.12 55)">Google Sheets</span><span class="ts-pill" style="background:oklch(92% 0.04 55);border-color:oklch(78% 0.08 55);color:oklch(36% 0.12 55)">WPS</span></div>
+          <div class="tech-chart-types"><div class="tech-chart-types-label">覆盖图型</div><div class="tech-chart-tags"><span class="tct">柱状/折线/饼图</span><span class="tct">散点图</span><span class="tct">组合图</span><span class="tct">迷你图</span></div></div>
+          <div class="tech-pros-cons"><div class="pros-col"><strong>优势</strong><li>零门槛最普及</li><li>数据-图表联动</li><li>离线无依赖</li></div><div class="cons-col"><strong>局限</strong><li>万行以上卡顿</li><li>美观度有限</li><li>无法程序化</li></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── T4: 设计工具路径 ── -->
+  <div class="tech-path" id="t4">
+    <div class="tech-path-header" style="background: oklch(95% 0.03 330); border-left-color: oklch(52% 0.17 330);">
+      <div style="flex: 1">
+        <div class="tech-path-number" style="color: oklch(52% 0.17 330)">PATH 04</div>
+        <div class="tech-path-title" style="color: oklch(25% 0.04 260)">设计工具<span class="tech-path-title-en">Design Tool / Presentation Software</span></div>
+        <div class="tech-path-desc">视觉设计师和产品经理首选路径，所见即所得，输出可交付的静态/动效图表，适合概念框架图和信息图设计</div>
+      </div>
+      <div class="tech-path-count" style="background: oklch(90% 0.05 330); color: oklch(36% 0.13 330); border: 1px solid oklch(78% 0.08 330)">4 类工具</div>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-card">
+        <div class="tech-card-header"><div class="tech-card-name"><span style="font-size:18px">🎨</span> UI 设计工具<div class="complexity-dot"><div class="cd" style="background:oklch(52% 0.17 330)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div></div></div><div class="tech-card-name-en">Figma / Sketch / Adobe XD</div></div>
+        <div class="tech-card-body">
+          <div class="tech-card-desc">矢量设计工具，通过手绘或插件生成图表，Figma Charts 插件可接入真实数据。适合产品原型中的数据可视化模块设计。</div>
+          <div class="tech-stack-row"><span class="ts-pill" style="background:oklch(92% 0.04 330);border-color:oklch(78% 0.08 330);color:oklch(36% 0.12 330)">Figma</span><span class="ts-pill" style="background:oklch(92% 0.04 330);border-color:oklch(78% 0.08 330);color:oklch(36% 0.12 330)">Charts 插件</span><span class="ts-pill" style="background:oklch(92% 0.04 330);border-color:oklch(78% 0.08 330);color:oklch(36% 0.12 330)">Sketch</span></div>
+          <div class="tech-chart-types"><div class="tech-chart-types-label">强项图型</div><div class="tech-chart-tags"><span class="tct">原型图表</span><span class="tct">信息架构图</span><span class="tct">概念框架</span><span class="tct">品牌屋</span><span class="tct">仪表盘原型</span></div></div>
+          <div class="tech-pros-cons"><div class="pros-col"><strong>优势</strong><li>设计自由度极高</li><li>团队协作实时</li><li>组件库可复用</li></div><div class="cons-col"><strong>局限</strong><li>不可数据驱动</li><li>动态交互受限</li><li>输出需前端还原</li></div></div>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-header"><div class="tech-card-name"><span style="font-size:18px">📑</span> 演示文稿工具<div class="complexity-dot"><div class="cd" style="background:oklch(52% 0.17 330)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div></div></div><div class="tech-card-name-en">PowerPoint / Keynote / Google Slides</div></div>
+        <div class="tech-card-body">
+          <div class="tech-card-desc">商业汇报场景首选，内置图表向导，支持 Excel 数据导入和链接更新。PowerPoint SmartArt 可快速生成层级/流程/循环等框架图。</div>
+          <div class="tech-stack-row"><span class="ts-pill" style="background:oklch(92% 0.04 330);border-color:oklch(78% 0.08 330);color:oklch(36% 0.12 330)">PowerPoint</span><span class="ts-pill" style="background:oklch(92% 0.04 330);border-color:oklch(78% 0.08 330);color:oklch(36% 0.12 330)">Keynote</span><span class="ts-pill" style="background:oklch(92% 0.04 330);border-color:oklch(78% 0.08 330);color:oklch(36% 0.12 330)">SmartArt</span></div>
+          <div class="tech-chart-types"><div class="tech-chart-types-label">强项图型</div><div class="tech-chart-tags"><span class="tct">金字塔</span><span class="tct">品牌屋</span><span class="tct">流程图</span><span class="tct">组织架构</span><span class="tct">标准统计图</span></div></div>
+          <div class="tech-pros-cons"><div class="pros-col"><strong>优势</strong><li>零门槛最普及</li><li>框架图模板丰富</li><li>汇报场景完美契合</li></div><div class="cons-col"><strong>局限</strong><li>仅静态输出</li><li>大数据图表弱</li><li>无 Web 嵌入</li></div></div>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-header"><div class="tech-card-name"><span style="font-size:18px">🗒️</span> 在线白板工具<div class="complexity-dot"><div class="cd" style="background:oklch(52% 0.17 330)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div></div></div><div class="tech-card-name-en">Miro / FigJam / Lucidchart / Whimsical</div></div>
+        <div class="tech-card-body">
+          <div class="tech-card-desc">协作型白板，内置流程图/思维导图/用户旅程图模板，适合团队共创和战略工作坊。Miro 内置数据图表功能，可轻量接入数据。</div>
+          <div class="tech-stack-row"><span class="ts-pill" style="background:oklch(92% 0.04 330);border-color:oklch(78% 0.08 330);color:oklch(36% 0.12 330)">Miro</span><span class="ts-pill" style="background:oklch(92% 0.04 330);border-color:oklch(78% 0.08 330);color:oklch(36% 0.12 330)">FigJam</span><span class="ts-pill" style="background:oklch(92% 0.04 330);border-color:oklch(78% 0.08 330);color:oklch(36% 0.12 330)">Lucidchart</span></div>
+          <div class="tech-chart-types"><div class="tech-chart-types-label">强项图型</div><div class="tech-chart-tags"><span class="tct">思维导图</span><span class="tct">用户旅程</span><span class="tct">服务蓝图</span><span class="tct">SWOT</span><span class="tct">流程图</span></div></div>
+          <div class="tech-pros-cons"><div class="pros-col"><strong>优势</strong><li>实时多人协作</li><li>工作坊首选</li><li>框架模板极丰富</li></div><div class="cons-col"><strong>局限</strong><li>数据绑定弱</li><li>无 embed 输出</li></div></div>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-header"><div class="tech-card-name"><span style="font-size:18px">✏️</span> 专业插画工具<div class="complexity-dot"><div class="cd" style="background:oklch(52% 0.17 330)"></div><div class="cd" style="background:oklch(52% 0.17 330)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div></div></div><div class="tech-card-name-en">Adobe Illustrator / Affinity Designer</div></div>
+        <div class="tech-card-body">
+          <div class="tech-card-desc">专业矢量插画工具，适合制作出版级信息图（Infographic）和品牌视觉图表。精细排版控制，输出高质量 PDF/SVG。</div>
+          <div class="tech-stack-row"><span class="ts-pill" style="background:oklch(92% 0.04 330);border-color:oklch(78% 0.08 330);color:oklch(36% 0.12 330)">Illustrator</span><span class="ts-pill" style="background:oklch(92% 0.04 330);border-color:oklch(78% 0.08 330);color:oklch(36% 0.12 330)">Affinity Designer</span></div>
+          <div class="tech-chart-types"><div class="tech-chart-types-label">强项图型</div><div class="tech-chart-tags"><span class="tct">信息图 Infographic</span><span class="tct">品牌可视化</span><span class="tct">数据新闻图</span><span class="tct">出版级图表</span></div></div>
+          <div class="tech-pros-cons"><div class="pros-col"><strong>优势</strong><li>出版级视觉质量</li><li>排版精细控制</li><li>SVG 导出完美</li></div><div class="cons-col"><strong>局限</strong><li>无数据绑定</li><li>学习成本高</li><li>手工制作效率低</li></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── T5: AI 生成路径 ── -->
+  <div class="tech-path" id="t5">
+    <div class="tech-path-header" style="background: oklch(95% 0.03 270); border-left-color: oklch(50% 0.16 270);">
+      <div style="flex: 1">
+        <div class="tech-path-number" style="color: oklch(50% 0.16 270)">PATH 05</div>
+        <div class="tech-path-title" style="color: oklch(25% 0.04 260)">AI 生成 &amp; 辅助<span class="tech-path-title-en">AI-Generated / LLM-Assisted Visualization</span></div>
+        <div class="tech-path-desc">自然语言描述驱动图表生成，2024年后快速成熟，适合快速原型、探索分析和低代码场景</div>
+      </div>
+      <div class="tech-path-count" style="background: oklch(90% 0.05 270); color: oklch(35% 0.13 270); border: 1px solid oklch(78% 0.08 270)">4 类方向</div>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-card">
+        <div class="tech-card-header"><div class="tech-card-name"><span style="font-size:18px">🤖</span> LLM 代码生成<div class="complexity-dot"><div class="cd" style="background:oklch(50% 0.16 270)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div></div></div><div class="tech-card-name-en">GPT / Claude → ECharts / Python / D3</div></div>
+        <div class="tech-card-body">
+          <div class="tech-card-desc">用自然语言描述需求，LLM 生成 ECharts JSON 配置、Python matplotlib/seaborn 代码或 D3 代码，无需手写配置。快速原型首选。</div>
+          <div class="tech-stack-row"><span class="ts-pill" style="background:oklch(92% 0.04 270);border-color:oklch(78% 0.08 270);color:oklch(35% 0.12 270)">GPT-4o</span><span class="ts-pill" style="background:oklch(92% 0.04 270);border-color:oklch(78% 0.08 270);color:oklch(35% 0.12 270)">Claude</span><span class="ts-pill" style="background:oklch(92% 0.04 270);border-color:oklch(78% 0.08 270);color:oklch(35% 0.12 270)">→ ECharts</span><span class="ts-pill" style="background:oklch(92% 0.04 270);border-color:oklch(78% 0.08 270);color:oklch(35% 0.12 270)">→ Vega-Lite</span></div>
+          <div class="tech-chart-types"><div class="tech-chart-types-label">覆盖图型</div><div class="tech-chart-tags"><span class="tct">所有标准图型</span><span class="tct">定制图型</span><span class="tct">SVG信息图</span></div></div>
+          <div class="tech-pros-cons"><div class="pros-col"><strong>优势</strong><li>自然语言驱动</li><li>快速出原型</li><li>迭代成本极低</li></div><div class="cons-col"><strong>局限</strong><li>复杂图型不稳定</li><li>需要人工审核</li><li>数据安全风险</li></div></div>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-header"><div class="tech-card-name"><span style="font-size:18px">✨</span> Text-to-Chart 产品<div class="complexity-dot"><div class="cd" style="background:oklch(50% 0.16 270)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div></div></div><div class="tech-card-name-en">Julius AI / ChartGPT / Rows / Vizly</div></div>
+        <div class="tech-card-body">
+          <div class="tech-card-desc">专注于数据-图表 AI 转换的 SaaS 产品，上传 CSV/Excel 后用自然语言提问即可生成图表，无需任何代码，适合数据分析师快速探索。</div>
+          <div class="tech-stack-row"><span class="ts-pill" style="background:oklch(92% 0.04 270);border-color:oklch(78% 0.08 270);color:oklch(35% 0.12 270)">Julius AI</span><span class="ts-pill" style="background:oklch(92% 0.04 270);border-color:oklch(78% 0.08 270);color:oklch(35% 0.12 270)">Rows</span><span class="ts-pill" style="background:oklch(92% 0.04 270);border-color:oklch(78% 0.08 270);color:oklch(35% 0.12 270)">Vizly</span><span class="ts-pill" style="background:oklch(92% 0.04 270);border-color:oklch(78% 0.08 270);color:oklch(35% 0.12 270)">Noteable</span></div>
+          <div class="tech-chart-types"><div class="tech-chart-types-label">覆盖图型</div><div class="tech-chart-tags"><span class="tct">统计图表</span><span class="tct">趋势分析</span><span class="tct">相关性图</span><span class="tct">自动推荐</span></div></div>
+          <div class="tech-pros-cons"><div class="pros-col"><strong>优势</strong><li>零门槛最快</li><li>自动推荐最优图型</li><li>数据洞察一体</li></div><div class="cons-col"><strong>局限</strong><li>定制化极弱</li><li>数据上传隐私</li><li>复杂图型缺失</li></div></div>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-header"><div class="tech-card-name"><span style="font-size:18px">🖼️</span> AI 信息图生成<div class="complexity-dot"><div class="cd" style="background:oklch(50% 0.16 270)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div></div></div><div class="tech-card-name-en">Napkin AI / Gamma / Beautiful.ai / Tome</div></div>
+        <div class="tech-card-body">
+          <div class="tech-card-desc">从文本/大纲直接生成信息图、流程图、品牌框架图等概念可视化，Napkin AI 专注从段落提取关键框架，Gamma 生成完整演示文稿。</div>
+          <div class="tech-stack-row"><span class="ts-pill" style="background:oklch(92% 0.04 270);border-color:oklch(78% 0.08 270);color:oklch(35% 0.12 270)">Napkin AI</span><span class="ts-pill" style="background:oklch(92% 0.04 270);border-color:oklch(78% 0.08 270);color:oklch(35% 0.12 270)">Gamma</span><span class="ts-pill" style="background:oklch(92% 0.04 270);border-color:oklch(78% 0.08 270);color:oklch(35% 0.12 270)">Beautiful.ai</span><span class="ts-pill" style="background:oklch(92% 0.04 270);border-color:oklch(78% 0.08 270);color:oklch(35% 0.12 270)">Tome</span></div>
+          <div class="tech-chart-types"><div class="tech-chart-types-label">强项图型</div><div class="tech-chart-tags"><span class="tct">信息图</span><span class="tct">流程图</span><span class="tct">思维导图</span><span class="tct">概念框架</span><span class="tct">品牌屋</span></div></div>
+          <div class="tech-pros-cons"><div class="pros-col"><strong>优势</strong><li>文字→框架图极快</li><li>品牌屋等非数值图</li><li>演示一体输出</li></div><div class="cons-col"><strong>局限</strong><li>数据驱动图弱</li><li>精细排版难</li><li>样式不完全可控</li></div></div>
+        </div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-card-header"><div class="tech-card-name"><span style="font-size:18px">🐍</span> Python AI 分析栈<div class="complexity-dot"><div class="cd" style="background:oklch(50% 0.16 270)"></div><div class="cd" style="background:oklch(50% 0.16 270)"></div><div class="cd" style="background:oklch(85% 0.03 260)"></div></div></div><div class="tech-card-name-en">Pandas + Matplotlib / Seaborn / Plotly / Altair</div></div>
+        <div class="tech-card-body">
+          <div class="tech-card-desc">数据科学黄金路径，Jupyter Notebook 内联图表，LLM 辅助生成分析代码，Plotly/Altair 支持交互输出。适合数据分析师全流程工作。</div>
+          <div class="tech-stack-row"><span class="ts-pill" style="background:oklch(92% 0.04 270);border-color:oklch(78% 0.08 270);color:oklch(35% 0.12 270)">matplotlib</span><span class="ts-pill" style="background:oklch(92% 0.04 270);border-color:oklch(78% 0.08 270);color:oklch(35% 0.12 270)">seaborn</span><span class="ts-pill" style="background:oklch(92% 0.04 270);border-color:oklch(78% 0.08 270);color:oklch(35% 0.12 270)">plotly</span><span class="ts-pill" style="background:oklch(92% 0.04 270);border-color:oklch(78% 0.08 270);color:oklch(35% 0.12 270)">altair</span></div>
+          <div class="tech-chart-types"><div class="tech-chart-types-label">强项图型</div><div class="tech-chart-tags"><span class="tct">统计分布</span><span class="tct">相关矩阵</span><span class="tct">箱线/小提琴</span><span class="tct">地理图</span><span class="tct">3D图</span></div></div>
+          <div class="tech-pros-cons"><div class="pros-col"><strong>优势</strong><li>数据处理与可视化一体</li><li>科学图型全覆盖</li><li>LLM 辅助效率高</li></div><div class="cons-col"><strong>局限</strong><li>需 Python 基础</li><li>Web 嵌入需额外工作</li></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 路径选择决策矩阵 -->
+  <div style="background: oklch(20% 0.04 260); border-radius: 16px; padding: 28px 32px; margin-top: 8px;">
+    <div style="font-size: 14px; font-weight: 700; color: oklch(90% 0.04 260); margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+      <span style="font-size:20px">🧭</span> 路径选择决策矩阵
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px;">
+      <div style="background: oklch(28% 0.04 260); border-radius: 8px; padding: 14px;">
+        <div style="font-size: 11px; font-weight: 700; color: oklch(55% 0.20 240); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;">前端工程师</div>
+        <div style="font-size: 12px; color: oklch(75% 0.03 260); line-height: 1.7;">标准图表 → <strong style="color:oklch(82% 0.06 260)">可视化库</strong><br>高度定制 → <strong style="color:oklch(82% 0.06 260)">D3 / 原生 SVG</strong><br>大数据量 → <strong style="color:oklch(82% 0.06 260)">Canvas / WebGL</strong></div>
+      </div>
+      <div style="background: oklch(28% 0.04 260); border-radius: 8px; padding: 14px;">
+        <div style="font-size: 11px; font-weight: 700; color: oklch(52% 0.18 175); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;">数据分析师</div>
+        <div style="font-size: 12px; color: oklch(75% 0.03 260); line-height: 1.7;">快速探索 → <strong style="color:oklch(82% 0.06 260)">Python / Jupyter</strong><br>日常报告 → <strong style="color:oklch(82% 0.06 260)">BI 平台</strong><br>AI辅助 → <strong style="color:oklch(82% 0.06 260)">Text-to-Chart</strong></div>
+      </div>
+      <div style="background: oklch(28% 0.04 260); border-radius: 8px; padding: 14px;">
+        <div style="font-size: 11px; font-weight: 700; color: oklch(52% 0.17 330); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;">设计师 / PM</div>
+        <div style="font-size: 12px; color: oklch(75% 0.03 260); line-height: 1.7;">品牌框架图 → <strong style="color:oklch(82% 0.06 260)">Figma / PPT</strong><br>工作坊 → <strong style="color:oklch(82% 0.06 260)">Miro / FigJam</strong><br>快速信息图 → <strong style="color:oklch(82% 0.06 260)">Napkin AI / Gamma</strong></div>
+      </div>
+      <div style="background: oklch(28% 0.04 260); border-radius: 8px; padding: 14px;">
+        <div style="font-size: 11px; font-weight: 700; color: oklch(52% 0.18 55); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;">业务人员</div>
+        <div style="font-size: 12px; color: oklch(75% 0.03 260); line-height: 1.7;">日常汇报 → <strong style="color:oklch(82% 0.06 260)">Excel / PPT</strong><br>自助分析 → <strong style="color:oklch(82% 0.06 260)">Tableau / Metabase</strong><br>AI辅助 → <strong style="color:oklch(82% 0.06 260)">Julius AI</strong></div>
+      </div>
+    </div>
+  </div>
+
       </div>
 
       <!-- Skill 路径维度 -->
       <div v-show="activeDimension === 'skill'" class="view-skill">
-        <p class="skill-intro">
-          Skill 工程路径 — 针对不同质量需求与工作流场景，提供 5 条标准调用路径
-        </p>
 
-        <div v-for="path in skillPaths" :key="path.id" class="skill-path">
-          <div class="skill-path-header" :style="{ background: path.bgColor, borderLeftColor: path.color }">
-            <div style="flex:1">
-              <div class="skill-path-label" :style="{ color: path.color }">
-                SKILL PATH {{ path.id }}
-              </div>
-              <div class="skill-path-title">
-                {{ path.title }}
-                <span class="skill-path-subtitle">{{ path.subtitle }}</span>
-              </div>
-              <div class="skill-path-desc">{{ path.desc }}</div>
-            </div>
-            <div class="skill-path-badge" :style="{ background: path.badgeBg, color: path.color, borderColor: path.borderColor }">
-              {{ path.badge }}
-            </div>
-          </div>
+  <!-- 维度说明 -->
+  <div style="background: oklch(15% 0.06 270); border: 1px solid oklch(30% 0.08 270); border-radius: 12px; padding: 20px 24px; margin-bottom: 40px; display: flex; gap: 20px; align-items: flex-start;">
+    <div style="font-size: 28px; flex-shrink: 0;">🧩</div>
+    <div>
+      <div style="font-size: 13px; font-weight: 700; color: oklch(90% 0.06 270); margin-bottom: 8px;">Skill 工程化路径维度 · How to Skill</div>
+      <div style="font-size: 13px; color: oklch(70% 0.05 270); line-height: 1.8;">
+        基于本 Skill 体系对图表生成任务的工程化封装方式。核心 Skill 包括：
+        <span class="skill-badge" style="background:oklch(22% 0.06 150);border-color:oklch(45% 0.14 150);color:oklch(75% 0.10 150);margin:0 3px">visual-creator</span>
+        <span class="skill-badge" style="background:oklch(22% 0.06 240);border-color:oklch(45% 0.14 240);color:oklch(75% 0.10 240);margin:0 3px">infovis-evaluator</span>
+        <span class="skill-badge" style="background:oklch(22% 0.06 330);border-color:oklch(45% 0.14 330);color:oklch(75% 0.10 330);margin:0 3px">infovis-autoevo</span>
+        <span class="skill-badge" style="background:oklch(22% 0.06 55);border-color:oklch(45% 0.12 55);color:oklch(75% 0.10 55);margin:0 3px">design-evaluator</span><br>
+        <span style="color:oklch(60% 0.04 270);font-size:12px;">按任务复杂度选路径：单次生成 → 生成+评测 → 自进化闭环。越靠后质量越高，代价越大。</span>
+      </div>
+    </div>
+  </div>
 
-          <div class="skill-flow">
-            <div v-for="(node, idx) in path.flow" :key="idx" class="sf-node-container">
-              <div 
-                class="sf-node" 
-                :class="{ 'sf-highlight': node.highlight }"
-                :style="node.highlight ? { '--sf-color': node.color, '--sf-bg': node.bg } : {}"
-              >
-                <div class="sf-node-name">{{ node.name }}</div>
-                <div class="sf-node-role">{{ node.role }}</div>
-              </div>
-              <div v-if="idx < path.flow.length - 1" class="sf-arrow">{{ node.arrow || '→' }}</div>
-            </div>
-          </div>
-
-          <div class="skill-use-cases">
-            <div v-for="useCase in path.useCases" :key="useCase.title" class="suc-card">
-              <div class="suc-chart-type">{{ useCase.title }}</div>
-              <div class="suc-desc">{{ useCase.desc }}</div>
-              <div class="suc-tags">
-                <span class="suc-tag" v-for="tag in useCase.tags" :key="tag">{{ tag }}</span>
-              </div>
-            </div>
-          </div>
+  <!-- SK1: 单点生成 -->
+  <div class="skill-path" id="sk1">
+    <div class="skill-path-header" style="background: oklch(95% 0.04 150); border-left-color: oklch(52% 0.16 150);">
+      <div style="flex:1">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:oklch(52% 0.16 150);margin-bottom:4px">SKILL PATH 01</div>
+        <div style="font-family:'Noto Serif SC',serif;font-size:20px;font-weight:700;color:oklch(22% 0.02 260);display:flex;align-items:center;gap:10px">
+          单点生成
+          <span style="font-family:'Inter',sans-serif;font-size:13px;font-weight:400;color:var(--text-muted)">visual-creator 直调</span>
         </div>
+        <div style="font-size:13px;color:var(--text-secondary);margin-top:5px">最轻量路径，一次 Skill 调用直接输出图表。适合需求明确、质量要求不高的快速生成场景</div>
+      </div>
+      <div style="background:oklch(88% 0.06 150);color:oklch(36% 0.14 150);border:1px solid oklch(76% 0.09 150);font-size:11px;padding:4px 10px;border-radius:99px;white-space:nowrap;font-weight:500;align-self:flex-start">适合：快速原型 / 一次性需求</div>
+    </div>
+    <div class="skill-flow">
+      <div class="sf-node"><div class="sf-node-name">用户意图</div><div class="sf-node-role">文字描述 / 数据</div></div>
+      <div class="sf-arrow">→</div>
+      <div class="sf-node sf-highlight" style="--sf-color:oklch(45% 0.14 150);--sf-bg:oklch(93% 0.04 150)"><div class="sf-node-name">visual-creator</div><div class="sf-node-role">意图路由 + 生成器</div></div>
+      <div class="sf-arrow">→</div>
+      <div class="sf-node"><div class="sf-node-name">输出图表</div><div class="sf-node-role">SVG / PNG / HTML</div></div>
+    </div>
+    <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:12px">适用图型 × 触发示例</div>
+    <div class="skill-use-cases">
+      <div class="suc-card"><div class="suc-chart-type">数据可视化图型</div><div class="suc-desc">柱状图、折线图、饼图、散点图等标准统计图。输入数据 + 意图描述即可。</div><div class="suc-tags"><span class="suc-tag">visual-creator</span><span class="suc-tag">type:data_viz</span></div></div>
+      <div class="suc-card"><div class="suc-chart-type">概念框架图</div><div class="suc-desc">品牌屋、金字塔、2×2矩阵等非数值框架。输入文字概念即可生成结构图。</div><div class="suc-tags"><span class="suc-tag">visual-creator</span><span class="suc-tag">type:concept</span></div></div>
+      <div class="suc-card"><div class="suc-chart-type">流程图 / 时间轴</div><div class="suc-desc">流程步骤、里程碑、用户旅程。输入事件列表或步骤描述。</div><div class="suc-tags"><span class="suc-tag">visual-creator</span><span class="suc-tag">type:flowchart</span><span class="suc-tag">type:timeline</span></div></div>
+      <div class="suc-card"><div class="suc-chart-type">PPT 信息图</div><div class="suc-desc">演讲汇报用结构化信息图，自动选择布局和色彩方案。</div><div class="suc-tags"><span class="suc-tag">visual-creator</span><span class="suc-tag">type:ppt_infographic</span></div></div>
+    </div>
+  </div>
 
-        <!-- 决策树 -->
-        <div class="skill-decision-tree">
-          <div class="decision-title">
-            <span style="font-size:20px">🎯</span> Skill 路径选择决策树
-          </div>
-          <div class="decision-grid">
-            <div v-for="decision in skillDecisions" :key="decision.label" class="decision-card">
-              <div class="decision-label" :style="{ color: decision.color }">{{ decision.label }}</div>
-              <div class="decision-text" v-html="decision.text"></div>
-            </div>
-          </div>
+  <!-- SK2: 生成+评测 -->
+  <div class="skill-path" id="sk2">
+    <div class="skill-path-header" style="background: oklch(95% 0.04 240); border-left-color: oklch(50% 0.18 240);">
+      <div style="flex:1">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:oklch(50% 0.18 240);margin-bottom:4px">SKILL PATH 02</div>
+        <div style="font-family:'Noto Serif SC',serif;font-size:20px;font-weight:700;color:oklch(22% 0.02 260);display:flex;align-items:center;gap:10px">
+          生成 + 评测
+          <span style="font-family:'Inter',sans-serif;font-size:13px;font-weight:400;color:var(--text-muted)">visual-creator → infovis-evaluator</span>
         </div>
+        <div style="font-size:13px;color:var(--text-secondary);margin-top:5px">生成后立即进行三维质量评测，输出结构化评分报告。适合有质量要求的交付物</div>
+      </div>
+      <div style="background:oklch(88% 0.07 240);color:oklch(35% 0.15 240);border:1px solid oklch(76% 0.10 240);font-size:11px;padding:4px 10px;border-radius:99px;white-space:nowrap;font-weight:500;align-self:flex-start">适合：有审查要求 / 汇报用图</div>
+    </div>
+    <div class="skill-flow">
+      <div class="sf-node"><div class="sf-node-name">意图 + 数据</div><div class="sf-node-role">viewer_intent / audience</div></div>
+      <div class="sf-arrow">→</div>
+      <div class="sf-node sf-highlight" style="--sf-color:oklch(45% 0.14 150);--sf-bg:oklch(93% 0.04 150)"><div class="sf-node-name">visual-creator</div><div class="sf-node-role">生成可视化产物</div></div>
+      <div class="sf-arrow">→</div>
+      <div class="sf-node sf-highlight" style="--sf-color:oklch(42% 0.16 240);--sf-bg:oklch(93% 0.04 240)"><div class="sf-node-name">infovis-evaluator</div><div class="sf-node-role">三维评测矩阵</div></div>
+      <div class="sf-arrow">→</div>
+      <div class="sf-node"><div class="sf-node-name">评分报告</div><div class="sf-node-role">得分 + 变异建议</div></div>
+    </div>
+    <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:16px;font-size:12px;color:var(--text-secondary);line-height:1.8">
+      <strong style="color:var(--text-primary);font-size:13px">infovis-evaluator 三维评测矩阵</strong><br>
+      <span style="color:oklch(50% 0.16 240)">■</span> <strong>信息路由</strong>（LLM）：图表类型是否匹配数据意图？Expected Topology 对齐度<br>
+      <span style="color:oklch(52% 0.16 150)">■</span> <strong>盲测解码</strong>（VLM）：无上下文能否提取核心洞察？Perceived Topology 匹配度<br>
+      <span style="color:oklch(55% 0.17 55)">■</span> <strong>认知摩擦力</strong>：视觉噪音和复杂度，Friction Score（越低越好）
+    </div>
+    <div class="skill-use-cases">
+      <div class="suc-card"><div class="suc-chart-type">高管汇报图表</div><div class="suc-desc">对非技术决策者受众做图，需确保核心洞察无需解读即可传达。</div><div class="suc-tags"><span class="suc-tag">audience:非技术决策者</span><span class="suc-tag">盲测解码</span></div></div>
+      <div class="suc-card"><div class="suc-chart-type">分布/关系类图</div><div class="suc-desc">散点图、箱线图等容易被误读的图型，评测信息路由匹配度。</div><div class="suc-tags"><span class="suc-tag">信息路由评测</span><span class="suc-tag">拓扑验证</span></div></div>
+      <div class="suc-card"><div class="suc-chart-type">复杂仪表盘</div><div class="suc-desc">多图组合看板，重点评测认知摩擦力，识别视觉噪音来源。</div><div class="suc-tags"><span class="suc-tag">认知摩擦力</span><span class="suc-tag">Friction Score</span></div></div>
+      <div class="suc-card"><div class="suc-chart-type">图型适配性验证</div><div class="suc-desc">给定数据后怀疑图型选择是否合适，让评测器验证 Expected Topology。</div><div class="suc-tags"><span class="suc-tag">Expected Topology</span><span class="suc-tag">图型路由</span></div></div>
+    </div>
+  </div>
+
+  <!-- SK3: 自进化闭环 -->
+  <div class="skill-path" id="sk3">
+    <div class="skill-path-header" style="background: oklch(95% 0.04 330); border-left-color: oklch(50% 0.16 330);">
+      <div style="flex:1">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:oklch(50% 0.16 330);margin-bottom:4px">SKILL PATH 03</div>
+        <div style="font-family:'Noto Serif SC',serif;font-size:20px;font-weight:700;color:oklch(22% 0.02 260);display:flex;align-items:center;gap:10px">
+          自进化闭环
+          <span style="font-family:'Inter',sans-serif;font-size:13px;font-weight:400;color:var(--text-muted)">infovis-autoevo · 生成→评测→变异→再生成</span>
+        </div>
+        <div style="font-size:13px;color:var(--text-secondary);margin-top:5px">全自动迭代优化直至得分 ≥ 9.6 分，无需人工介入。适合高质量交付和批量验证</div>
+      </div>
+      <div style="background:oklch(88% 0.06 330);color:oklch(36% 0.13 330);border:1px solid oklch(76% 0.08 330);font-size:11px;padding:4px 10px;border-radius:99px;white-space:nowrap;font-weight:500;align-self:flex-start">适合：高质量交付 / 批量质量门控</div>
+    </div>
+    <div style="background:oklch(18% 0.04 260);border-radius:12px;padding:20px 24px;margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:oklch(55% 0.05 260);margin-bottom:14px">infovis-autoevo 完整流水线</div>
+      <div style="display:flex;align-items:center;gap:0;flex-wrap:wrap;">
+        <div style="background:oklch(28% 0.05 270);border:1.5px solid oklch(50% 0.14 270);border-radius:8px;padding:10px 14px;min-width:110px;"><div style="font-size:11px;font-weight:700;color:oklch(72% 0.12 270)">INPUT</div><div style="font-size:10px;color:oklch(58% 0.06 260);margin-top:2px">数据 + 意图 + 受众</div></div>
+        <div style="font-size:18px;color:oklch(50% 0.04 260);padding:0 8px">→</div>
+        <div style="background:oklch(28% 0.05 150);border:1.5px solid oklch(50% 0.14 150);border-radius:8px;padding:10px 14px;min-width:120px;"><div style="font-size:11px;font-weight:700;color:oklch(72% 0.12 150)">visual-creator</div><div style="font-size:10px;color:oklch(58% 0.06 260);margin-top:2px">PHASE 1: 生成</div></div>
+        <div style="font-size:18px;color:oklch(50% 0.04 260);padding:0 8px">→</div>
+        <div style="background:oklch(28% 0.05 240);border:1.5px solid oklch(50% 0.14 240);border-radius:8px;padding:10px 14px;min-width:132px;"><div style="font-size:11px;font-weight:700;color:oklch(72% 0.12 240)">infovis-evaluator</div><div style="font-size:10px;color:oklch(58% 0.06 260);margin-top:2px">PHASE 2: 三维评测</div></div>
+        <div style="font-size:18px;color:oklch(50% 0.04 260);padding:0 8px">→</div>
+        <div style="background:oklch(28% 0.05 55);border:1.5px solid oklch(50% 0.14 55);border-radius:8px;padding:10px 14px;min-width:110px;"><div style="font-size:11px;font-weight:700;color:oklch(72% 0.12 55)">Mutator</div><div style="font-size:10px;color:oklch(58% 0.06 260);margin-top:2px">PHASE 3: 变异</div></div>
+        <div style="font-size:18px;color:oklch(50% 0.04 260);padding:0 8px">↻</div>
+        <div style="background:oklch(28% 0.05 330);border:1.5px solid oklch(50% 0.14 330);border-radius:8px;padding:10px 14px;min-width:100px;"><div style="font-size:11px;font-weight:700;color:oklch(72% 0.12 330)">PASS ≥9.6</div><div style="font-size:10px;color:oklch(58% 0.06 260);margin-top:2px">最终产物</div></div>
+      </div>
+      <div style="margin-top:12px;font-size:11px;color:oklch(55% 0.05 260);">最大迭代轮次：5 次 &nbsp;·&nbsp; 通过阈值：9.6 分（固定）&nbsp;·&nbsp; 每轮差异：自动写入 mutation_history 驱动下一轮</div>
+    </div>
+    <div class="skill-use-cases">
+      <div class="suc-card"><div class="suc-chart-type">高质量品牌可视化</div><div class="suc-desc">品牌汇报用图，要求高管一眼读懂、认知摩擦极低，需反复迭代。</div><div class="suc-tags"><span class="suc-tag">自进化</span><span class="suc-tag">≥9.6分</span><span class="suc-tag">品牌框架图</span></div></div>
+      <div class="suc-card"><div class="suc-chart-type">批量 case 质量验证</div><div class="suc-desc">多个可视化 case 统一通过质量闸门，确保全部达标才交付。</div><div class="suc-tags"><span class="suc-tag">批量验证</span><span class="suc-tag">质量闸</span></div></div>
+      <div class="suc-card"><div class="suc-chart-type">Skill 自身优化</div><div class="suc-desc">用评测结论反哺 visual-creator 的生成指令，让 Skill 自我进化提升基线。</div><div class="suc-tags"><span class="suc-tag">Skill 进化</span><span class="suc-tag">mutation_history</span></div></div>
+      <div class="suc-card"><div class="suc-chart-type">复杂网络/层级图</div><div class="suc-desc">力导向图、桑基图等认知负担高的图型，自动迭代至认知摩擦力达标。</div><div class="suc-tags"><span class="suc-tag">认知摩擦</span><span class="suc-tag">自动迭代</span></div></div>
+    </div>
+  </div>
+
+  <!-- SK4: 上层路由 (design-evaluator) -->
+  <div class="skill-path" id="sk4">
+    <div class="skill-path-header" style="background: oklch(95% 0.04 55); border-left-color: oklch(50% 0.16 55);">
+      <div style="flex:1">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:oklch(50% 0.16 55);margin-bottom:4px">SKILL PATH 04</div>
+        <div style="font-family:'Noto Serif SC',serif;font-size:20px;font-weight:700;color:oklch(22% 0.02 260);display:flex;align-items:center;gap:10px">
+          上层路由评测
+          <span style="font-family:'Inter',sans-serif;font-size:13px;font-weight:400;color:var(--text-muted)">design-evaluator 统一入口</span>
+        </div>
+        <div style="font-size:13px;color:var(--text-secondary);margin-top:5px">图表嵌套在 PPT / 报告 / 信息图中时，由 design-evaluator 识别类型后自动派发给 infovis-evaluator 子评测</div>
+      </div>
+      <div style="background:oklch(90% 0.05 55);color:oklch(35% 0.12 55);border:1px solid oklch(78% 0.08 55);font-size:11px;padding:4px 10px;border-radius:99px;white-space:nowrap;font-weight:500;align-self:flex-start">适合：图文混排 / 整体评测</div>
+    </div>
+    <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:16px;">
+      <div style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px">design-evaluator 二层架构</div>
+      <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:start;">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px;">
+          <div style="font-size:11px;font-weight:700;color:oklch(50% 0.16 55);margin-bottom:8px">Layer 1 · 共同维度</div>
+          <div style="font-size:11px;color:var(--text-secondary);line-height:1.8">D1 可读性 &amp; 信息层级<br>D2 受众对齐<br>D3 认知负担<br>D4 视觉一致性</div>
+        </div>
+        <div style="font-size:20px;color:var(--text-muted);align-self:center">→</div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px;">
+          <div style="font-size:11px;font-weight:700;color:oklch(50% 0.16 55);margin-bottom:8px">Layer 2 · 类型路由</div>
+          <div style="font-size:11px;color:var(--text-secondary);line-height:1.8">图表 → <strong style="color:oklch(45% 0.14 240)">infovis-evaluator</strong><br>PPT → PPT rules<br>报告 → Report rules<br>信息图 → Infographic rules</div>
+        </div>
+      </div>
+    </div>
+    <div class="skill-use-cases">
+      <div class="suc-card"><div class="suc-chart-type">PPT 中的图表评测</div><div class="suc-desc">PPT 里有图表，用 design-evaluator 整体评测，自动对图表部分调用 infovis-evaluator。</div><div class="suc-tags"><span class="suc-tag">设计产物</span><span class="suc-tag">自动派发</span></div></div>
+      <div class="suc-card"><div class="suc-chart-type">品牌汇报文件</div><div class="suc-desc">含品牌屋、金字塔等框架图的品牌报告，整体评测后对每个可视化元素给出改进建议。</div><div class="suc-tags"><span class="suc-tag">品牌框架图</span><span class="suc-tag">整体评测</span></div></div>
+      <div class="suc-card"><div class="suc-chart-type">信息图质量审查</div><div class="suc-desc">多图混排的信息图，识别其中图表类型子元素并分别评测。</div><div class="suc-tags"><span class="suc-tag">Infographic</span><span class="suc-tag">子评测器</span></div></div>
+    </div>
+  </div>
+
+  <!-- SK5: 质量门控 -->
+  <div class="skill-path" id="sk5">
+    <div class="skill-path-header" style="background: oklch(95% 0.03 270); border-left-color: oklch(48% 0.16 270);">
+      <div style="flex:1">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:oklch(48% 0.16 270);margin-bottom:4px">SKILL PATH 05</div>
+        <div style="font-family:'Noto Serif SC',serif;font-size:20px;font-weight:700;color:oklch(22% 0.02 260);display:flex;align-items:center;gap:10px">
+          质量门控模式
+          <span style="font-family:'Inter',sans-serif;font-size:13px;font-weight:400;color:var(--text-muted)">infovis-evaluator 独立评审</span>
+        </div>
+        <div style="font-size:13px;color:var(--text-secondary);margin-top:5px">不生成，只评测。对已有图表（截图/代码/URL）直接运行三维评测，输出 PASS/FAIL 和变异建议</div>
+      </div>
+      <div style="background:oklch(90% 0.05 270);color:oklch(35% 0.13 270);border:1px solid oklch(78% 0.08 270);font-size:11px;padding:4px 10px;border-radius:99px;white-space:nowrap;font-weight:500;align-self:flex-start">适合：审查已有图表 / CI 集成</div>
+    </div>
+    <div class="skill-flow">
+      <div class="sf-node"><div class="sf-node-name">已有图表</div><div class="sf-node-role">截图 / 代码 / URL</div></div>
+      <div class="sf-arrow">→</div>
+      <div class="sf-node sf-highlight" style="--sf-color:oklch(42% 0.16 240);--sf-bg:oklch(93% 0.04 240)"><div class="sf-node-name">infovis-evaluator</div><div class="sf-node-role">三维矩阵评测</div></div>
+      <div class="sf-arrow">→</div>
+      <div class="sf-node"><div class="sf-node-name">PASS / FAIL</div><div class="sf-node-role">得分 + 变异建议</div></div>
+      <div class="sf-arrow">→ 若需修复 →</div>
+      <div class="sf-node sf-highlight" style="--sf-color:oklch(45% 0.14 330);--sf-bg:oklch(93% 0.04 330)"><div class="sf-node-name">infovis-autoevo</div><div class="sf-node-role">自动修复迭代</div></div>
+    </div>
+    <div class="skill-use-cases">
+      <div class="suc-card"><div class="suc-chart-type">交付前质量闸</div><div class="suc-desc">图表发布前的最终检查，PASS 才允许交付，FAIL 则自动触发 infovis-autoevo 修复。</div><div class="suc-tags"><span class="suc-tag">质量门控</span><span class="suc-tag">PASS/FAIL</span></div></div>
+      <div class="suc-card"><div class="suc-chart-type">外部图表审查</div><div class="suc-desc">对他人制作的图表截图进行快速质量诊断，找出认知摩擦点。</div><div class="suc-tags"><span class="suc-tag">独立评测</span><span class="suc-tag">VLM盲测</span></div></div>
+      <div class="suc-card"><div class="suc-chart-type">图型适配审查</div><div class="suc-desc">质疑某图型选择是否合适，输入数据意图让评测器做信息路由验证。</div><div class="suc-tags"><span class="suc-tag">信息路由</span><span class="suc-tag">图型匹配</span></div></div>
+    </div>
+  </div>
+
+  <!-- Skill 路径选择决策表 -->
+  <div style="background: oklch(18% 0.04 260); border-radius: 16px; padding: 28px 32px; margin-top: 8px;">
+    <div style="font-size: 14px; font-weight: 700; color: oklch(90% 0.04 260); margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+      <span style="font-size:20px">🎯</span> Skill 路径选择决策树
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px;">
+      <div style="background:oklch(28% 0.04 260);border-radius:8px;padding:14px;"><div style="font-size:11px;font-weight:700;color:oklch(70% 0.12 150);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">快速生成</div><div style="font-size:12px;color:oklch(70% 0.03 260);line-height:1.7">需求明确 + 无质量压力<br>→ <strong style="color:oklch(80% 0.06 260)">SK1: visual-creator</strong></div></div>
+      <div style="background:oklch(28% 0.04 260);border-radius:8px;padding:14px;"><div style="font-size:11px;font-weight:700;color:oklch(70% 0.12 240);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">生成+验收</div><div style="font-size:12px;color:oklch(70% 0.03 260);line-height:1.7">有交付质量要求<br>→ <strong style="color:oklch(80% 0.06 260)">SK2: creator→evaluator</strong></div></div>
+      <div style="background:oklch(28% 0.04 260);border-radius:8px;padding:14px;"><div style="font-size:11px;font-weight:700;color:oklch(70% 0.12 330);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">极致质量</div><div style="font-size:12px;color:oklch(70% 0.03 260);line-height:1.7">需达 9.6 分 + 可迭代<br>→ <strong style="color:oklch(80% 0.06 260)">SK3: infovis-autoevo</strong></div></div>
+      <div style="background:oklch(28% 0.04 260);border-radius:8px;padding:14px;"><div style="font-size:11px;font-weight:700;color:oklch(70% 0.12 55);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">整体文件</div><div style="font-size:12px;color:oklch(70% 0.03 260);line-height:1.7">图表在 PPT/报告中<br>→ <strong style="color:oklch(80% 0.06 260)">SK4: design-evaluator</strong></div></div>
+      <div style="background:oklch(28% 0.04 260);border-radius:8px;padding:14px;"><div style="font-size:11px;font-weight:700;color:oklch(70% 0.12 270);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">只评不改</div><div style="font-size:12px;color:oklch(70% 0.03 260);line-height:1.7">审查已有图表<br>→ <strong style="color:oklch(80% 0.06 260)">SK5: 质量门控</strong></div></div>
+    </div>
+  </div>
+
       </div>
       <!-- 质量评测维度 -->
       <div v-show="activeDimension === 'eval'" class="view-eval">
@@ -220,7 +721,75 @@
                 <div class="eval-desc">{{ chart.desc }}</div>
               </div>
             </div>
-            <div class="eval-std-note">请参阅原始评测标准文档</div>
+            <!-- 五维评测标准完整表格 -->
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;overflow-x:auto;margin-bottom:24px;">
+              <div style="display:grid;grid-template-columns:140px repeat(5,1fr);gap:0;min-width:700px;">
+                <!-- header row -->
+                <div style="padding:10px 8px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);border-bottom:2px solid var(--border);">维度</div>
+                <div style="padding:10px 8px;font-weight:700;color:oklch(52% 0.05 260);border-bottom:2px solid var(--border);font-size:12px;">L1 原始可用</div>
+                <div style="padding:10px 8px;font-weight:700;color:oklch(45% 0.12 220);border-bottom:2px solid var(--border);font-size:12px;">L2 基础规范</div>
+                <div style="padding:10px 8px;font-weight:700;color:oklch(42% 0.15 270);border-bottom:2px solid var(--border);font-size:12px;">L3 专业整洁</div>
+                <div style="padding:10px 8px;font-weight:700;color:oklch(38% 0.17 230);border-bottom:2px solid var(--border);font-size:12px;">L4 设计精良</div>
+                <div style="padding:10px 8px;font-weight:700;color:oklch(32% 0.18 255);border-bottom:2px solid var(--border);font-size:12px;">L5 顶级品质</div>
+                <!-- row 1 -->
+                <div style="padding:10px 8px;font-size:12px;font-weight:600;color:var(--text-secondary);border-bottom:1px solid var(--border);">📦 数据完整性</div>
+                <div style="padding:10px 8px;font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border);">仅有原始数据，无单位无来源</div>
+                <div style="padding:10px 8px;font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border);">有标题，数字千分位格式化</div>
+                <div style="padding:10px 8px;font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border);">关键值标注，数据源注明</div>
+                <div style="padding:10px 8px;font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border);">环比/同比变化标注，趋势说明</div>
+                <div style="padding:10px 8px;font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border);">完整数据叙事，含对比基准线</div>
+                <!-- row 2 -->
+                <div style="padding:10px 8px;font-size:12px;font-weight:600;color:var(--text-secondary);border-bottom:1px solid var(--border);">🎨 视觉规范</div>
+                <div style="padding:10px 8px;font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border);">默认色/灰色，无设计意图</div>
+                <div style="padding:10px 8px;font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border);">统一配色，有坐标轴</div>
+                <div style="padding:10px 8px;font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border);">色彩系统化，关键值高亮</div>
+                <div style="padding:10px 8px;font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border);">渐变/主题色，视觉引导清晰</div>
+                <div style="padding:10px 8px;font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border);">品牌级配色，发光/特效精准</div>
+                <!-- row 3 -->
+                <div style="padding:10px 8px;font-size:12px;font-weight:600;color:var(--text-secondary);border-bottom:1px solid var(--border);">📐 信息层级</div>
+                <div style="padding:10px 8px;font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border);">无层级，全部信息等权重</div>
+                <div style="padding:10px 8px;font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border);">有标题/轴标签，基础层级</div>
+                <div style="padding:10px 8px;font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border);">标题+数值+分类，三层清晰</div>
+                <div style="padding:10px 8px;font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border);">标题+副标题+数据，洞察前置</div>
+                <div style="padding:10px 8px;font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border);">叙事完整，一眼命中核心结论</div>
+                <!-- row 4 -->
+                <div style="padding:10px 8px;font-size:12px;font-weight:600;color:var(--text-secondary);border-bottom:1px solid var(--border);">🧠 认知摩擦</div>
+                <div style="padding:10px 8px;font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border);">极高，需逐个阅读理解</div>
+                <div style="padding:10px 8px;font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border);">中等，需思考才能得出结论</div>
+                <div style="padding:10px 8px;font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border);">低，分钟内得出结论</div>
+                <div style="padding:10px 8px;font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border);">很低，秒级理解主要信息</div>
+                <div style="padding:10px 8px;font-size:11px;color:var(--text-secondary);border-bottom:1px solid var(--border);">零摩擦，盲测可100%解码</div>
+                <!-- row 5 -->
+                <div style="padding:10px 8px;font-size:12px;font-weight:600;color:var(--text-secondary);">✨ 设计精度</div>
+                <div style="padding:10px 8px;font-size:11px;color:var(--text-secondary);">无对齐，间距随意</div>
+                <div style="padding:10px 8px;font-size:11px;color:var(--text-secondary);">基础对齐，间距统一</div>
+                <div style="padding:10px 8px;font-size:11px;color:var(--text-secondary);">像素对齐，比例精确</div>
+                <div style="padding:10px 8px;font-size:11px;color:var(--text-secondary);">圆角/阴影精细，细节考究</div>
+                <div style="padding:10px 8px;font-size:11px;color:var(--text-secondary);">品牌出版级，每个像素有意图</div>
+              </div>
+            </div>
+
+            <!-- infovis-evaluator 三维对应关系 -->
+            <div style="background:oklch(22% 0.05 260);border-radius:12px;padding:20px 24px;">
+              <div style="font-size:12px;font-weight:700;color:oklch(88% 0.06 255);margin-bottom:14px">与 infovis-evaluator 三维矩阵的对应关系</div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+                <div style="background:oklch(28% 0.06 240);border-radius:8px;padding:12px;border:1px solid oklch(42% 0.12 240);">
+                  <div style="font-size:11px;font-weight:700;color:oklch(72% 0.12 240);margin-bottom:6px">信息路由维度</div>
+                  <div style="font-size:11px;color:oklch(68% 0.04 260);line-height:1.7">图表类型是否匹配数据意图？<br>L1-L2: 类型可能误用<br>L3+: 类型与数据精准对齐<br>L5: Expected Topology 完全匹配</div>
+                </div>
+                <div style="background:oklch(28% 0.06 150);border-radius:8px;padding:12px;border:1px solid oklch(42% 0.12 150);">
+                  <div style="font-size:11px;font-weight:700;color:oklch(72% 0.12 150);margin-bottom:6px">盲测解码维度</div>
+                  <div style="font-size:11px;color:oklch(68% 0.04 260);line-height:1.7">无上下文能否提取核心洞察？<br>L1-L2: 盲测失败率 &gt;70%<br>L3: 盲测基本可解读<br>L5: 盲测 100% 解码</div>
+                </div>
+                <div style="background:oklch(28% 0.06 55);border-radius:8px;padding:12px;border:1px solid oklch(42% 0.12 55);">
+                  <div style="font-size:11px;font-weight:700;color:oklch(72% 0.12 55);margin-bottom:6px">认知摩擦力维度</div>
+                  <div style="font-size:11px;color:oklch(68% 0.04 260);line-height:1.7">视觉噪音 Friction Score<br>L1: Friction &gt; 8 (极高)<br>L3: Friction ≈ 4 (合格)<br>L5: Friction &lt; 1 (极低)</div>
+                </div>
+              </div>
+              <div style="margin-top:12px;font-size:11px;color:oklch(55% 0.06 260)">
+                infovis-autoevo 通过阈值 ≥ 9.6 分，对应本评级体系的 <strong style="color:oklch(72% 0.12 255)">L5 标准</strong>
+              </div>
+            </div>
           </template>
 
           <!-- Chart with levels -->
@@ -2048,6 +2617,41 @@ const evalCharts = [
   border-radius: 3px;
   color: oklch(50% 0.02 260);
 }
+
+/* ── Tech Path ── */
+.tech-path { margin-bottom: 56px; scroll-margin-top: 64px; }
+.tech-path-header {
+  display: flex; align-items: flex-start; gap: 16px;
+  margin-bottom: 28px; padding: 20px 24px; border-radius: 12px; border-left: 4px solid;
+}
+.tech-path-number { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+.tech-path-title { font-family: 'Noto Serif SC', serif; font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+.tech-path-title-en { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 400; color: oklch(55% 0.02 260); }
+.tech-path-desc { font-size: 13px; color: oklch(50% 0.02 260); margin-top: 5px; max-width: 560px; }
+.tech-path-count { margin-left: auto; font-size: 11px; padding: 4px 10px; border-radius: 99px; white-space: nowrap; align-self: flex-start; font-weight: 500; }
+.tech-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+.tech-card { background: var(--surface, #fff); border: 1px solid var(--border, #e5e7eb); border-radius: 12px; overflow: hidden; transition: box-shadow 0.2s, transform 0.2s; }
+.tech-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,.08); transform: translateY(-2px); }
+.tech-card-header { padding: 16px 16px 12px; border-bottom: 1px solid var(--border, #e5e7eb); background: var(--surface-2, #f9fafb); }
+.tech-card-name { font-size: 14px; font-weight: 600; color: var(--text-primary, #111); display: flex; align-items: center; gap: 8px; }
+.tech-card-name-en { font-size: 11px; color: oklch(55% 0.02 260); margin-top: 2px; }
+.tech-card-body { padding: 14px 16px; }
+.tech-card-desc { font-size: 12px; color: oklch(50% 0.02 260); line-height: 1.6; margin-bottom: 10px; }
+.tech-stack-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.ts-pill { padding: 3px 9px; border-radius: 99px; font-size: 11px; font-weight: 500; border: 1px solid; font-family: 'Inter', monospace; letter-spacing: 0.02em; }
+.tech-pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border, #e5e7eb); }
+.pros-col, .cons-col { font-size: 11px; }
+.pros-col strong { color: oklch(48% 0.15 150); font-size: 10px; display: block; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+.cons-col strong { color: oklch(50% 0.15 25); font-size: 10px; display: block; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+.pros-col li, .cons-col li { color: oklch(50% 0.02 260); list-style: none; padding-left: 0; line-height: 1.7; }
+.pros-col li::before { content: '✓ '; color: oklch(52% 0.15 150); font-weight: 600; }
+.cons-col li::before { content: '✗ '; color: oklch(52% 0.15 25); font-weight: 600; }
+.tech-chart-types { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border, #e5e7eb); }
+.tech-chart-types-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: oklch(55% 0.02 260); margin-bottom: 6px; }
+.tech-chart-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.tct { font-size: 10px; padding: 2px 7px; border-radius: 4px; background: var(--surface-2, #f9fafb); border: 1px solid var(--border, #e5e7eb); color: oklch(50% 0.02 260); }
+.complexity-dot { display: inline-flex; gap: 3px; align-items: center; margin-left: auto; }
+.cd { width: 6px; height: 6px; border-radius: 50%; }
 
 /* Skill Path */
 .skill-path {
