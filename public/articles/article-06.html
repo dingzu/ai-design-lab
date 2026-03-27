@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 时代下，设计中的情绪体验 · 设计洞察摘要</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --text-primary:   #1d1d1f;
+      --text-secondary: #6e6e73;
+      --text-tertiary:  #aeaeb2;
+      --fill-primary:   #ffffff;
+      --fill-secondary: #f5f5f7;
+      --fill-tertiary:  #e8e8ed;
+      --separator:      #d2d2d7;
+
+      /* ⚠️ 强调色跟随主题 HUE=340（玫瑰粉·情绪体验主题） */
+      --accent:         hsl(340, 50%, 32%);
+      --accent-soft:    hsl(340, 40%, 92%);
+
+      --radius-sm:  6px;
+      --radius-md:  14px;
+      --radius-lg:  20px;
+      --radius-xl:  28px;
+    }
+
+    html { -webkit-font-smoothing: antialiased; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+                   "PingFang SC", "Helvetica Neue", sans-serif;
+      background: linear-gradient(180deg, hsl(340,30%,95%) 0%, #f5f5f7 260px);
+      color: var(--text-primary);
+      line-height: 1.7;
+      padding: 0 20px 80px;
+    }
+
+    .container { max-width: 680px; margin: 0 auto; }
+
+    /* ── 头图 ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+      overflow: hidden;
+      margin-bottom: 32px;
+      background: linear-gradient(160deg,
+        hsl(340, 42%, 87%) 0%,
+        hsl(340, 28%, 91%) 50%,
+        hsl(340, 16%, 94%) 100%);
+    }
+
+    .hero-svg { display: block; width: 100%; height: 220px; }
+
+    .hero-overlay {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 32px 20px;
+      background: linear-gradient(
+        to bottom,
+        transparent                0%,
+        transparent                22%,
+        hsla(340,30%,95%,0.55)     38%,
+        hsla(340,30%,95%,0.82)     48%,
+        hsl(340,30%,95%)           58%,
+        hsl(340,30%,95%)           100%
+      );
+    }
+
+    .hero-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+
+    .meta-badge {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.05em;
+      color: hsl(340,45%,30%);
+      background: rgba(255,255,255,0.92);
+      padding: 3px 10px; border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.6);
+    }
+
+    .hero-title {
+      font-size: 26px; font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.5px; line-height: 1.3; margin-bottom: 6px;
+    }
+
+    .hero-subtitle { font-size: 13px; color: var(--text-secondary); }
+
+    /* ── 卡片 ── */
+    .card {
+      background: var(--fill-primary);
+      border-radius: var(--radius-lg);
+      padding: 30px; margin-bottom: 14px;
+      box-shadow: 0 1px 0 var(--separator), 0 2px 12px rgba(0,0,0,0.04);
+    }
+
+    .card-label {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.09em; text-transform: uppercase;
+      color: var(--text-tertiary); margin-bottom: 14px;
+    }
+
+    .card-headline {
+      font-size: 17px; font-weight: 600;
+      color: var(--text-primary); line-height: 1.65;
+    }
+
+    .card-body { font-size: 15px; color: var(--text-secondary); line-height: 1.85; }
+    .card-body p { margin-bottom: 14px; }
+    .card-body p:last-child { margin-bottom: 0; }
+
+    .card-body ul {
+      list-style: none; padding: 0;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .card-body ul li {
+      position: relative; padding-left: 18px;
+      font-size: 15px; color: var(--text-secondary); line-height: 1.75;
+    }
+    .card-body ul li::before {
+      content: "·"; position: absolute; left: 4px;
+      color: var(--text-tertiary); font-size: 18px; line-height: 1.5;
+    }
+
+    /* ── 图例容器 ── */
+    .diagram {
+      margin-top: 24px;
+      background: var(--fill-secondary);
+      border-radius: var(--radius-md);
+      padding: 22px 20px;
+    }
+
+    .section-label {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.09em; text-transform: uppercase;
+      color: var(--text-tertiary); margin-bottom: 16px;
+    }
+
+    /* ── 工作流表格（情绪策略对照） ── */
+    .workflow-table { display: flex; flex-direction: column; gap: 3px; }
+
+    .wf-row {
+      display: grid; grid-template-columns: 76px 1fr;
+      background: var(--fill-primary);
+      border-radius: 10px; overflow: hidden;
+    }
+
+    .wf-left {
+      padding: 14px 10px; background: var(--fill-secondary);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .wf-dimension {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.05em; color: var(--text-tertiary);
+      text-transform: uppercase; text-align: center;
+    }
+
+    .wf-right { padding: 13px 16px; display: flex; flex-direction: column; gap: 6px; }
+    .wf-title-text { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+
+    .wf-pills { display: flex; flex-wrap: wrap; gap: 5px; }
+    .pill {
+      font-size: 12px; font-weight: 500; padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--fill-secondary);
+      color: var(--text-secondary);
+      border: 1px solid var(--fill-tertiary);
+    }
+    .pill.accent {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-color: hsl(340, 38%, 78%);
+    }
+    .pill.strong {
+      background: var(--fill-tertiary);
+      color: var(--text-primary);
+      border-color: var(--separator);
+    }
+
+    /* ── 对比双列 ── */
+    .compare-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+    .compare-col {
+      border-radius: 10px; padding: 16px 14px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .compare-col.pos {
+      background: hsl(340,28%,96%);
+      border: 1px solid hsl(340,30%,88%);
+    }
+    .compare-col.neg {
+      background: hsl(200,18%,96%);
+      border: 1px solid hsl(200,20%,88%);
+    }
+    .compare-col-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+    }
+    .compare-col.pos .compare-col-label { color: hsl(340,45%,32%); }
+    .compare-col.neg .compare-col-label { color: hsl(200,30%,36%); }
+
+    .compare-item {
+      font-size: 12.5px; line-height: 1.65;
+      color: var(--text-secondary);
+      padding: 8px 10px; border-radius: 7px;
+    }
+    .compare-col.pos .compare-item { background: hsl(340,22%,98%); }
+    .compare-col.neg .compare-item { background: hsl(200,14%,98%); }
+
+    /* ── 层级列表（冰山模型） ── */
+    .token-ladder { display: flex; flex-direction: column; gap: 3px; }
+    .token-row {
+      display: grid; grid-template-columns: 26px 1fr auto;
+      align-items: center; gap: 14px;
+      background: var(--fill-primary);
+      border-radius: 10px; padding: 13px 16px;
+    }
+    .row-index {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--fill-tertiary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: var(--text-tertiary); flex-shrink: 0;
+    }
+    .row-info { display: flex; flex-direction: column; gap: 3px; }
+    .row-name { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+    .row-desc { font-size: 12px; color: var(--text-tertiary); line-height: 1.4; }
+    .row-chips { display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-end; }
+    .row-chip {
+      font-size: 11px; font-family: "SF Mono", "Menlo", monospace;
+      background: var(--fill-secondary); color: var(--text-secondary);
+      padding: 3px 7px; border-radius: 4px;
+      border: 1px solid var(--fill-tertiary); white-space: nowrap;
+    }
+    .token-arrow {
+      text-align: center; font-size: 11px;
+      color: var(--text-tertiary); padding: 1px 0;
+    }
+
+    /* ── Insight 引用块 ── */
+    .insight {
+      margin-top: 20px; padding: 18px 20px;
+      background: var(--fill-secondary);
+      border-radius: var(--radius-md);
+      font-size: 14px; color: var(--text-secondary); line-height: 1.8;
+      border-left: 2px solid var(--accent);
+    }
+
+    /* ── Footer ── */
+    .footer {
+      margin-top: 40px; padding-top: 20px;
+      border-top: 1px solid var(--separator);
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    }
+    .footer p { font-size: 12px; color: var(--text-tertiary); }
+    .footer p span { margin: 0 5px; }
+
+    @media (max-width: 520px) {
+      .hero-title { font-size: 22px; }
+      .card { padding: 22px 18px; }
+      .compare-grid { grid-template-columns: 1fr; }
+      .row-chips { display: none; }
+      .hero-svg { height: 180px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ══ 头图 ══ -->
+  <div class="hero">
+    <svg class="hero-svg" viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="h6bg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%"   stop-color="hsl(340,42%,87%)"/>
+          <stop offset="50%"  stop-color="hsl(340,28%,91%)"/>
+          <stop offset="100%" stop-color="hsl(340,16%,94%)"/>
+        </linearGradient>
+        <radialGradient id="h6gA" cx="50%" cy="30%" r="55%">
+          <stop offset="0%"  stop-color="hsl(340,52%,70%)" stop-opacity="0.18"/>
+          <stop offset="100%" stop-color="hsl(340,52%,70%)" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="h6fs">
+          <feDropShadow dx="0" dy="1" stdDeviation="2"
+            flood-color="hsl(340,30%,48%)" flood-opacity="0.14"/>
+        </filter>
+        <linearGradient id="h6fL" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="hsl(340,36%,89%)" stop-opacity="1"/>
+          <stop offset="100%" stop-color="hsl(340,36%,89%)" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="h6fR" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="hsl(340,30%,92%)" stop-opacity="0"/>
+          <stop offset="100%" stop-color="hsl(340,30%,92%)" stop-opacity="1"/>
+        </linearGradient>
+      </defs>
+
+      <rect width="680" height="220" fill="url(#h6bg)"/>
+      <ellipse cx="340" cy="50" rx="320" ry="130" fill="url(#h6gA)"/>
+
+      <!-- 左组：冰山情绪层级 -->
+      <g opacity="0.55">
+        <line x1="113" y1="12" x2="113" y2="90"
+          stroke="hsl(340,30%,72%)" stroke-width="0.8" stroke-dasharray="2,2.5"/>
+        <rect x="66" y="12" width="94" height="13" rx="3.5"
+          fill="hsl(340,46%,90%)" stroke="hsl(340,34%,73%)" stroke-width="0.7" filter="url(#h6fs)"/>
+        <text x="113" y="22" text-anchor="middle" font-size="6.5" font-weight="700"
+          fill="hsl(340,50%,28%)" font-family="-apple-system,PingFang SC,sans-serif">行为（怒删 APP）</text>
+        <line x1="113" y1="25" x2="113" y2="35" stroke="hsl(340,30%,72%)" stroke-width="0.8"/>
+        <rect x="66" y="35" width="94" height="13" rx="3.5"
+          fill="hsl(340,42%,82%)" stroke="hsl(340,30%,64%)" stroke-width="0.7" filter="url(#h6fs)"/>
+        <text x="113" y="45" text-anchor="middle" font-size="6.5" font-weight="700"
+          fill="hsl(340,46%,22%)" font-family="-apple-system,PingFang SC,sans-serif">情绪（愤怒 / 焦虑）</text>
+        <line x1="113" y1="48" x2="113" y2="58" stroke="hsl(340,30%,72%)" stroke-width="0.8"/>
+        <rect x="66" y="58" width="94" height="13" rx="3.5"
+          fill="hsl(340,38%,74%)" stroke="hsl(340,26%,56%)" stroke-width="0.7" filter="url(#h6fs)"/>
+        <text x="113" y="68" text-anchor="middle" font-size="6.5" font-weight="700"
+          fill="hsl(340,44%,16%)" font-family="-apple-system,PingFang SC,sans-serif">期待（应当流畅）</text>
+        <line x1="113" y1="71" x2="113" y2="81" stroke="hsl(340,30%,72%)" stroke-width="0.8"/>
+        <rect x="66" y="81" width="94" height="12" rx="3.5"
+          fill="hsl(340,34%,65%)" stroke="hsl(340,22%,48%)" stroke-width="0.7" filter="url(#h6fs)"/>
+        <text x="113" y="90.5" text-anchor="middle" font-size="6" font-weight="700"
+          fill="hsl(340,40%,10%)" font-family="-apple-system,PingFang SC,sans-serif">需求（效率 / 安全）</text>
+        <text x="113" y="104" text-anchor="middle" font-size="6"
+          fill="hsl(340,22%,60%)" font-family="-apple-system,PingFang SC,sans-serif">冰山情绪模型</text>
+      </g>
+
+      <!-- 中组：设计三切入点（主视觉焦点） -->
+      <g filter="url(#h6fs)" transform="translate(296,10)">
+        <rect width="88" height="26" rx="5" fill="#ffffff" fill-opacity="0.92"/>
+        <text x="44" y="13" text-anchor="middle" font-size="7.5" font-weight="700"
+          fill="hsl(340,42%,28%)" font-family="-apple-system,PingFang SC,sans-serif">身体感受</text>
+        <text x="44" y="24" text-anchor="middle" font-size="6.5"
+          fill="hsl(340,28%,50%)" font-family="-apple-system,PingFang SC,sans-serif">视觉氛围 · 色温 · 动效</text>
+      </g>
+      <text x="340" y="44" text-anchor="middle" font-size="9" fill="hsl(340,36%,58%)">↓</text>
+      <g filter="url(#h6fs)" transform="translate(296,48)">
+        <rect width="88" height="26" rx="5"
+          fill="hsl(340,44%,84%)" fill-opacity="0.92"/>
+        <text x="44" y="13" text-anchor="middle" font-size="7.5" font-weight="700"
+          fill="hsl(340,46%,22%)" font-family="-apple-system,PingFang SC,sans-serif">认知评估</text>
+        <text x="44" y="24" text-anchor="middle" font-size="6.5"
+          fill="hsl(340,28%,38%)" font-family="-apple-system,PingFang SC,sans-serif">信息架构 · 文案语调</text>
+      </g>
+      <text x="340" y="82" text-anchor="middle" font-size="9" fill="hsl(340,36%,58%)">↓</text>
+      <g filter="url(#h6fs)" transform="translate(296,86)">
+        <rect width="88" height="14" rx="3.5"
+          fill="hsl(340,40%,72%)" fill-opacity="0.92"/>
+        <text x="44" y="10.5" text-anchor="middle" font-size="7"
+          font-weight="700" fill="hsl(340,44%,14%)" font-family="-apple-system,PingFang SC,sans-serif">情绪出口 · 释放渠道</text>
+      </g>
+
+      <!-- 右组：五组情绪对（opacity=0.55） -->
+      <g opacity="0.55">
+        <rect x="517" y="12" width="100" height="12" rx="3.5"
+          fill="hsl(340,44%,88%)" stroke="hsl(340,30%,70%)" stroke-width="0.6"/>
+        <text x="567" y="21" text-anchor="middle" font-size="6.5" font-weight="600"
+          fill="hsl(340,44%,26%)" font-family="-apple-system,PingFang SC,sans-serif">安心 ↔ 焦虑</text>
+        <text x="567" y="31" text-anchor="middle" font-size="8" fill="hsl(340,30%,60%)">·</text>
+        <rect x="517" y="33" width="100" height="12" rx="3.5"
+          fill="hsl(340,40%,80%)" stroke="hsl(340,26%,62%)" stroke-width="0.6"/>
+        <text x="567" y="42" text-anchor="middle" font-size="6.5" font-weight="600"
+          fill="hsl(340,42%,18%)" font-family="-apple-system,PingFang SC,sans-serif">惊喜 ↔ 愤怒</text>
+        <text x="567" y="52" text-anchor="middle" font-size="8" fill="hsl(340,30%,60%)">·</text>
+        <rect x="517" y="54" width="100" height="12" rx="3.5"
+          fill="hsl(340,36%,70%)" stroke="hsl(340,22%,52%)" stroke-width="0.6"/>
+        <text x="567" y="63" text-anchor="middle" font-size="6.5" font-weight="600"
+          fill="hsl(340,42%,10%)" font-family="-apple-system,PingFang SC,sans-serif">满足 ↔ 挫败</text>
+        <text x="567" y="73" text-anchor="middle" font-size="8" fill="hsl(340,30%,60%)">·</text>
+        <rect x="517" y="75" width="100" height="12" rx="3.5"
+          fill="hsl(340,32%,60%)" stroke="hsl(340,18%,44%)" stroke-width="0.6"/>
+        <text x="567" y="84" text-anchor="middle" font-size="6.5" font-weight="600"
+          fill="hsl(340,38%,8%)" font-family="-apple-system,PingFang SC,sans-serif">愉悦 ↔ 失落</text>
+        <text x="567" y="100" text-anchor="middle" font-size="6"
+          fill="hsl(340,22%,60%)" font-family="-apple-system,PingFang SC,sans-serif">情绪对设计框架</text>
+      </g>
+
+      <!-- 边缘淡出 -->
+      <rect x="0" y="0" width="50" height="110" fill="url(#h6fL)"/>
+      <rect x="630" y="0" width="50" height="110" fill="url(#h6fR)"/>
+    </svg>
+
+    <div class="hero-overlay">
+      <div class="hero-meta">
+        <span class="meta-badge">情绪体验</span>
+        <span class="meta-badge">设计实践</span>
+      </div>
+      <h1 class="hero-title">AI 时代下，设计中的情绪体验</h1>
+      <p class="hero-subtitle">来自团队内部分享的摘要 · 信息已脱敏处理 · 原文含图示</p>
+    </div>
+  </div>
+
+  <!-- ══ 核心观点 ══ -->
+  <section class="card" style="background: hsl(340,28%,98.5%);">
+    <p class="card-label" style="display:flex;align-items:center;gap:6px;">
+      <span style="font-size:14px;line-height:1;">💡</span>核心观点
+    </p>
+    <p class="card-headline" style="color:hsl(340,42%,26%);font-size:17px;line-height:1.65;">
+      设计正从"界面美化"走向"情绪调节"。AI 时代，用户情绪需求更高、容忍度更低；设计师的真正价值在于理解人性、做出关键判断，成为连接情感与技术的问题解决者。
+    </p>
+  </section>
+
+  <!-- ══ AI 时代设计师角色转变 ══ -->
+  <section class="card">
+    <p class="card-label">AI 时代设计师的角色转变</p>
+    <div class="card-body">
+      <p>在 AI 高效生产内容与多元载体并行的时代，设计师的定位正在从"方案制作者"转向"问题解决者"——既要有对人性的洞察，也要对技术保持敏感。</p>
+      <ul>
+        <li><strong style="color:var(--text-primary)">AI 的优势</strong>：信息收集、发散创意、效率优化，可大幅提升执行速度</li>
+        <li><strong style="color:var(--text-primary)">人类不可替代之处</strong>：权衡决策、洞察深层需求、跨部门协同推动落地</li>
+        <li><strong style="color:var(--text-primary)">用户需求新特征</strong>：情绪驱动消费（为情绪价值买单，而非刚需）；耐心极度下降，追求即时刺激与确定感</li>
+      </ul>
+      <div class="insight">用户更容易被打动，也更容易失望——设计需要从「功能导向」转向「情绪导向」，这是 AI 时代对设计师最核心的要求之一。</div>
+    </div>
+  </section>
+
+  <!-- ══ 认识情绪：冰山模型 ══ -->
+  <section class="card">
+    <p class="card-label">认识情绪：冰山模型与三要素</p>
+    <div class="card-body">
+      <p>用户的每一个行为背后，几乎都藏着情绪和未被满足的需求。情绪并非凭空产生，而是来自身体感受、认知评估和需求满足程度的综合结果。</p>
+
+      <div class="diagram">
+        <p class="section-label">萨提亚冰山模型——以"怒删 APP"为例</p>
+        <div class="token-ladder">
+          <div class="token-row">
+            <div class="row-index">↑</div>
+            <div class="row-info">
+              <span class="row-name">表层行为</span>
+              <span class="row-desc">怒删 APP（可见，易被误解）</span>
+            </div>
+            <div class="row-chips"><span class="row-chip">水面以上</span></div>
+          </div>
+          <div class="token-arrow">↓</div>
+          <div class="token-row">
+            <div class="row-index">1</div>
+            <div class="row-info">
+              <span class="row-name">情绪层</span>
+              <span class="row-desc">愤怒、焦虑</span>
+            </div>
+            <div class="row-chips"><span class="row-chip">水面以下</span></div>
+          </div>
+          <div class="token-arrow">↓</div>
+          <div class="token-row">
+            <div class="row-index">2</div>
+            <div class="row-info">
+              <span class="row-name">判断层</span>
+              <span class="row-desc">"这个产品根本不行"</span>
+            </div>
+            <div class="row-chips"><span class="row-chip">认知评估</span></div>
+          </div>
+          <div class="token-arrow">↓</div>
+          <div class="token-row">
+            <div class="row-index">3</div>
+            <div class="row-info">
+              <span class="row-name">期待层</span>
+              <span class="row-desc">"使用应该是流畅的"</span>
+            </div>
+            <div class="row-chips"><span class="row-chip">隐性预期</span></div>
+          </div>
+          <div class="token-arrow">↓</div>
+          <div class="token-row">
+            <div class="row-index">4</div>
+            <div class="row-info">
+              <span class="row-name">深层需求</span>
+              <span class="row-desc">效率、安全感、自尊</span>
+            </div>
+            <div class="row-chips"><span class="row-chip">核心动机</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="diagram" style="margin-top:14px;">
+        <p class="section-label">情绪产生的三脑要素与设计对应</p>
+        <div class="workflow-table">
+          <div class="wf-row">
+            <div class="wf-left"><span class="wf-dimension">本能脑</span></div>
+            <div class="wf-right">
+              <span class="wf-title-text">直接响应五感刺激</span>
+              <div class="wf-pills">
+                <span class="pill accent">动态视觉</span>
+                <span class="pill">颜色 / 动效 / 声音</span>
+              </div>
+            </div>
+          </div>
+          <div class="wf-row">
+            <div class="wf-left"><span class="wf-dimension">情绪脑</span></div>
+            <div class="wf-right">
+              <span class="wf-title-text">关联身体反应</span>
+              <div class="wf-pills">
+                <span class="pill accent">安抚动画</span>
+                <span class="pill">心跳加速 / 肌肉紧绷</span>
+              </div>
+            </div>
+          </div>
+          <div class="wf-row">
+            <div class="wf-left"><span class="wf-dimension">理智脑</span></div>
+            <div class="wf-right">
+              <span class="wf-title-text">负责逻辑压制（反应较慢）</span>
+              <div class="wf-pills">
+                <span class="pill">简化复杂信息</span>
+                <span class="pill">降低认知焦虑</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 设计表达的三大切入点 ══ -->
+  <section class="card">
+    <p class="card-label">设计表达的三大切入点</p>
+    <div class="card-body">
+      <p>设计不只是呈现信息，而是在直接影响用户的身、心、脑。三个维度环环相扣，缺一不可。</p>
+
+      <div class="diagram">
+        <p class="section-label">切入点 · 方法 · 案例</p>
+        <div class="workflow-table">
+          <div class="wf-row">
+            <div class="wf-left"><span class="wf-dimension">身体感受</span></div>
+            <div class="wf-right">
+              <span class="wf-title-text">视觉氛围直接影响体感</span>
+              <div class="wf-pills">
+                <span class="pill accent">冷暖色调</span>
+                <span class="pill">留白节奏</span>
+                <span class="pill">动效速率</span>
+              </div>
+            </div>
+          </div>
+          <div class="wf-row">
+            <div class="wf-left"><span class="wf-dimension">认知评估</span></div>
+            <div class="wf-right">
+              <span class="wf-title-text">信息架构与文案塑造判断</span>
+              <div class="wf-pills">
+                <span class="pill accent">正向文案</span>
+                <span class="pill">"获得 90 分" vs "丢失 10 分"</span>
+              </div>
+            </div>
+          </div>
+          <div class="wf-row">
+            <div class="wf-left"><span class="wf-dimension">情绪出口</span></div>
+            <div class="wf-right">
+              <span class="wf-title-text">提供释放渠道，控制负面扩散</span>
+              <div class="wf-pills">
+                <span class="pill accent">催单功能</span>
+                <span class="pill">投诉入口</span>
+                <span class="pill">分享按钮</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 构建有意义的情绪体验 ══ -->
+  <section class="card">
+    <p class="card-label">构建有意义的情绪体验：五组情绪对</p>
+    <div class="card-body">
+      <p>真正有价值的情绪设计，不是制造情绪，而是让情绪为用户和业务产生意义。每组情绪对应不同的设计策略。</p>
+
+      <div class="diagram">
+        <p class="section-label">安心 ↔ 焦虑</p>
+        <div class="compare-grid">
+          <div class="compare-col pos">
+            <span class="compare-col-label">设计策略：安心</span>
+            <div class="compare-item">量化等待过程（找车范围动态扩大）</div>
+            <div class="compare-item">提供建设性备选方案（推荐其他车型）</div>
+            <div class="compare-item">强化信任符号（盾牌图标、蓝色氛围）</div>
+          </div>
+          <div class="compare-col neg">
+            <span class="compare-col-label">焦虑触发信号</span>
+            <div class="compare-item">长时间等待无反馈</div>
+            <div class="compare-item">空白状态 / 多选项纠结</div>
+            <div class="compare-item">不确定性引发失控感</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="diagram" style="margin-top:14px;">
+        <p class="section-label">满足 ↔ 挫败</p>
+        <div class="compare-grid">
+          <div class="compare-col pos">
+            <span class="compare-col-label">设计策略：满足感</span>
+            <div class="compare-item">即时正反馈（答题正确+花式动画）</div>
+            <div class="compare-item">成就体系（年度报告、联盟任务）</div>
+            <div class="compare-item">鼓励文案（"再战"替代"失败"）</div>
+          </div>
+          <div class="compare-col neg">
+            <span class="compare-col-label">挫败触发信号</span>
+            <div class="compare-item">错误率高 / 反复失败</div>
+            <div class="compare-item">帮助入口访问量上升</div>
+            <div class="compare-item">侮辱性反馈 / 直接标红</div>
+          </div>
+        </div>
+      </div>
+
+      <ul style="margin-top:20px;">
+        <li><strong style="color:var(--text-primary)">惊喜 ↔ 愤怒</strong>：全屏动效强化成就感；通过"拉黑+扣信誉分"让愤怒无害化宣泄，避免骂战</li>
+        <li><strong style="color:var(--text-primary)">愉悦 ↔ 失落</strong>：情感化细节（如宠物专送的黑白→彩色情绪切换）；购物车失效→推荐同类，提供替代方案</li>
+        <li><strong style="color:var(--text-primary)">好奇 ↔ 厌倦</strong>：悬念式互动（谐音谜题）；IP 人格化撒娇卖萌打破单调，注入新鲜感</li>
+      </ul>
+
+      <div class="insight">最终目标不是让用户「被情绪牵着走」，而是让他们在产品中感到被理解、有收获、能成长、有意义——好的设计，本质是在调节用户的状态。</div>
+    </div>
+  </section>
+
+  <!-- ══ Footer ══ -->
+  <footer class="footer">
+    <p>⚠ 本内容已进行信息脱敏处理，不含原始业务数据及内部链接</p>
+    <p>2025年<span>·</span>UX Article Digest</p>
+  </footer>
+
+</div>
+</body>
+</html>

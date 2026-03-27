@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI 重塑设计：设计工作的智能化演进实践</title>
+  <style>
+    :root {
+      --text-primary:   #1d1d1f;
+      --text-secondary: #3d3d3f;
+      --text-tertiary:  #6e6e73;
+      --fill-primary:   #ffffff;
+      --fill-secondary: #f5f5f7;
+      --fill-tertiary:  #ebebed;
+      --separator:      #d2d2d7;
+      --accent:         #0071e3;
+      --radius-sm:  6px;
+      --radius-md:  14px;
+      --radius-lg:  20px;
+      --radius-xl:  28px;
+    }
+
+    html { -webkit-font-smoothing: antialiased; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+                   "PingFang SC", "Helvetica Neue", sans-serif;
+      /* hue=175（青绿调）· AI 生成时写死，刷新不变 */
+      background: linear-gradient(180deg, hsl(175,30%,95%) 0%, #f5f5f7 260px);
+      color: var(--text-primary);
+      line-height: 1.7;
+      padding: 0 20px 80px;
+      margin: 0;
+    }
+
+    .container { max-width: 680px; margin: 0 auto; }
+
+    /* ── 头图 ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+      overflow: hidden;
+      margin-bottom: 32px;
+      background: linear-gradient(160deg,
+        hsl(175, 42%, 87%) 0%,
+        hsl(175, 28%, 91%) 50%,
+        hsl(175, 16%, 94%) 100%);
+    }
+
+    .hero-svg { display: block; width: 100%; height: 220px; }
+
+    .hero-overlay {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 32px 20px;
+      background: linear-gradient(
+        to bottom,
+        transparent              0%,
+        transparent              22%,
+        hsla(175,30%,95%,0.55)   38%,
+        hsla(175,30%,95%,0.82)   48%,
+        hsl(175,30%,95%)         58%,
+        hsl(175,30%,95%)         100%
+      );
+    }
+
+    .hero-meta {
+      display: flex; align-items: center; gap: 6px;
+      margin-bottom: 10px; flex-wrap: wrap;
+    }
+
+    .meta-badge {
+      font-size: 11px; font-weight: 600;
+      padding: 3px 9px; border-radius: 20px;
+      background: rgba(255,255,255,0.90);
+      color: hsl(175,45%,26%);
+    }
+
+    .hero-title {
+      font-size: 28px; font-weight: 700; line-height: 1.25;
+      color: var(--text-primary); margin: 0 0 8px; letter-spacing: -0.3px;
+    }
+
+    .hero-subtitle {
+      font-size: 13px; color: var(--text-tertiary); margin: 0; line-height: 1.5;
+    }
+
+    /* ── 卡片 ── */
+    .card {
+      background: var(--fill-primary);
+      border-radius: var(--radius-lg);
+      padding: 30px; margin-bottom: 14px;
+      box-shadow: 0 1px 0 var(--separator), 0 2px 12px rgba(0,0,0,0.04);
+    }
+
+    .card-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.09em;
+      text-transform: uppercase; color: var(--text-tertiary); margin: 0 0 14px;
+    }
+
+    .card-headline {
+      font-size: 17px; font-weight: 600; line-height: 1.55;
+      color: var(--text-primary); margin: 0;
+    }
+
+    .card-body { font-size: 15px; color: var(--text-secondary); line-height: 1.85; margin: 0; }
+
+    .card-body ul {
+      display: flex; flex-direction: column; gap: 14px;
+      padding-left: 0; list-style: none; margin: 0;
+    }
+
+    .card-body ul li { padding-left: 18px; position: relative; }
+
+    .card-body ul li::before {
+      content: "·"; position: absolute; left: 4px;
+      color: var(--text-tertiary); font-size: 18px; line-height: 1.5;
+    }
+
+    /* ── 图例容器 ── */
+    .diagram {
+      background: var(--fill-secondary);
+      border-radius: var(--radius-md);
+      padding: 22px 20px; margin-top: 22px;
+    }
+
+    .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-tertiary); margin: 0 0 16px;
+    }
+
+    /* ── 5阶段层级图 ── */
+    .stage-list { display: flex; flex-direction: column; gap: 3px; }
+
+    .stage-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 14px; border-radius: var(--radius-sm);
+      background: var(--fill-primary);
+    }
+
+    .stage-badge {
+      font-size: 11px; font-weight: 700; padding: 3px 8px;
+      border-radius: 4px; flex-shrink: 0;
+      font-family: "SF Mono", Menlo, monospace;
+    }
+
+    .stage-badge.s1 { background: hsl(175,45%,92%); color: hsl(175,50%,28%); }
+    .stage-badge.s2 { background: hsl(175,43%,86%); color: hsl(175,48%,24%); }
+    .stage-badge.s3 { background: hsl(175,41%,80%); color: hsl(175,46%,20%); }
+    .stage-badge.s4 { background: hsl(175,39%,74%); color: hsl(175,44%,16%); }
+    .stage-badge.s5 { background: hsl(175,37%,67%); color: hsl(175,42%,12%); }
+
+    .stage-info { display: flex; flex-direction: column; gap: 2px; }
+    .stage-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+    .stage-desc { font-size: 12px; color: var(--text-tertiary); line-height: 1.4; }
+
+    /* ── 工作流表格 ── */
+    .workflow-table {
+      width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px;
+    }
+
+    .workflow-table thead th {
+      background: hsl(175,32%,86%); color: hsl(175,42%,26%);
+      font-weight: 700; padding: 9px 14px; text-align: left;
+    }
+
+    .workflow-table thead th:first-child { border-radius: var(--radius-sm) 0 0 0; }
+    .workflow-table thead th:last-child  { border-radius: 0 var(--radius-sm) 0 0; }
+
+    .workflow-table tbody tr td {
+      padding: 10px 14px; border-bottom: 1px solid var(--fill-tertiary);
+      vertical-align: top; color: var(--text-secondary);
+      background: var(--fill-primary); line-height: 1.55;
+    }
+
+    .workflow-table tbody tr:last-child td { border-bottom: none; }
+
+    .workflow-table tbody tr td:first-child {
+      font-weight: 600; color: hsl(175,42%,28%); white-space: nowrap;
+    }
+
+    /* ── Agent 流程链 ── */
+    .agent-chain {
+      display: flex; flex-direction: column; gap: 0;
+    }
+
+    .agent-node {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 14px 16px; background: var(--fill-primary);
+      border-radius: 0; border-bottom: 1px solid var(--fill-tertiary);
+    }
+
+    .agent-node:first-child { border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+    .agent-node:last-child  { border-radius: 0 0 var(--radius-sm) var(--radius-sm); border-bottom: none; }
+
+    .agent-tag {
+      font-size: 10px; font-weight: 700; padding: 2px 8px;
+      border-radius: 4px; flex-shrink: 0; margin-top: 2px;
+      background: hsl(175,40%,88%); color: hsl(175,45%,26%);
+      font-family: "SF Mono", Menlo, monospace; white-space: nowrap;
+    }
+
+    .agent-content { flex: 1; }
+    .agent-name { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 3px; }
+    .agent-desc { font-size: 12px; color: var(--text-tertiary); line-height: 1.5; }
+
+    /* ── 三列 insight 块 ── */
+    .insight-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+
+    .insight-block {
+      background: var(--fill-primary); border-radius: var(--radius-sm);
+      padding: 14px 12px; display: flex; flex-direction: column; gap: 5px;
+    }
+
+    .insight-icon { font-size: 18px; line-height: 1; }
+    .insight-title { font-size: 12px; font-weight: 700; color: var(--text-primary); }
+    .insight-desc  { font-size: 11px; color: var(--text-tertiary); line-height: 1.5; }
+
+    /* ── 引用块 ── */
+    .insight-quote {
+      border-left: 3px solid hsl(175,42%,58%);
+      padding: 14px 18px;
+      background: hsl(175,32%,95%);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin-top: 20px;
+    }
+
+    .insight-quote p {
+      font-size: 14px; font-weight: 600; color: var(--text-primary);
+      line-height: 1.65; margin: 0;
+    }
+
+    /* ── footer ── */
+    .footer {
+      margin-top: 40px; padding-top: 20px;
+      border-top: 1px solid var(--separator);
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    }
+
+    .footer p { font-size: 12px; color: var(--text-tertiary); margin: 0; }
+
+    @media (max-width: 520px) {
+      .hero-title { font-size: 22px; }
+      .card { padding: 22px 18px; }
+      .insight-grid { grid-template-columns: 1fr 1fr; }
+      .hero-svg { height: 180px; }
+      .workflow-table { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ══ 头图 ══ -->
+  <div class="hero">
+    <svg class="hero-svg" viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="heroBg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%"   stop-color="hsl(175,42%,87%)"/>
+          <stop offset="50%"  stop-color="hsl(175,28%,91%)"/>
+          <stop offset="100%" stop-color="hsl(175,16%,94%)"/>
+        </linearGradient>
+        <!-- ✅ 定稿：光晕居中，低 opacity -->
+        <radialGradient id="gA" cx="50%" cy="30%" r="55%">
+          <stop offset="0%"   stop-color="hsl(175,52%,70%)" stop-opacity="0.18"/>
+          <stop offset="100%" stop-color="hsl(175,52%,70%)" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="fs">
+          <feDropShadow dx="0" dy="1" stdDeviation="2"
+            flood-color="hsl(175,30%,48%)" flood-opacity="0.14"/>
+        </filter>
+        <!-- ✅ 定稿：左右边缘淡出遮罩 -->
+        <linearGradient id="fadeL" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="hsl(175,36%,89%)" stop-opacity="1"/>
+          <stop offset="100%" stop-color="hsl(175,36%,89%)" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="fadeR" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="hsl(175,30%,92%)" stop-opacity="0"/>
+          <stop offset="100%" stop-color="hsl(175,30%,92%)" stop-opacity="1"/>
+        </linearGradient>
+      </defs>
+
+      <rect width="680" height="220" fill="url(#heroBg)"/>
+      <ellipse cx="340" cy="50" rx="320" ry="130" fill="url(#gA)"/>
+
+      <!-- 布局：3组均分居中，中心 x=113 / x=340 / x=567，y ≤ 100 -->
+
+      <!-- ── 组1：智能化升级阶梯 S1/S3/S5（左侧，opacity=0.55，中心 x=113） ── -->
+      <g opacity="0.55">
+        <line x1="113" y1="14" x2="113" y2="76"
+          stroke="hsl(175,30%,74%)" stroke-width="0.8" stroke-dasharray="2,2.5"/>
+
+        <rect x="69" y="14" width="88" height="13" rx="3.5"
+          fill="hsl(175,46%,91%)" stroke="hsl(175,34%,73%)" stroke-width="0.7" filter="url(#fs)"/>
+        <text x="113" y="24" text-anchor="middle" font-size="6.5" font-weight="700"
+          fill="hsl(175,50%,28%)" font-family="-apple-system,PingFang SC,sans-serif">S1 在线办公</text>
+
+        <line x1="113" y1="27" x2="113" y2="37" stroke="hsl(175,30%,74%)" stroke-width="0.8"/>
+
+        <rect x="69" y="37" width="88" height="13" rx="3.5"
+          fill="hsl(175,42%,80%)" stroke="hsl(175,30%,62%)" stroke-width="0.7" filter="url(#fs)"/>
+        <text x="113" y="47" text-anchor="middle" font-size="6.5" font-weight="700"
+          fill="hsl(175,46%,20%)" font-family="-apple-system,PingFang SC,sans-serif">S3 辅助决策</text>
+
+        <line x1="113" y1="50" x2="113" y2="60" stroke="hsl(175,30%,74%)" stroke-width="0.8"/>
+
+        <rect x="69" y="60" width="88" height="13" rx="3.5"
+          fill="hsl(175,38%,68%)" stroke="hsl(175,26%,50%)" stroke-width="0.7" filter="url(#fs)"/>
+        <text x="113" y="70" text-anchor="middle" font-size="6.5" font-weight="700"
+          fill="hsl(175,42%,12%)" font-family="-apple-system,PingFang SC,sans-serif">S5 全自动化</text>
+
+        <text x="113" y="86" text-anchor="middle" font-size="6.5"
+          fill="hsl(175,22%,60%)" font-family="-apple-system,PingFang SC,sans-serif">智能化升级阶梯</text>
+      </g>
+
+      <!-- ── 组2：四步咨询流程（中间，全不透明，中心 x=340） ── -->
+      <g filter="url(#fs)" transform="translate(299, 14)">
+        <rect width="82" height="16" rx="4" fill="#ffffff" fill-opacity="0.90"/>
+        <text x="41" y="11" text-anchor="middle" font-size="7.5" font-weight="700"
+          fill="hsl(175,42%,26%)" font-family="-apple-system,PingFang SC,sans-serif">① 场景调研</text>
+      </g>
+      <text x="340" y="37" text-anchor="middle" font-size="9" fill="hsl(175,30%,58%)">↓</text>
+      <g filter="url(#fs)" transform="translate(299, 40)">
+        <rect width="82" height="16" rx="4" fill="#ffffff" fill-opacity="0.90"/>
+        <text x="41" y="11" text-anchor="middle" font-size="7.5" font-weight="700"
+          fill="hsl(175,42%,26%)" font-family="-apple-system,PingFang SC,sans-serif">② 场景评估</text>
+      </g>
+      <text x="340" y="63" text-anchor="middle" font-size="9" fill="hsl(175,30%,58%)">↓</text>
+      <g filter="url(#fs)" transform="translate(299, 66)">
+        <rect width="82" height="16" rx="4" fill="hsl(175,44%,84%)" fill-opacity="0.92"/>
+        <text x="41" y="11" text-anchor="middle" font-size="7.5" font-weight="700"
+          fill="hsl(175,46%,22%)" font-family="-apple-system,PingFang SC,sans-serif">③ 场景构建</text>
+      </g>
+      <text x="340" y="89" text-anchor="middle" font-size="9" fill="hsl(175,30%,58%)">↓</text>
+      <g filter="url(#fs)" transform="translate(299, 91)">
+        <rect width="82" height="9" rx="4" fill="hsl(175,40%,72%)" fill-opacity="0.92"/>
+        <text x="41" y="7.5" text-anchor="middle" font-size="7" font-weight="700"
+          fill="hsl(175,44%,16%)" font-family="-apple-system,PingFang SC,sans-serif">④ 设计演示</text>
+      </g>
+
+      <text x="340" y="112" text-anchor="middle" font-size="6.5"
+        fill="hsl(175,22%,58%)" font-family="-apple-system,PingFang SC,sans-serif">智能化咨询四步流程</text>
+
+      <!-- ── 组3：Agent 协同链（右侧，opacity=0.55，中心 x=567） ── -->
+      <g opacity="0.55">
+        <rect x="517" y="14" width="100" height="12" rx="3.5"
+          fill="hsl(175,45%,90%)" stroke="hsl(175,32%,72%)" stroke-width="0.6"/>
+        <text x="567" y="23" text-anchor="middle" font-size="6.5" font-weight="600"
+          fill="hsl(175,42%,26%)" font-family="-apple-system,PingFang SC,sans-serif">业务梳理 Agent</text>
+
+        <text x="567" y="33" text-anchor="middle" font-size="8" fill="hsl(175,30%,58%)">↓</text>
+
+        <rect x="517" y="36" width="100" height="12" rx="3.5"
+          fill="hsl(175,41%,80%)" stroke="hsl(175,28%,62%)" stroke-width="0.6"/>
+        <text x="567" y="45" text-anchor="middle" font-size="6.5" font-weight="600"
+          fill="hsl(175,42%,18%)" font-family="-apple-system,PingFang SC,sans-serif">技术方案 Agent</text>
+
+        <text x="567" y="55" text-anchor="middle" font-size="8" fill="hsl(175,30%,58%)">↓</text>
+
+        <rect x="517" y="58" width="100" height="12" rx="3.5"
+          fill="hsl(175,37%,68%)" stroke="hsl(175,24%,50%)" stroke-width="0.6"/>
+        <text x="567" y="67" text-anchor="middle" font-size="6.5" font-weight="600"
+          fill="hsl(175,42%,10%)" font-family="-apple-system,PingFang SC,sans-serif">脚本生成 Agent</text>
+
+        <text x="567" y="82" text-anchor="middle" font-size="6.5"
+          fill="hsl(175,22%,58%)" font-family="-apple-system,PingFang SC,sans-serif">Agent 协同链</text>
+      </g>
+
+      <!-- 左右边缘淡出遮罩 -->
+      <rect x="0"   y="0" width="50"  height="110" fill="url(#fadeL)"/>
+      <rect x="630" y="0" width="50"  height="110" fill="url(#fadeR)"/>
+    </svg>
+
+    <div class="hero-overlay">
+      <div class="hero-meta">
+        <span class="meta-badge">设计实践</span>
+        <span class="meta-badge">AI 方法论</span>
+      </div>
+      <h1 class="hero-title">AI 重塑设计：设计工作的智能化演进实践</h1>
+      <p class="hero-subtitle">来自阿里云政企智算域设计团队的内部分享摘要 · 人名已脱敏处理 · 原文含图示与演示视频</p>
+    </div>
+  </div>
+
+  <!-- ══ 核心观点 ══ -->
+  <section class="card" style="background: hsl(175,28%,98.5%);">
+    <p class="card-label" style="display:flex; align-items:center; gap:6px;">
+      <span style="font-size:14px; line-height:1;">💡</span>核心观点
+    </p>
+    <p class="card-headline" style="color: hsl(175,42%,28%); font-size:17px; line-height:1.65;">设计师不会被 AI 取代，而是能借助 AI 焕发新活力——核心在于既深度洞察客户与用户诉求，又熟悉新技术迭代并善用其赋能业务场景，逐步从单一能力设计师进化为新时代的超级个体。</p>
+  </section>
+
+  <!-- ══ 智能化能力演进 ══ -->
+  <section class="card">
+    <p class="card-label">智能化能力演进历程</p>
+    <div class="card-body">
+      <ul>
+        <li>阿里云政企设计团队在过去十年中经历了从人工智能初步发展、大模型生成式多模态，到 2024 年智能体爆发与行业深度落地的完整演进，服务涵盖城市大脑、辅助医疗等前沿领域</li>
+        <li>技术端拓展出 LoRA 训练、3D 生成、Agent 智能体等能力，应用端覆盖品牌、游戏、金融、法律、企业管理等广泛产业场景，AI 技术从基础工具向产业级协同系统进阶</li>
+        <li>团队将每年涌现的新技术提炼为「智能原子能力卡」，帮助设计师与客户沟通时快速选型，并在方案中实现技术与场景的精准连接与落地</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ══ 智能化评估体系 ══ -->
+  <section class="card">
+    <p class="card-label">智能化价值评估体系</p>
+    <div class="card-body">
+      <ul>
+        <li>在传统行业生产工作流中引入「脑机比」概念，量化人工与 AI 各自的投入比重，客观评估每个环节的智能化改造收益，避免盲目追求智能化</li>
+        <li>建立智能化价值评估象限：横轴为技术实现复杂度，纵轴为场景价值（影响力大小），将阿里云设计工作的所有场景（用研、项目咨询、客户交付、产品设计、展会、品牌等）纳入四象限，优先聚焦高价值场景</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ══ 三大落地案例 ══ -->
+  <section class="card">
+    <p class="card-label">典型落地案例</p>
+    <div class="card-body">
+      <ul>
+        <li>
+          <strong>营销长图智能化（钉钉卡片方案）</strong>：针对运营长图修改频次高、沟通成本大的痛点，利用钉钉卡片的 JSON 代码本质，构建代码转换 Agent，将设计内容自动转化为可点击的钉钉运营卡片。方案轻量、复用性强，且投放后所有点击数据均可追踪回溯，解决了运营内容价值难以量化的问题
+        </li>
+        <li>
+          <strong>产销培训视频生成（数字人方案）</strong>：针对产品出海宣贯、多语言培训内容制作需求，调研市面上多款 MCP 能力后，将性价比最优方案封装至自研 Agent，实现声纹 + 形象采集后自动生成数字人视频。引入并行渲染逻辑后，生成时间从 3 小时缩短至 30 分钟
+        </li>
+        <li>
+          <strong>鞋履设计全流程智能化（闭源大模型方案）</strong>：服务某运动领域品牌客户，梳理其企划需求→鞋型发散→配色→定版全流程，基于客户沉淀的十余万张高质量鞋履设计图片，构建行业专属闭源大模型，实现 AI 辅助覆盖鞋履生产全链路
+        </li>
+      </ul>
+    </div>
+
+    <div class="insight-quote">
+      <p>今年云栖大会上发布的 ArtWeaver 平台，已服务阿里云 50 余个业务线及海量外部客户，包含大量 AIGC 类内容，可大幅提升日常设计工作效率，并为客户沟通展示提供丰富素材支持。</p>
+    </div>
+  </section>
+
+  <!-- ══ 智能化咨询4步流程 ══ -->
+  <section class="card">
+    <p class="card-label">智能化设计咨询方法论</p>
+    <div class="card-body">
+      <ul>
+        <li>阿里云设计团队提炼出一套完整的智能化设计咨询流程，帮助客户完成从业务现状梳理到 AI 转型蓝图的全链路交付，可推广、可复用</li>
+      </ul>
+    </div>
+
+    <div class="diagram">
+      <p class="section-label">四步咨询流程</p>
+      <table class="workflow-table">
+        <thead>
+          <tr>
+            <th>步骤</th>
+            <th>核心方法</th>
+            <th>产出物</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>① 场景调研</td>
+            <td>三维要素调研法：角色 · 流程 · 触点，深度洞察业务现状与客户核心痛点</td>
+            <td>业务现状流程图</td>
+          </tr>
+          <tr>
+            <td>② 场景评估</td>
+            <td>五维评估法：需求强度 / 大模型匹配度 / 技术可实现度 / 盈利潜力 / 场景孵化潜力</td>
+            <td>优质场景清单（含五维度打分）</td>
+          </tr>
+          <tr>
+            <td>③ 场景构建</td>
+            <td>基于 5 阶段智能化模型（S1→S5），将大模型能力与现有业务深度融合，绘制未来业务流程图并标注 AI 介入点</td>
+            <td>AI 赋能后的未来业务流程图</td>
+          </tr>
+          <tr>
+            <td>④ 设计演示</td>
+            <td>三种交互模式（对话式 · 辅助式 · 嵌入式）搭配横纵坐标评估体系，用 UI 界面 + 演示视频呈现未来业务形态</td>
+            <td>可视化原型 + 场景化脚本</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══ 场景调研三维要素 ══ -->
+  <section class="card">
+    <p class="card-label">场景调研：三维要素法</p>
+    <div class="card-body">
+      <ul>
+        <li>调研是一切的根基。设计师来自设计背景而非业务背景，必须在帮助业务进行大模型转型之前，深入了解业务现状，洞察客户真实痛点</li>
+      </ul>
+    </div>
+
+    <div class="diagram">
+      <p class="section-label">三维调研要素</p>
+      <div class="insight-grid">
+        <div class="insight-block">
+          <span class="insight-icon">◉</span>
+          <span class="insight-title">角色维度</span>
+          <span class="insight-desc">识别场景中存在的关键业务人员类型及其核心职责</span>
+        </div>
+        <div class="insight-block">
+          <span class="insight-icon">⇢</span>
+          <span class="insight-title">流程维度</span>
+          <span class="insight-desc">还原不同业务人员在实际工作中的配合关系与全流程节点</span>
+        </div>
+        <div class="insight-block">
+          <span class="insight-icon">⬡</span>
+          <span class="insight-title">触点维度</span>
+          <span class="insight-desc">梳理业务系统、线上沟通等各类交互触点，判断 AI 切入可行性</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 5阶段智能化路径 ══ -->
+  <section class="card">
+    <p class="card-label">场景构建：5 阶段智能化升级路径</p>
+    <div class="card-body">
+      <ul>
+        <li>基于人与 AI 的占比关系，将业务场景智能化程度划分为 5 个阶段，AI 占比逐级提升、人工参与逐级降低。目前大多数项目处于 S3–S4 阶段，S5 为未来目标形态</li>
+      </ul>
+    </div>
+
+    <div class="diagram">
+      <p class="section-label">场景智能化阶梯</p>
+      <div class="stage-list">
+        <div class="stage-item">
+          <span class="stage-badge s1">S1</span>
+          <div class="stage-info">
+            <span class="stage-name">在线办公</span>
+            <span class="stage-desc">业务全面数字化，信息可在线流转，具备智能化升级基础</span>
+          </div>
+        </div>
+        <div class="stage-item">
+          <span class="stage-badge s2">S2</span>
+          <div class="stage-info">
+            <span class="stage-name">信息咨询</span>
+            <span class="stage-desc">AI 回答知识性问题，人向 AI 提问、AI 给出答案</span>
+          </div>
+        </div>
+        <div class="stage-item">
+          <span class="stage-badge s3">S3</span>
+          <div class="stage-info">
+            <span class="stage-name">辅助决策</span>
+            <span class="stage-desc">AI 提供数据分析与方案建议，人工负责最终决策判断</span>
+          </div>
+        </div>
+        <div class="stage-item">
+          <span class="stage-badge s4">S4</span>
+          <div class="stage-info">
+            <span class="stage-name">自主执行</span>
+            <span class="stage-desc">Agent 自主完成特定繁琐事务，人工专注监督与确认</span>
+          </div>
+        </div>
+        <div class="stage-item">
+          <span class="stage-badge s5">S5</span>
+          <div class="stage-info">
+            <span class="stage-name">全自动化</span>
+            <span class="stage-desc">端到端无人工干预，AI 全流程闭环运转，为未来目标形态</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 数字员工 Agent 体系 ══ -->
+  <section class="card">
+    <p class="card-label">数字员工 Agent 协同体系</p>
+    <div class="card-body">
+      <ul>
+        <li>以智能体为核心，构建由 5 个专项 Agent 组成的全流程协同方案：输入客户访谈资料后，几分钟内可自动生成结构清晰、逻辑完整的行业智能化转型报告</li>
+      </ul>
+    </div>
+
+    <div class="diagram">
+      <p class="section-label">5 Agent 协同链路</p>
+      <div class="agent-chain">
+        <div class="agent-node">
+          <span class="agent-tag">Agent 1</span>
+          <div class="agent-content">
+            <div class="agent-name">业务梳理 Agent</div>
+            <div class="agent-desc">解析客户访谈资料，基于预制业务流程图映射机制，生成完整的业务现状流程图，将抽象文档转化为直观可视化呈现</div>
+          </div>
+        </div>
+        <div class="agent-node">
+          <span class="agent-tag">Agent 2</span>
+          <div class="agent-content">
+            <div class="agent-name">场景筛选 Agent</div>
+            <div class="agent-desc">对业务流程图进行交叉验证，依托大模型五维评估法（需求强度 / 匹配度 / 可实现性 / 盈利潜力 / 孵化潜力）综合打分，输出含分级的优质场景清单</div>
+          </div>
+        </div>
+        <div class="agent-node">
+          <span class="agent-tag">Agent 3</span>
+          <div class="agent-content">
+            <div class="agent-name">技术方案 Agent</div>
+            <div class="agent-desc">基于接入的阿里云产品能力库，为优质场景匹配技术路径，分析实现方式，输出含优势与实施难度的推荐技术方案，助力交付团队判断可行性</div>
+          </div>
+        </div>
+        <div class="agent-node">
+          <span class="agent-tag">Agent 4</span>
+          <div class="agent-content">
+            <div class="agent-name">流程重构 Agent</div>
+            <div class="agent-desc">基于大模型场景构建评估方法，绘制未来版业务流程图，清晰标注 AI 介入点与人机协同模式，输出传统流程 AI 赋能的完整升级路径</div>
+          </div>
+        </div>
+        <div class="agent-node">
+          <span class="agent-tag">Agent 5</span>
+          <div class="agent-content">
+            <div class="agent-name">脚本生成 Agent</div>
+            <div class="agent-desc">基于优化后的业务流程与 AI 嵌入等级，生成含场景背景、角色设定、人机对话及页面表现的场景化脚本，助力客户直观感知 AI 赋能后的业务未来样态</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight-quote">
+      <p>最终整合输出的完整报告涵盖：业务现状流程图 · 优质场景清单 · 技术落地方案 · 未来业务流程图 · 场景化脚本文案，形成可推广、可复用、可迭代的 AI 落地新模式。</p>
+    </div>
+  </section>
+
+  <!-- ══ 对设计师的启示 ══ -->
+  <section class="card">
+    <p class="card-label">对设计师的启示</p>
+    <div class="card-body">
+      <ul>
+        <li><strong>定义问题的能力</strong>：在 AI 可以执行大量生产任务的时代，设计师的核心价值在于识别和定义正确的问题，而非仅仅交付解决方案</li>
+        <li><strong>人机协作的领导力</strong>：理解 AI 的能力边界，知道何时信任、何时干预，能够指挥 Agent 完成复杂任务，成为人机协作的组织者</li>
+        <li><strong>系统性商业思维</strong>：从单一视觉执行者转变为能够理解业务价值链、推动 AI 落地产生商业价值的设计决策者</li>
+      </ul>
+    </div>
+
+    <div class="insight-quote">
+      <p>未来的设计师，是一个懂人性的逻辑学家，也是一个懂技术的艺术家。你的价值不在于 Figma 图层整理得有多干净，而在于如何驾驭 AI 这个强大的工具，去创造真正解决人类问题、且具有商业价值的产品。</p>
+    </div>
+  </section>
+
+  <!-- ══ footer ══ -->
+  <footer class="footer">
+    <p>来自阿里云政企智算域设计团队 · 云栖大会内部分享</p>
+    <p>2024年 <span>·</span> 摘要由 AI 生成 <span>·</span> 人名已脱敏</p>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 时代的产品与组织 · 设计洞察摘要</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --text-primary:   #1d1d1f;
+      --text-secondary: #6e6e73;
+      --text-tertiary:  #aeaeb2;
+      --fill-primary:   #ffffff;
+      --fill-secondary: #f5f5f7;
+      --fill-tertiary:  #e8e8ed;
+      --separator:      #d2d2d7;
+      --accent:         #0071e3;
+      --accent-soft:    #eef5fd;
+      --radius-sm:  6px;
+      --radius-md:  14px;
+      --radius-lg:  20px;
+      --radius-xl:  28px;
+    }
+
+    html { -webkit-font-smoothing: antialiased; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+                   "PingFang SC", "Helvetica Neue", sans-serif;
+      background: linear-gradient(180deg, hsl(28,30%,95%) 0%, #f5f5f7 260px);
+      color: var(--text-primary);
+      line-height: 1.7;
+      padding: 0 20px 80px;
+    }
+
+    .container { max-width: 680px; margin: 0 auto; }
+
+    /* ── 头图 ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+      overflow: hidden;
+      margin-bottom: 32px;
+      /* hue=28（暖橙调）· AI 生成时写死，刷新不变 */
+      background: linear-gradient(160deg,
+        hsl(28, 42%, 87%) 0%,
+        hsl(28, 28%, 91%) 50%,
+        hsl(28, 16%, 94%) 100%);
+    }
+
+    .hero-svg { display: block; width: 100%; height: 220px; }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        transparent              0%,
+        transparent              22%,
+        hsla(28,30%,95%,0.55)    38%,
+        hsla(28,30%,95%,0.82)    48%,
+        hsl(28,30%,95%)          58%,
+        hsl(28,30%,95%)          100%
+      );
+      /* ⚠️ 遮罩终止色与 body 背景起始色一致，确保平滑衔接 */
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 32px 20px;
+    }
+
+    .hero-meta {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+    }
+
+    .meta-badge {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.05em;
+      color: hsl(28,45%,28%);
+      background: rgba(255,255,255,0.92);
+      padding: 3px 10px; border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.6);
+    }
+
+    .hero-title {
+      font-size: 26px; font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.5px; line-height: 1.3; margin-bottom: 6px;
+    }
+
+    .hero-subtitle { font-size: 13px; color: var(--text-secondary); }
+
+    /* ── 卡片 ── */
+    .card {
+      background: var(--fill-primary);
+      border-radius: var(--radius-lg);
+      padding: 30px; margin-bottom: 14px;
+      box-shadow: 0 1px 0 var(--separator), 0 2px 12px rgba(0,0,0,0.04);
+    }
+
+    .card-label {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.09em; text-transform: uppercase;
+      color: var(--text-tertiary); margin-bottom: 14px;
+    }
+
+    .card-headline {
+      font-size: 17px; font-weight: 600;
+      color: var(--text-primary); line-height: 1.6;
+    }
+
+    /* ── 正文 ── */
+    .card-body {
+      font-size: 15px; color: var(--text-secondary); line-height: 1.85;
+    }
+
+    .card-body p { margin-bottom: 14px; }
+    .card-body p:last-child { margin-bottom: 0; }
+
+    .card-body ul {
+      list-style: none; padding: 0;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+
+    .card-body ul li {
+      position: relative; padding-left: 18px;
+      font-size: 15px; color: var(--text-secondary); line-height: 1.75;
+    }
+
+    .card-body ul li::before {
+      content: "·"; position: absolute; left: 4px;
+      color: var(--text-tertiary); font-size: 18px; line-height: 1.5;
+    }
+
+    code {
+      font-family: "SF Mono", "Menlo", "Consolas", monospace;
+      font-size: 12.5px;
+      background: var(--fill-secondary);
+      color: var(--text-primary);
+      padding: 2px 6px; border-radius: 4px;
+      border: 1px solid var(--fill-tertiary);
+    }
+
+    /* ── 图例容器 ── */
+    .diagram {
+      margin-top: 24px;
+      background: var(--fill-secondary);
+      border-radius: var(--radius-md);
+      padding: 22px 20px;
+    }
+
+    .section-label {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.09em; text-transform: uppercase;
+      color: var(--text-tertiary); margin-bottom: 16px;
+    }
+
+    /* ── 对比图 ── */
+    .compare-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+
+    .compare-col {
+      display: flex; flex-direction: column;
+      border-radius: 10px; overflow: hidden;
+    }
+
+    .compare-col-header {
+      font-size: 12px; font-weight: 600;
+      padding: 10px 14px 9px;
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    .compare-col.old .compare-col-header {
+      background: #fdf4f4; color: #8c3c3c;
+      border-bottom: 1px solid #f5e2e2;
+    }
+
+    .compare-col.new .compare-col-header {
+      background: #f2faf5; color: #2d6b46;
+      border-bottom: 1px solid #e0f0e8;
+    }
+
+    .compare-item-old {
+      background: #fef8f8;
+      padding: 9px 14px;
+      font-size: 13px; color: #b05555;
+      border-bottom: 1px solid #f5eded;
+      line-height: 1.5;
+    }
+    .compare-item-old:last-child { border-bottom: none; }
+
+    .compare-item-new {
+      background: #f8fcf9;
+      padding: 9px 14px;
+      font-size: 13px; color: #2a5c40;
+      border-bottom: 1px solid #edf5f0;
+      line-height: 1.5; font-weight: 500;
+    }
+    .compare-item-new:last-child { border-bottom: none; }
+
+    /* ── 流程阶梯图 ── */
+    .level-list { display: flex; flex-direction: column; gap: 3px; }
+
+    .level-row {
+      display: grid; grid-template-columns: 36px 1fr;
+      align-items: center; gap: 14px;
+      background: var(--fill-primary);
+      border-radius: 10px; padding: 13px 16px;
+    }
+
+    .level-badge {
+      width: 28px; height: 28px; border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .level-badge.l1 { background: hsl(28,45%,92%); color: hsl(28,45%,40%); }
+    .level-badge.l2 { background: hsl(28,42%,88%); color: hsl(28,45%,35%); }
+    .level-badge.l3 { background: hsl(28,40%,84%); color: hsl(28,45%,30%); }
+    .level-badge.l4 { background: hsl(28,38%,80%); color: hsl(28,45%,25%); }
+    .level-badge.l5 { background: hsl(28,36%,76%); color: hsl(28,45%,20%); }
+
+    .level-info { display: flex; flex-direction: column; gap: 2px; }
+    .level-name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+    .level-desc { font-size: 12px; color: var(--text-tertiary); line-height: 1.4; }
+
+    /* ── 三列洞察卡 ── */
+    .insight-grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;
+    }
+
+    .insight-cell {
+      background: var(--fill-primary);
+      border-radius: 10px; padding: 14px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+
+    .insight-cell-label {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      color: var(--text-tertiary);
+    }
+
+    .insight-cell-title {
+      font-size: 13px; font-weight: 600; color: var(--text-primary);
+    }
+
+    .insight-cell-items {
+      display: flex; flex-direction: column; gap: 5px; margin-top: 2px;
+    }
+
+    .insight-cell-item {
+      font-size: 12px; color: var(--text-secondary);
+      padding-left: 12px; position: relative; line-height: 1.5;
+    }
+    .insight-cell-item::before {
+      content: ""; position: absolute;
+      left: 0; top: 7px;
+      width: 4px; height: 4px;
+      border-radius: 50%; background: var(--fill-tertiary);
+    }
+
+    /* ── Insight 引用块 ── */
+    .insight {
+      margin-top: 20px; padding: 18px 20px;
+      background: var(--fill-secondary);
+      border-radius: var(--radius-md);
+      font-size: 14px; color: var(--text-secondary); line-height: 1.8;
+      border-left: 2px solid var(--accent);
+    }
+
+    /* ── 法则列表 ── */
+    .rule-list { display: flex; flex-direction: column; gap: 3px; }
+
+    .rule-row {
+      background: var(--fill-primary);
+      border-radius: 10px; padding: 14px 18px;
+      display: flex; align-items: flex-start; gap: 12px;
+    }
+
+    .rule-num {
+      font-size: 11px; font-weight: 700; color: var(--accent);
+      background: var(--accent-soft); padding: 3px 8px;
+      border-radius: 5px; flex-shrink: 0; margin-top: 1px;
+    }
+
+    .rule-content { display: flex; flex-direction: column; gap: 3px; }
+    .rule-title { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+    .rule-desc { font-size: 12px; color: var(--text-tertiary); line-height: 1.5; }
+
+    /* ── Footer ── */
+    .footer {
+      margin-top: 40px; padding-top: 20px;
+      border-top: 1px solid var(--separator);
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    }
+    .footer p { font-size: 12px; color: var(--text-tertiary); }
+    .footer p span { margin: 0 5px; }
+
+    @media (max-width: 520px) {
+      .hero-title { font-size: 22px; }
+      .card { padding: 22px 18px; }
+      .compare-grid { grid-template-columns: 1fr; }
+      .insight-grid { grid-template-columns: 1fr 1fr; }
+      .hero-svg { height: 180px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ══ 头图：AI 重塑产品与组织 ══ -->
+  <div class="hero" id="heroEl">
+    <svg class="hero-svg" viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="heroBg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%"   stop-color="hsl(28,42%,87%)"/>
+          <stop offset="50%"  stop-color="hsl(28,28%,91%)"/>
+          <stop offset="100%" stop-color="hsl(28,16%,94%)"/>
+        </linearGradient>
+        <radialGradient id="gA" cx="50%" cy="30%" r="55%">
+          <stop offset="0%"   stop-color="hsl(28,52%,70%)" stop-opacity="0.18"/>
+          <stop offset="100%" stop-color="hsl(28,52%,70%)" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="fs">
+          <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="hsl(28,30%,48%)" flood-opacity="0.14"/>
+        </filter>
+        <linearGradient id="fadeL" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="hsl(28,36%,89%)" stop-opacity="1"/>
+          <stop offset="100%" stop-color="hsl(28,36%,89%)" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="fadeR" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="hsl(28,30%,92%)" stop-opacity="0"/>
+          <stop offset="100%" stop-color="hsl(28,30%,92%)" stop-opacity="1"/>
+        </linearGradient>
+      </defs>
+
+      <rect width="680" height="220" fill="url(#heroBg)"/>
+      <ellipse cx="340" cy="50" rx="320" ry="130" fill="url(#gA)"/>
+
+      <!-- 布局：3组均分居中，中心 x=113 / x=340 / x=567，y ≤ 100 -->
+
+      <!-- ── 组1：Agent 演进路径（左侧，opacity=0.55，中心 x=113） ── -->
+      <g opacity="0.55">
+        <line x1="113" y1="14" x2="113" y2="76" stroke="hsl(28,30%,74%)" stroke-width="0.8" stroke-dasharray="2,2.5"/>
+
+        <rect x="69" y="14" width="88" height="13" rx="3.5" fill="hsl(28,45%,90%)" stroke="hsl(28,36%,74%)" stroke-width="0.7" filter="url(#fs)"/>
+        <text x="113" y="24" text-anchor="middle" font-size="6.5" font-weight="700" fill="hsl(28,50%,28%)" font-family="-apple-system,PingFang SC,sans-serif">L1 单步执行</text>
+
+        <line x1="113" y1="27" x2="113" y2="37" stroke="hsl(28,30%,74%)" stroke-width="0.8"/>
+
+        <rect x="69" y="37" width="88" height="13" rx="3.5" fill="hsl(28,42%,83%)" stroke="hsl(28,34%,68%)" stroke-width="0.7" filter="url(#fs)"/>
+        <text x="113" y="47" text-anchor="middle" font-size="6.5" font-weight="700" fill="hsl(28,48%,22%)" font-family="-apple-system,PingFang SC,sans-serif">L3 工具调用</text>
+
+        <line x1="113" y1="50" x2="113" y2="60" stroke="hsl(28,30%,74%)" stroke-width="0.8"/>
+
+        <rect x="69" y="60" width="88" height="13" rx="3.5" fill="hsl(28,40%,76%)" stroke="hsl(28,32%,62%)" stroke-width="0.7" filter="url(#fs)"/>
+        <text x="113" y="70" text-anchor="middle" font-size="6.5" font-weight="700" fill="hsl(28,46%,16%)" font-family="-apple-system,PingFang SC,sans-serif">L5 自主决策</text>
+
+        <text x="113" y="86" text-anchor="middle" font-size="6.5" fill="hsl(28,22%,60%)" font-family="-apple-system,PingFang SC,sans-serif">Agent 演进路径</text>
+      </g>
+
+      <!-- ── 组2：设计师 ⇄ AI 协作层（中间，全不透明，中心 x=340） ── -->
+      <g transform="translate(265, 14)" filter="url(#fs)">
+        <rect width="74" height="38" rx="5" fill="#ffffff" fill-opacity="0.90"/>
+        <text x="37" y="13" text-anchor="middle" font-size="10" fill="hsl(28,40%,74%)">✦</text>
+        <text x="37" y="25" text-anchor="middle" font-size="8" fill="hsl(28,30%,36%)" font-family="-apple-system,PingFang SC,sans-serif" font-weight="600">设计师</text>
+        <rect x="8" y="30" width="22" height="3" rx="1.5" fill="hsl(28,40%,84%)"/>
+        <rect x="36" y="30" width="30" height="3" rx="1.5" fill="hsl(28,30%,89%)"/>
+      </g>
+
+      <text x="340" y="60" text-anchor="middle" font-size="11" fill="hsl(28,36%,62%)">⇄</text>
+
+      <rect x="303" y="52" width="74" height="14" rx="7" fill="hsl(28,48%,50%)" fill-opacity="0.10"/>
+      <text x="340" y="62" text-anchor="middle" font-size="7" fill="hsl(28,50%,34%)" font-family="-apple-system,PingFang SC,sans-serif" font-weight="700">AI 协作层</text>
+
+      <g transform="translate(341, 14)" filter="url(#fs)">
+        <rect width="74" height="38" rx="5" fill="hsl(28,20%,24%)" fill-opacity="0.88"/>
+        <text x="37" y="13" text-anchor="middle" font-size="9" fill="hsl(28,35%,72%)">⌨</text>
+        <text x="37" y="25" text-anchor="middle" font-size="8" fill="hsl(28,25%,84%)" font-family="-apple-system,PingFang SC,sans-serif" font-weight="600">工程师</text>
+        <rect x="8" y="30" width="22" height="3" rx="1.5" fill="hsl(28,28%,46%)"/>
+        <rect x="36" y="30" width="30" height="3" rx="1.5" fill="hsl(28,22%,38%)"/>
+      </g>
+
+      <text x="340" y="76" text-anchor="middle" font-size="6.5" fill="hsl(28,22%,58%)" font-family="-apple-system,PingFang SC,sans-serif">专业边界消融</text>
+
+      <!-- ── 组3：传统→AI 产品形态（右侧，opacity=0.55，中心 x=567） ── -->
+      <g opacity="0.55">
+        <rect x="517" y="14" width="100" height="30" rx="5" fill="hsl(28,20%,96%)" stroke="hsl(28,25%,82%)" stroke-width="0.7"/>
+        <text x="527" y="25" font-size="6.5" fill="hsl(28,20%,54%)" font-family="-apple-system,PingFang SC,sans-serif">传统：固定界面</text>
+        <rect x="524" y="28" width="22" height="9" rx="2" fill="hsl(28,35%,86%)" stroke="hsl(28,25%,78%)" stroke-width="0.5"/>
+        <rect x="552" y="28" width="22" height="9" rx="2" fill="hsl(28,35%,86%)" stroke="hsl(28,25%,78%)" stroke-width="0.5"/>
+        <rect x="580" y="28" width="32" height="9" rx="2" fill="hsl(28,30%,80%)" stroke="hsl(28,25%,72%)" stroke-width="0.5"/>
+
+        <text x="567" y="54" text-anchor="middle" font-size="9" fill="hsl(28,25%,65%)">↓</text>
+
+        <rect x="517" y="58" width="100" height="30" rx="5" fill="hsl(28,45%,93%)" stroke="hsl(28,35%,76%)" stroke-width="0.7"/>
+        <text x="527" y="69" font-size="6.5" fill="hsl(28,45%,36%)" font-family="-apple-system,PingFang SC,sans-serif" font-weight="600">AI：自适应容器</text>
+        <rect x="524" y="72" width="34" height="10" rx="2" fill="hsl(28,50%,88%)" stroke="hsl(28,42%,70%)" stroke-width="0.5" stroke-dasharray="2,2"/>
+        <rect x="564" y="72" width="16" height="10" rx="2" fill="hsl(28,50%,88%)" stroke="hsl(28,42%,70%)" stroke-width="0.5" stroke-dasharray="2,2"/>
+        <rect x="586" y="72" width="24" height="10" rx="2" fill="hsl(28,50%,88%)" stroke="hsl(28,42%,70%)" stroke-width="0.5" stroke-dasharray="2,2"/>
+
+        <text x="567" y="100" text-anchor="middle" font-size="6.5" fill="hsl(28,22%,60%)" font-family="-apple-system,PingFang SC,sans-serif">产品形态演进</text>
+      </g>
+
+      <!-- 左右边缘淡出遮罩 -->
+      <rect x="0" y="0" width="50" height="110" fill="url(#fadeL)"/>
+      <rect x="630" y="0" width="50" height="110" fill="url(#fadeR)"/>
+    </svg>
+
+    <div class="hero-overlay">
+      <div class="hero-meta">
+        <span class="meta-badge">行业洞察</span>
+        <span class="meta-badge">组织变革</span>
+      </div>
+      <h1 class="hero-title">AI 时代的产品与组织</h1>
+      <p class="hero-subtitle">来自 IXDC 行业分享的摘要 · 信息已脱敏处理 · 原文含图示</p>
+    </div>
+  </div>
+
+  <!-- ══ 核心观点 ══ -->
+  <section class="card" style="background: hsl(28,28%,98.5%);">
+    <p class="card-label" style="display:flex; align-items:center; gap:6px;">
+      <span style="font-size:14px; line-height:1;">💡</span>核心观点
+    </p>
+    <p class="card-headline" style="color: hsl(28,42%,28%); font-size:17px; line-height:1.65;">AI 正在全面重构产品形态、角色边界与组织方式——能否将独有知识转化为不可替代的商业价值，是企业和个人在 AI 时代的核心命题。</p>
+  </section>
+
+  <!-- ══ 行业格局洞察 ══ -->
+  <section class="card">
+    <p class="card-label">行业格局洞察</p>
+    <div class="card-body">
+      <ul>
+        <li>2023 年是第一代 AI 产品集中爆发的一年，大量团队在此时入局并快速积累经验，历史的进程往往决定了做正确事情的窗口期</li>
+        <li>部分大厂设计团队选择深入到企业 2B 合作，通过对业务细节的深度参与，完成了从"设计执行"到"业务理解"的角色转型</li>
+      </ul>
+    </div>
+
+    <!-- 美中市场对比图 -->
+    <div class="diagram">
+      <p class="section-label">美国 vs 中国 AI 市场差异</p>
+      <div class="compare-grid">
+        <div class="compare-col old">
+          <div class="compare-col-header">🇺🇸 美国市场</div>
+          <div class="compare-item-old" style="text-decoration:none;color:#7a5a3a;background:#fdf7f0;">技术驱动</div>
+          <div class="compare-item-old" style="text-decoration:none;color:#7a5a3a;background:#fdf7f0;">B2B 订阅制为主</div>
+          <div class="compare-item-old" style="text-decoration:none;color:#7a5a3a;background:#fdf7f0;">高客单价，人均 ARR 高</div>
+          <div class="compare-item-old" style="text-decoration:none;color:#7a5a3a;background:#fdf7f0;">聚焦模型研发</div>
+        </div>
+        <div class="compare-col new">
+          <div class="compare-col-header">🇨🇳 中国市场</div>
+          <div class="compare-item-new">流量驱动，广告内购制</div>
+          <div class="compare-item-new">聚焦应用开发</div>
+          <div class="compare-item-new">商业转化难，ARR 偏低</div>
+          <div class="compare-item-new">C 端产品竞争激烈</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ Agent 演进路径 ══ -->
+  <section class="card">
+    <p class="card-label">Agent 演进路径</p>
+    <div class="card-body">
+      <ul>
+        <li>当前 Agent 面临的核心瓶颈：上下文窗口限制、多步骤任务稳定性、大规模工具调用能力、以及整体任务成功率</li>
+        <li>未来趋势：通用产品作为调度器，调用各类垂直领域产品，形成协同网络；垂类产品的成功关键在于高频刚需与极致体验</li>
+      </ul>
+    </div>
+
+    <div class="diagram">
+      <p class="section-label">Agent 发展脉络（L1 → L5）</p>
+      <div class="level-list">
+        <div class="level-row">
+          <div class="level-badge l1">L1</div>
+          <div class="level-info">
+            <span class="level-name">单步执行</span>
+            <span class="level-desc">执行单一指令，无记忆与上下文</span>
+          </div>
+        </div>
+        <div class="level-row">
+          <div class="level-badge l2">L2</div>
+          <div class="level-info">
+            <span class="level-name">多步推理</span>
+            <span class="level-desc">具备短期记忆，可完成简单任务链</span>
+          </div>
+        </div>
+        <div class="level-row">
+          <div class="level-badge l3">L3</div>
+          <div class="level-info">
+            <span class="level-name">工具调用</span>
+            <span class="level-desc">调用外部 API / 工具，扩展能力边界</span>
+          </div>
+        </div>
+        <div class="level-row">
+          <div class="level-badge l4">L4</div>
+          <div class="level-info">
+            <span class="level-name">跨系统协作</span>
+            <span class="level-desc">与多个 Agent 协同，完成复杂任务分配</span>
+          </div>
+        </div>
+        <div class="level-row">
+          <div class="level-badge l5">L5</div>
+          <div class="level-info">
+            <span class="level-name">自主决策 Agent</span>
+            <span class="level-desc">具备完整自主决策能力，人类监督最小化</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 设计范式转变 ══ -->
+  <section class="card">
+    <p class="card-label">设计范式转变</p>
+    <div class="card-body">
+      <ul>
+        <li>设计师的工作层次在提升：不再是精确设计固定 UI 界面，而是设计一套可适应不同用户、不同情境的"容器系统"</li>
+        <li>Vibe Coding 的兴起正在颠倒传统学习路径——从"先学技术再做创意"变为"先有想法再按需学习"，创意成为驱动力</li>
+        <li>传统专业壁垒正在消融：AI 使设计师可写代码、工程师可做设计，过度专业化的价值正在被重新评估</li>
+      </ul>
+    </div>
+
+    <!-- 互联网产品 vs AI 产品对比 -->
+    <div class="diagram">
+      <p class="section-label">互联网产品 vs AI 产品本质差异</p>
+      <div class="insight-grid">
+        <div class="insight-cell">
+          <span class="insight-cell-label">本质</span>
+          <span class="insight-cell-title">连接 → 挖掘</span>
+          <div class="insight-cell-items">
+            <span class="insight-cell-item">互联网：连接人</span>
+            <span class="insight-cell-item">AI：挖掘潜力</span>
+          </div>
+        </div>
+        <div class="insight-cell">
+          <span class="insight-cell-label">用户需求</span>
+          <span class="insight-cell-title">明确 → 意图</span>
+          <div class="insight-cell-items">
+            <span class="insight-cell-item">互联网：明确需求</span>
+            <span class="insight-cell-item">AI：意图驱动模糊需求</span>
+          </div>
+        </div>
+        <div class="insight-cell">
+          <span class="insight-cell-label">产品形态</span>
+          <span class="insight-cell-title">GUI → LUI</span>
+          <div class="insight-cell-items">
+            <span class="insight-cell-item">互联网：边界清晰</span>
+            <span class="insight-cell-item">AI：边界模糊，对话式</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 组织层面启示 ══ -->
+  <section class="card">
+    <p class="card-label">组织层面启示</p>
+    <div class="card-body">
+      <ul>
+        <li>企业 AI 化的核心在于：是否具备将自身独有知识转化为不可替代商业价值的能力，而非仅仅"用上了 AI"</li>
+        <li>先行的组织已将 AI 能力纳入招聘硬性门槛、晋升评估标准与绩效考核，AI 理解度直接影响职业发展路径</li>
+      </ul>
+      <div class="insight">
+        AI 正在全面重塑一切传统生产力的成本与价值。能被 AI 替代的工作，其未来价值将趋近于 Token 的定价。获取最先进的生产力、大胆改变生产关系，当下就是最好的时机。
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 创新法则 ══ -->
+  <section class="card">
+    <p class="card-label">AI 时代的创新法则</p>
+    <div class="card-body">
+      <p>以下六条来自行业实践的创新原则，在 AI 加速迭代的时代尤为适用：</p>
+    </div>
+    <div class="diagram" style="margin-top:16px;">
+      <p class="section-label">六条创新原则</p>
+      <div class="rule-list">
+        <div class="rule-row">
+          <span class="rule-num">01</span>
+          <div class="rule-content">
+            <span class="rule-title">从模糊开始</span>
+            <span class="rule-desc">伟大的创意往往起源于不清晰的想法，需要时间和耐心打磨</span>
+          </div>
+        </div>
+        <div class="rule-row">
+          <span class="rule-num">02</span>
+          <div class="rule-content">
+            <span class="rule-title">集结信徒，而非官僚</span>
+            <span class="rule-desc">真正的创新团队由有热情的人组成，而非只看职位和流程的管理者</span>
+          </div>
+        </div>
+        <div class="rule-row">
+          <span class="rule-num">03</span>
+          <div class="rule-content">
+            <span class="rule-title">延迟收敛，扩大探索</span>
+            <span class="rule-desc">不要过早聚焦，广泛探索能带来更多创新可能性</span>
+          </div>
+        </div>
+        <div class="rule-row">
+          <span class="rule-num">04</span>
+          <div class="rule-content">
+            <span class="rule-title">实践优先于规划</span>
+            <span class="rule-desc">通过动手实践和不断试错，才能真正理解与完善创意</span>
+          </div>
+        </div>
+        <div class="rule-row">
+          <span class="rule-num">05</span>
+          <div class="rule-content">
+            <span class="rule-title">保护新想法，避免过早验证</span>
+            <span class="rule-desc">不要急于用数据否定新想法，给它们成长的空间</span>
+          </div>
+        </div>
+        <div class="rule-row">
+          <span class="rule-num">06</span>
+          <div class="rule-content">
+            <span class="rule-title">追求品质与敏捷的平衡</span>
+            <span class="rule-desc">卓越来自速度与深度的结合，持续迭代而非追求一次性完美</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>⚠ 本内容已进行信息脱敏处理，不含原始业务数据及内部信息</p>
+    <p>生成于 2025年3月<span>·</span>UX Article Digest</p>
+  </footer>
+
+</div>
+</body>
+</html>

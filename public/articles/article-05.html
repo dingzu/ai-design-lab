@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>阿里云 UES：AI 驱动的体验度量 · 设计洞察摘要</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --text-primary:   #1d1d1f;
+      --text-secondary: #6e6e73;
+      --text-tertiary:  #aeaeb2;
+      --fill-primary:   #ffffff;
+      --fill-secondary: #f5f5f7;
+      --fill-tertiary:  #e8e8ed;
+      --separator:      #d2d2d7;
+      --accent:         hsl(175,50%,32%);
+      --accent-soft:    hsl(175,40%,92%);
+      --radius-sm:  6px;
+      --radius-md:  14px;
+      --radius-lg:  20px;
+      --radius-xl:  28px;
+    }
+
+    html { -webkit-font-smoothing: antialiased; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+                   "PingFang SC", "Helvetica Neue", sans-serif;
+      background: linear-gradient(180deg, hsl(175,30%,95%) 0%, #f5f5f7 260px);
+      color: var(--text-primary);
+      line-height: 1.7;
+      padding: 0 20px 80px;
+    }
+
+    .container { max-width: 680px; margin: 0 auto; }
+
+    /* ── 头图 ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+      overflow: hidden;
+      margin-bottom: 32px;
+      background: linear-gradient(160deg,
+        hsl(175, 42%, 87%) 0%,
+        hsl(175, 28%, 91%) 50%,
+        hsl(175, 16%, 94%) 100%);
+    }
+
+    .hero-svg { display: block; width: 100%; height: 220px; }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 32px 20px;
+      background: linear-gradient(
+        to bottom,
+        transparent                0%,
+        transparent                22%,
+        hsla(175,30%,95%,0.55)     38%,
+        hsla(175,30%,95%,0.82)     48%,
+        hsl(175,30%,95%)           58%,
+        hsl(175,30%,95%)           100%
+      );
+    }
+
+    .hero-meta {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+    }
+
+    .meta-badge {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.05em;
+      color: hsl(175,45%,26%);
+      background: rgba(255,255,255,0.92);
+      padding: 3px 10px; border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.6);
+    }
+
+    .hero-title {
+      font-size: 26px; font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.5px; line-height: 1.3; margin-bottom: 6px;
+    }
+
+    .hero-subtitle { font-size: 13px; color: var(--text-secondary); }
+
+    /* ── 卡片 ── */
+    .card {
+      background: var(--fill-primary);
+      border-radius: var(--radius-lg);
+      padding: 30px; margin-bottom: 14px;
+      box-shadow: 0 1px 0 var(--separator), 0 2px 12px rgba(0,0,0,0.04);
+    }
+
+    .card-label {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.09em; text-transform: uppercase;
+      color: var(--text-tertiary); margin-bottom: 14px;
+    }
+
+    .card-headline {
+      font-size: 17px; font-weight: 600;
+      color: var(--text-primary); line-height: 1.6;
+    }
+
+    .card-body {
+      font-size: 15px; color: var(--text-secondary); line-height: 1.85;
+    }
+
+    .card-body p { margin-bottom: 14px; }
+    .card-body p:last-child { margin-bottom: 0; }
+
+    .card-body ul {
+      list-style: none; padding: 0;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+
+    .card-body ul li {
+      position: relative; padding-left: 18px;
+      font-size: 15px; color: var(--text-secondary); line-height: 1.75;
+    }
+
+    .card-body ul li::before {
+      content: "·"; position: absolute; left: 4px;
+      color: var(--text-tertiary); font-size: 18px; line-height: 1.5;
+    }
+
+    /* ── 图例容器 ── */
+    .diagram {
+      margin-top: 24px;
+      background: var(--fill-secondary);
+      border-radius: var(--radius-md);
+      padding: 22px 20px;
+    }
+
+    .section-label {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.09em; text-transform: uppercase;
+      color: var(--text-tertiary); margin-bottom: 16px;
+    }
+
+    /* ── 层级结构图 ── */
+    .token-ladder { display: flex; flex-direction: column; gap: 3px; }
+
+    .token-row {
+      display: grid; grid-template-columns: 26px 1fr auto;
+      align-items: center; gap: 14px;
+      background: var(--fill-primary);
+      border-radius: 10px; padding: 15px 16px;
+    }
+
+    .row-index {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--fill-tertiary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700;
+      color: var(--text-tertiary); flex-shrink: 0;
+    }
+
+    .row-info { display: flex; flex-direction: column; gap: 3px; }
+    .row-name { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+    .row-desc { font-size: 12px; color: var(--text-tertiary); line-height: 1.4; }
+
+    .row-chips { display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-end; }
+    .row-chip {
+      font-size: 11px; font-family: "SF Mono", "Menlo", monospace;
+      background: var(--fill-secondary); color: var(--text-secondary);
+      padding: 3px 7px; border-radius: 4px;
+      border: 1px solid var(--fill-tertiary); white-space: nowrap;
+    }
+
+    .token-arrow {
+      text-align: center; font-size: 11px;
+      color: var(--text-tertiary); padding: 1px 0;
+    }
+
+    /* ── 工作流分工表 ── */
+    .workflow-table { display: flex; flex-direction: column; gap: 3px; }
+
+    .wf-row {
+      display: grid; grid-template-columns: 80px 1fr;
+      background: var(--fill-primary);
+      border-radius: 10px; overflow: hidden;
+    }
+
+    .wf-left {
+      padding: 16px 12px; background: var(--fill-secondary);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .wf-dimension {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.06em; color: var(--text-tertiary);
+      text-transform: uppercase; text-align: center;
+    }
+
+    .wf-right { padding: 14px 18px; display: flex; flex-direction: column; gap: 7px; }
+    .wf-title-text { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+
+    .wf-pills { display: flex; flex-wrap: wrap; gap: 5px; }
+    .pill {
+      font-size: 12px; font-weight: 500; padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--fill-secondary);
+      color: var(--text-secondary);
+      border: 1px solid var(--fill-tertiary);
+    }
+    .pill.accent { background: var(--accent-soft); color: var(--accent); border-color: hsl(175,38%,78%); }
+    .pill.strong { background: var(--fill-tertiary); color: var(--text-primary); border-color: var(--separator); }
+
+    /* ── Insight 引用块 ── */
+    .insight {
+      margin-top: 20px; padding: 18px 20px;
+      background: var(--fill-secondary);
+      border-radius: var(--radius-md);
+      font-size: 14px; color: var(--text-secondary); line-height: 1.8;
+      border-left: 2px solid var(--accent);
+    }
+
+    /* ── 统计数据行 ── */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 10px; margin-top: 20px;
+    }
+    .stat-item {
+      background: var(--fill-primary);
+      border-radius: 10px; padding: 16px 14px;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .stat-num {
+      font-size: 22px; font-weight: 700;
+      color: hsl(175,42%,32%); letter-spacing: -0.5px;
+    }
+    .stat-label {
+      font-size: 11px; color: var(--text-tertiary); line-height: 1.4;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      margin-top: 40px; padding-top: 20px;
+      border-top: 1px solid var(--separator);
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    }
+    .footer p { font-size: 12px; color: var(--text-tertiary); }
+    .footer p span { margin: 0 5px; }
+
+    /* ── 响应式 ── */
+    @media (max-width: 520px) {
+      .hero-title { font-size: 22px; }
+      .card { padding: 22px 18px; }
+      .row-chips { display: none; }
+      .hero-svg { height: 180px; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ══ 头图 ══ -->
+  <div class="hero">
+    <svg class="hero-svg" viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="h5bg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%"   stop-color="hsl(175,42%,87%)"/>
+          <stop offset="50%"  stop-color="hsl(175,28%,91%)"/>
+          <stop offset="100%" stop-color="hsl(175,16%,94%)"/>
+        </linearGradient>
+        <radialGradient id="h5gA" cx="50%" cy="30%" r="55%">
+          <stop offset="0%"  stop-color="hsl(175,52%,70%)" stop-opacity="0.18"/>
+          <stop offset="100%" stop-color="hsl(175,52%,70%)" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="h5fs">
+          <feDropShadow dx="0" dy="1" stdDeviation="2"
+            flood-color="hsl(175,30%,48%)" flood-opacity="0.14"/>
+        </filter>
+        <linearGradient id="h5fL" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="hsl(175,36%,89%)" stop-opacity="1"/>
+          <stop offset="100%" stop-color="hsl(175,36%,89%)" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="h5fR" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="hsl(175,30%,92%)" stop-opacity="0"/>
+          <stop offset="100%" stop-color="hsl(175,30%,92%)" stop-opacity="1"/>
+        </linearGradient>
+      </defs>
+
+      <rect width="680" height="220" fill="url(#h5bg)"/>
+      <ellipse cx="340" cy="50" rx="320" ry="130" fill="url(#h5gA)"/>
+
+      <!-- 组1：左侧 UES 五维度指标堆叠（opacity=0.55） -->
+      <g opacity="0.55">
+        <line x1="113" y1="12" x2="113" y2="90" stroke="hsl(175,30%,72%)" stroke-width="0.8" stroke-dasharray="2,2.5"/>
+        <rect x="66" y="12" width="94" height="13" rx="3.5" fill="hsl(175,46%,90%)" stroke="hsl(175,34%,73%)" stroke-width="0.7" filter="url(#h5fs)"/>
+        <text x="113" y="22" text-anchor="middle" font-size="6.5" font-weight="700" fill="hsl(175,50%,28%)" font-family="-apple-system,PingFang SC,sans-serif">易用性 Ease of Use</text>
+        <line x1="113" y1="25" x2="113" y2="35" stroke="hsl(175,30%,72%)" stroke-width="0.8"/>
+        <rect x="66" y="35" width="94" height="13" rx="3.5" fill="hsl(175,42%,82%)" stroke="hsl(175,30%,64%)" stroke-width="0.7" filter="url(#h5fs)"/>
+        <text x="113" y="45" text-anchor="middle" font-size="6.5" font-weight="700" fill="hsl(175,46%,22%)" font-family="-apple-system,PingFang SC,sans-serif">一致性 Consistency</text>
+        <line x1="113" y1="48" x2="113" y2="58" stroke="hsl(175,30%,72%)" stroke-width="0.8"/>
+        <rect x="66" y="58" width="94" height="13" rx="3.5" fill="hsl(175,38%,74%)" stroke="hsl(175,26%,56%)" stroke-width="0.7" filter="url(#h5fs)"/>
+        <text x="113" y="68" text-anchor="middle" font-size="6.5" font-weight="700" fill="hsl(175,44%,16%)" font-family="-apple-system,PingFang SC,sans-serif">任务效率 Task Success</text>
+        <line x1="113" y1="71" x2="113" y2="81" stroke="hsl(175,30%,72%)" stroke-width="0.8"/>
+        <rect x="66" y="81" width="94" height="12" rx="3.5" fill="hsl(175,34%,65%)" stroke="hsl(175,22%,48%)" stroke-width="0.7" filter="url(#h5fs)"/>
+        <text x="113" y="90.5" text-anchor="middle" font-size="6" font-weight="700" fill="hsl(175,40%,10%)" font-family="-apple-system,PingFang SC,sans-serif">满意度 Happiness</text>
+        <text x="113" y="104" text-anchor="middle" font-size="6" fill="hsl(175,22%,60%)" font-family="-apple-system,PingFang SC,sans-serif">UES 五维度指标</text>
+      </g>
+
+      <!-- 组2：中间 AI 驱动闭环（全不透明，视觉焦点） -->
+      <g filter="url(#h5fs)" transform="translate(296,12)">
+        <rect width="88" height="32" rx="5" fill="#ffffff" fill-opacity="0.92"/>
+        <text x="44" y="14" text-anchor="middle" font-size="7.5" font-weight="700" fill="hsl(175,42%,28%)" font-family="-apple-system,PingFang SC,sans-serif">用户反馈</text>
+        <text x="44" y="25" text-anchor="middle" font-size="6.5" fill="hsl(175,28%,50%)" font-family="-apple-system,PingFang SC,sans-serif">2000+ 条语料</text>
+      </g>
+      <text x="340" y="52" text-anchor="middle" font-size="10" fill="hsl(175,36%,58%)">↓</text>
+      <g filter="url(#h5fs)" transform="translate(296,55)">
+        <rect width="88" height="22" rx="5" fill="hsl(175,44%,84%)" fill-opacity="0.92"/>
+        <text x="44" y="15" text-anchor="middle" font-size="7.5" font-weight="700" fill="hsl(175,46%,22%)" font-family="-apple-system,PingFang SC,sans-serif">AI 智能分类</text>
+      </g>
+      <text x="340" y="85" text-anchor="middle" font-size="10" fill="hsl(175,36%,58%)">↓</text>
+      <g filter="url(#h5fs)" transform="translate(296,88)">
+        <rect width="88" height="14" rx="3.5" fill="hsl(175,40%,72%)" fill-opacity="0.92"/>
+        <text x="44" y="10" text-anchor="middle" font-size="7" font-weight="700" fill="hsl(175,44%,14%)" font-family="-apple-system,PingFang SC,sans-serif">指标权重 → 体验优化</text>
+      </g>
+
+      <!-- 组3：右侧 AI Agent 协同链（opacity=0.55） -->
+      <g opacity="0.55">
+        <rect x="517" y="12" width="100" height="12" rx="3.5" fill="hsl(175,44%,88%)" stroke="hsl(175,30%,70%)" stroke-width="0.6"/>
+        <text x="567" y="21" text-anchor="middle" font-size="6.5" font-weight="600" fill="hsl(175,44%,26%)" font-family="-apple-system,PingFang SC,sans-serif">指标文献 RAG</text>
+        <text x="567" y="31" text-anchor="middle" font-size="8" fill="hsl(175,30%,58%)">↓</text>
+        <rect x="517" y="33" width="100" height="12" rx="3.5" fill="hsl(175,40%,78%)" stroke="hsl(175,26%,60%)" stroke-width="0.6"/>
+        <text x="567" y="42" text-anchor="middle" font-size="6.5" font-weight="600" fill="hsl(175,42%,18%)" font-family="-apple-system,PingFang SC,sans-serif">NLP 聚类分析</text>
+        <text x="567" y="52" text-anchor="middle" font-size="8" fill="hsl(175,30%,58%)">↓</text>
+        <rect x="517" y="54" width="100" height="12" rx="3.5" fill="hsl(175,36%,66%)" stroke="hsl(175,22%,48%)" stroke-width="0.6"/>
+        <text x="567" y="63" text-anchor="middle" font-size="6.5" font-weight="600" fill="hsl(175,42%,10%)" font-family="-apple-system,PingFang SC,sans-serif">商业关联验证</text>
+        <text x="567" y="80" text-anchor="middle" font-size="6" fill="hsl(175,22%,60%)" font-family="-apple-system,PingFang SC,sans-serif">指标自动进化体系</text>
+      </g>
+
+      <!-- 左右边缘淡出遮罩 -->
+      <rect x="0" y="0" width="50" height="110" fill="url(#h5fL)"/>
+      <rect x="630" y="0" width="50" height="110" fill="url(#h5fR)"/>
+    </svg>
+
+    <div class="hero-overlay">
+      <div class="hero-meta">
+        <span class="meta-badge">体验度量</span>
+        <span class="meta-badge">AI 实践</span>
+      </div>
+      <h1 class="hero-title">阿里云 UES：AI 驱动的体验度量</h1>
+      <p class="hero-subtitle">来自团队内部分享的摘要 · 信息已脱敏处理 · 原文含图示</p>
+    </div>
+  </div>
+
+  <!-- ══ 核心观点 ══ -->
+  <section class="card" style="background: hsl(175,28%,98.5%);">
+    <p class="card-label" style="display:flex; align-items:center; gap:6px;">
+      <span style="font-size:14px; line-height:1;">💡</span>核心观点
+    </p>
+    <p class="card-headline" style="color: hsl(175,42%,26%); font-size:17px; line-height:1.65;">体验度量的本质是将用户主观感受转化为可驱动决策的客观数据；而 AI 的加入，让这套体系从「周期性报告」进化为「实时自进化的智能引擎」。</p>
+  </section>
+
+  <!-- ══ 地基与原点 ══ -->
+  <section class="card">
+    <p class="card-label">地基与原点</p>
+    <div class="card-body">
+      <p>阿里云设计中心支持数百款云产品的设计工作，曾面临三大痛点：<strong style="color:var(--text-primary)">无度量标尺、无改进抓手、无管理机制</strong>。2019 年，阿里云首次提出 UES 体验度量模型，从三个维度全面定义体验。</p>
+      <ul>
+        <li><strong style="color:var(--text-primary)">主观态度</strong>：通过用研和专家走查获取，涵盖易用性、一致性、满意度指标</li>
+        <li><strong style="color:var(--text-primary)">客观行为</strong>：通过数据埋点获取，即任务效率指标</li>
+        <li><strong style="color:var(--text-primary)">系统表现</strong>：通过数据埋点获取，即产品性能指标</li>
+      </ul>
+
+      <div class="diagram" style="margin-top:20px;">
+        <p class="section-label">UES 五年规模化成果</p>
+        <div class="stats-row">
+          <div class="stat-item">
+            <span class="stat-num">113</span>
+            <span class="stat-label">款核心云产品覆盖</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">600+</span>
+            <span class="stat-label">内部成员参与</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">2000+</span>
+            <span class="stat-label">体验问题推动改进</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ AI 如何重构度量体系 ══ -->
+  <section class="card">
+    <p class="card-label">AI 如何重构度量体系</p>
+    <div class="card-body">
+      <p>静态度量体系在 AI 时代面临三大瓶颈，阿里云基于 UES 进行了二次进化：</p>
+      <ul>
+        <li><strong style="color:var(--text-primary)">实时与个性化</strong>：从周期性采集升级为实时监测，支持分群分析与千人千面体验度量</li>
+        <li><strong style="color:var(--text-primary)">AI 特有维度</strong>：引入可解释性、公平性、可信度、智能性满意度等新指标，填补传统框架空白</li>
+        <li><strong style="color:var(--text-primary)">自动化闭环</strong>：用 AI 日志分析、情绪识别、语义理解替代人工问卷，度量从「数周一次」升级为「分钟级实时监测」</li>
+      </ul>
+
+      <div class="diagram">
+        <p class="section-label">智能指标自动进化三步走</p>
+        <div class="workflow-table">
+          <div class="wf-row">
+            <div class="wf-left"><span class="wf-dimension">Step 1</span></div>
+            <div class="wf-right">
+              <span class="wf-title-text">指标文献 RAG 构建</span>
+              <div class="wf-pills">
+                <span class="pill accent">AI 自动化</span>
+                <span class="pill">产品属性映射</span>
+                <span class="pill">度量指标库</span>
+              </div>
+            </div>
+          </div>
+          <div class="wf-row">
+            <div class="wf-left"><span class="wf-dimension">Step 2</span></div>
+            <div class="wf-right">
+              <span class="wf-title-text">NLP 聚类分析用户反馈</span>
+              <div class="wf-pills">
+                <span class="pill accent">AI 智能分类</span>
+                <span class="pill">问题类型占比</span>
+              </div>
+            </div>
+          </div>
+          <div class="wf-row">
+            <div class="wf-left"><span class="wf-dimension">Step 3</span></div>
+            <div class="wf-right">
+              <span class="wf-title-text">持续计算指标与商业关联性</span>
+              <div class="wf-pills">
+                <span class="pill">AHP 权重分析</span>
+                <span class="pill">续约率 / 留存率相关性</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ AI 虚拟角色体验测试 ══ -->
+  <section class="card">
+    <p class="card-label">AI 虚拟角色：替代真人进行体验测试</p>
+    <div class="card-body">
+      <p>阿里云探索了用 AI 替代真人进行体验测评，并通过「虚拟角色 7 维构建法」赋予角色理性、感性与随机三类属性，使其更贴近真实用户行为。</p>
+      <ul>
+        <li><strong style="color:var(--text-primary)">模型能力摸底</strong>：对比 Gemini、ChatGPT、豆包三款大模型在元素识别、规则理解、报告输出上的表现，Gemini 在理论理解和评估稳定性上表现最优</li>
+        <li><strong style="color:var(--text-primary)">三步微调训练</strong>：通过指标理论 RAG 训练、常见问题库训练、真人对比实验数据训练，让 AI 更懂体验语境</li>
+        <li><strong style="color:var(--text-primary)">虚拟角色构建</strong>：定义理性维度（指标规则）、感性维度（情绪反应）、随机维度（出错率 10–15%），模拟真实用户操作偏好</li>
+      </ul>
+
+      <div class="diagram">
+        <p class="section-label">AI vs 真人测评对比实验（20 位专家参与）</p>
+        <div class="token-ladder">
+          <div class="token-row">
+            <div class="row-index">①</div>
+            <div class="row-info">
+              <span class="row-name">规则型打分一致性</span>
+              <span class="row-desc">一致性等规则型维度，AI 与真人打分几乎无差异</span>
+            </div>
+            <div class="row-chips"><span class="row-chip">≈ 无差异</span></div>
+          </div>
+          <div class="token-arrow">↓</div>
+          <div class="token-row">
+            <div class="row-index">②</div>
+            <div class="row-info">
+              <span class="row-name">高频问题发现重叠率</span>
+              <span class="row-desc">AI 与真人在发现高频体验问题上高度重合</span>
+            </div>
+            <div class="row-chips"><span class="row-chip">79.2%</span></div>
+          </div>
+          <div class="token-arrow">↓</div>
+          <div class="token-row">
+            <div class="row-index">③</div>
+            <div class="row-info">
+              <span class="row-name">AI 发现问题有效性</span>
+              <span class="row-desc">AI 独立发现问题中，经专家验证有效的比例</span>
+            </div>
+            <div class="row-chips"><span class="row-chip">76.8%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 未来展望 ══ -->
+  <section class="card">
+    <p class="card-label">人机共生时代的体验度量展望</p>
+    <div class="card-body">
+      <ul>
+        <li><strong style="color:var(--text-primary)">从静态到实时</strong>：AI 驱动秒级监测，自动捕捉情绪变化与任务效率波动</li>
+        <li><strong style="color:var(--text-primary)">双向感知体系</strong>：同时采集人类生理信号与 AI 内部感知数据，构建更全面的度量维度</li>
+        <li><strong style="color:var(--text-primary)">指标向「关系性体验」扩展</strong>：加入协作流畅度、信任构建能力、人机协同创造力等新维度</li>
+        <li><strong style="color:var(--text-primary)">度量体系自进化</strong>：度量体系本身成为智能体，可自动生成、优化、淘汰指标，适应不同场景</li>
+      </ul>
+      <div class="insight">在人机共生时代，体验度量的评估对象将从传统页面与功能，转向人与 AI 系统整体交互质量——产品体验不再是「用户与产品的单向使用」，而是「人机身份与能力的持续融合」。</div>
+    </div>
+  </section>
+
+  <!-- ══ Footer ══ -->
+  <footer class="footer">
+    <p>⚠ 本内容已进行信息脱敏处理，不含原始业务数据及内部链接</p>
+    <p>2025年10月<span>·</span>UX Article Digest</p>
+  </footer>
+
+</div>
+</body>
+</html>

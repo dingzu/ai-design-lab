@@ -105,6 +105,7 @@ h3 { font-size: 18px; font-weight: 600; }
 .tag-green  { color: var(--green);  border-color: var(--green-border);  background: var(--green-bg); }
 .tag-blue   { color: var(--blue);   border-color: var(--blue-border);   background: var(--blue-bg); }
 .tag-purple { color: var(--purple); border-color: var(--purple-border); background: var(--purple-bg); }
+.tag-orange { color: var(--orange); border-color: var(--orange-border); background: var(--orange-bg); }
 .tag-gray   { color: var(--text-3); border-color: var(--border); background: var(--bg-subtle); }
 
 /* Utility */

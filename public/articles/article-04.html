@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 时代知识库与内容运营 · 设计洞察摘要</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --text-primary:   #1d1d1f;
+      --text-secondary: #6e6e73;
+      --text-tertiary:  #aeaeb2;
+      --fill-primary:   #ffffff;
+      --fill-secondary: #f5f5f7;
+      --fill-tertiary:  #e8e8ed;
+      --separator:      #d2d2d7;
+      --accent:         #0071e3;
+      --accent-soft:    #eef5fd;
+      --radius-sm:  6px;
+      --radius-md:  14px;
+      --radius-lg:  20px;
+      --radius-xl:  28px;
+    }
+
+    html { -webkit-font-smoothing: antialiased; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+                   "PingFang SC", "Helvetica Neue", sans-serif;
+      background: linear-gradient(180deg, hsl(270,30%,95%) 0%, #f5f5f7 260px);
+      color: var(--text-primary);
+      line-height: 1.7;
+      padding: 0 20px 80px;
+    }
+
+    .container { max-width: 680px; margin: 0 auto; }
+
+    /* ── 头图 ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+      overflow: hidden;
+      margin-bottom: 32px;
+      background: linear-gradient(160deg,
+        hsl(270, 42%, 87%) 0%,
+        hsl(270, 28%, 91%) 50%,
+        hsl(270, 16%, 94%) 100%);
+    }
+
+    .hero-svg { display: block; width: 100%; height: 220px; }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 32px 20px;
+      background: linear-gradient(
+        to bottom,
+        transparent                0%,
+        transparent                22%,
+        hsla(270,30%,95%,0.55)     38%,
+        hsla(270,30%,95%,0.82)     48%,
+        hsl(270,30%,95%)           58%,
+        hsl(270,30%,95%)           100%
+      );
+    }
+
+    .hero-meta {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+    }
+
+    .meta-badge {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.05em;
+      color: hsl(270,45%,28%);
+      background: rgba(255,255,255,0.92);
+      padding: 3px 10px; border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.6);
+    }
+
+    .hero-title {
+      font-size: 26px; font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.5px; line-height: 1.3; margin-bottom: 6px;
+    }
+
+    .hero-subtitle { font-size: 13px; color: var(--text-secondary); }
+
+    /* ── 卡片 ── */
+    .card {
+      background: var(--fill-primary);
+      border-radius: var(--radius-lg);
+      padding: 30px; margin-bottom: 14px;
+      box-shadow: 0 1px 0 var(--separator), 0 2px 12px rgba(0,0,0,0.04);
+    }
+
+    .card-label {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.09em; text-transform: uppercase;
+      color: var(--text-tertiary); margin-bottom: 14px;
+    }
+
+    .card-headline {
+      font-size: 17px; font-weight: 600;
+      color: var(--text-primary); line-height: 1.6;
+    }
+
+    /* ── 核心观点卡片 ── */
+    .insight-card {
+      background: hsl(270,28%,98.5%);
+      border-radius: var(--radius-lg);
+      padding: 28px 30px; margin-bottom: 14px;
+      box-shadow: 0 1px 0 var(--separator), 0 2px 12px rgba(0,0,0,0.04);
+    }
+
+    .insight-label {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.09em; text-transform: uppercase;
+      color: var(--text-tertiary); margin-bottom: 14px;
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    .insight-quote {
+      font-size: 16px; font-weight: 600; line-height: 1.75;
+      color: hsl(270,42%,28%);
+    }
+
+    /* ── 正文 & 列表 ── */
+    .card-body {
+      font-size: 15px; color: var(--text-secondary); line-height: 1.85;
+    }
+
+    .card-body p { margin-bottom: 14px; }
+    .card-body p:last-child { margin-bottom: 0; }
+
+    .card-body ul {
+      list-style: none; padding: 0;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+
+    .card-body ul li {
+      position: relative; padding-left: 18px;
+      font-size: 15px; color: var(--text-secondary); line-height: 1.75;
+    }
+
+    .card-body ul li::before {
+      content: "·"; position: absolute; left: 4px;
+      color: var(--text-tertiary); font-size: 18px; line-height: 1.5;
+    }
+
+    strong { color: var(--text-primary); font-weight: 600; }
+
+    code {
+      font-family: "SF Mono", "Menlo", "Consolas", monospace;
+      font-size: 12.5px;
+      background: var(--fill-secondary);
+      color: var(--text-primary);
+      padding: 2px 6px; border-radius: 4px;
+      border: 1px solid var(--fill-tertiary);
+    }
+
+    /* ── 图例容器 ── */
+    .diagram {
+      margin-top: 24px;
+      background: var(--fill-secondary);
+      border-radius: var(--radius-md);
+      padding: 22px 20px;
+    }
+
+    .section-label {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.09em; text-transform: uppercase;
+      color: var(--text-tertiary); margin-bottom: 16px;
+    }
+
+    /* ── 层级流程图 ── */
+    .layer-list { display: flex; flex-direction: column; gap: 0; }
+
+    .layer-row {
+      display: flex; align-items: flex-start; gap: 14px;
+      background: var(--fill-primary);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      box-shadow: 0 1px 0 var(--separator);
+    }
+
+    .layer-row + .layer-arrow {
+      text-align: center; color: var(--text-tertiary);
+      font-size: 14px; padding: 4px 0; line-height: 1;
+    }
+
+    .layer-arrow { text-align: center; color: var(--text-tertiary); font-size: 14px; padding: 4px 0; }
+
+    .layer-num {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: hsl(270,28%,90%);
+      color: hsl(270,42%,32%);
+      font-size: 11px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+
+    .layer-content { flex: 1; }
+
+    .layer-name {
+      font-size: 14px; font-weight: 600;
+      color: var(--text-primary); margin-bottom: 2px;
+    }
+
+    .layer-desc {
+      font-size: 12.5px; color: var(--text-secondary); line-height: 1.5;
+    }
+
+    .layer-chip {
+      font-family: "SF Mono", "Menlo", monospace;
+      font-size: 11px; color: hsl(270,38%,38%);
+      background: hsl(270,28%,93%);
+      padding: 2px 8px; border-radius: 4px;
+      white-space: nowrap; flex-shrink: 0; align-self: center;
+    }
+
+    /* ── 三列对照组 ── */
+    .sop-grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;
+    }
+
+    .sop-col {
+      background: var(--fill-primary);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      border: 1px solid var(--separator);
+    }
+
+    .sop-title {
+      font-size: 11px; font-weight: 700;
+      color: hsl(270,38%,42%); margin-bottom: 8px;
+      letter-spacing: 0.04em;
+    }
+
+    .sop-item {
+      font-size: 12px; color: var(--text-secondary);
+      line-height: 1.6; margin-bottom: 4px;
+    }
+
+    /* ── 运营三关流程 ── */
+    .gate-list { display: flex; flex-direction: column; gap: 8px; }
+
+    .gate-row {
+      display: flex; align-items: flex-start; gap: 12px;
+      background: var(--fill-primary);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      box-shadow: 0 1px 0 var(--separator);
+    }
+
+    .gate-badge {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.05em;
+      color: hsl(270,42%,32%);
+      background: hsl(270,32%,91%);
+      padding: 2px 8px; border-radius: 10px;
+      white-space: nowrap; flex-shrink: 0; margin-top: 2px;
+    }
+
+    .gate-text {
+      font-size: 13.5px; color: var(--text-secondary); line-height: 1.65;
+    }
+
+    .gate-text strong { color: var(--text-primary); }
+
+    /* ── footer ── */
+    .footer {
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid var(--separator);
+      text-align: center;
+    }
+
+    .footer p {
+      font-size: 12px; color: var(--text-tertiary); line-height: 1.8;
+    }
+
+    .footer span { margin: 0 6px; }
+
+    /* ── 响应式 ── */
+    @media (max-width: 520px) {
+      body { padding: 0 14px 60px; }
+      .hero-title { font-size: 22px; }
+      .sop-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+  <!-- ══ 头图：AI 知识库 × 内容运营 ══ -->
+  <div class="hero">
+    <svg class="hero-svg" viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="heroBg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%"   stop-color="hsl(270,42%,87%)"/>
+          <stop offset="50%"  stop-color="hsl(270,28%,91%)"/>
+          <stop offset="100%" stop-color="hsl(270,16%,94%)"/>
+        </linearGradient>
+        <radialGradient id="gA" cx="50%" cy="30%" r="55%">
+          <stop offset="0%"   stop-color="hsl(270,52%,70%)" stop-opacity="0.18"/>
+          <stop offset="100%" stop-color="hsl(270,52%,70%)" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="fs">
+          <feDropShadow dx="0" dy="1" stdDeviation="2"
+            flood-color="hsl(270,30%,48%)" flood-opacity="0.14"/>
+        </filter>
+        <linearGradient id="fadeL" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="hsl(270,36%,89%)" stop-opacity="1"/>
+          <stop offset="100%" stop-color="hsl(270,36%,89%)" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="fadeR" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="hsl(270,30%,92%)" stop-opacity="0"/>
+          <stop offset="100%" stop-color="hsl(270,30%,92%)" stop-opacity="1"/>
+        </linearGradient>
+      </defs>
+
+      <rect width="680" height="220" fill="url(#heroBg)"/>
+      <ellipse cx="340" cy="50" rx="320" ry="130" fill="url(#gA)"/>
+
+      <!-- 布局：3组均分居中，中心 x=113 / x=340 / x=567，y ≤ 100 -->
+
+      <!-- ── 组1：知识库四层架构（左侧，opacity=0.55，中心 x=113） ── -->
+      <g opacity="0.55">
+        <line x1="113" y1="12" x2="113" y2="84"
+          stroke="hsl(270,28%,72%)" stroke-width="0.8" stroke-dasharray="2,2.5"/>
+
+        <rect x="69" y="12" width="88" height="13" rx="3.5"
+          fill="hsl(270,44%,90%)" stroke="hsl(270,32%,73%)" stroke-width="0.7" filter="url(#fs)"/>
+        <text x="113" y="22" text-anchor="middle" font-size="6.5" font-weight="700"
+          fill="hsl(270,48%,28%)" font-family="-apple-system,PingFang SC,sans-serif">身份层</text>
+
+        <line x1="113" y1="25" x2="113" y2="35" stroke="hsl(270,28%,72%)" stroke-width="0.8"/>
+
+        <rect x="69" y="35" width="88" height="13" rx="3.5"
+          fill="hsl(270,40%,82%)" stroke="hsl(270,28%,64%)" stroke-width="0.7" filter="url(#fs)"/>
+        <text x="113" y="45" text-anchor="middle" font-size="6.5" font-weight="700"
+          fill="hsl(270,44%,22%)" font-family="-apple-system,PingFang SC,sans-serif">资产层</text>
+
+        <line x1="113" y1="48" x2="113" y2="58" stroke="hsl(270,28%,72%)" stroke-width="0.8"/>
+
+        <rect x="69" y="58" width="88" height="13" rx="3.5"
+          fill="hsl(270,36%,74%)" stroke="hsl(270,24%,56%)" stroke-width="0.7" filter="url(#fs)"/>
+        <text x="113" y="68" text-anchor="middle" font-size="6.5" font-weight="700"
+          fill="hsl(270,40%,16%)" font-family="-apple-system,PingFang SC,sans-serif">状态层</text>
+
+        <line x1="113" y1="71" x2="113" y2="81" stroke="hsl(270,28%,72%)" stroke-width="0.8"/>
+
+        <rect x="69" y="81" width="88" height="13" rx="3.5"
+          fill="hsl(270,32%,66%)" stroke="hsl(270,20%,48%)" stroke-width="0.7" filter="url(#fs)"/>
+        <text x="113" y="91" text-anchor="middle" font-size="6.5" font-weight="700"
+          fill="hsl(270,36%,10%)" font-family="-apple-system,PingFang SC,sans-serif">SOP 层</text>
+
+        <text x="113" y="104" text-anchor="middle" font-size="6.5"
+          fill="hsl(270,20%,60%)" font-family="-apple-system,PingFang SC,sans-serif">知识库四层架构</text>
+      </g>
+
+      <!-- ── 组2：Skill × 知识库协同（中间，全不透明，中心 x=340） ── -->
+      <!-- Skill 函数卡 -->
+      <g filter="url(#fs)">
+        <rect x="291" y="12" width="98" height="38" rx="6" fill="#ffffff" fill-opacity="0.92"/>
+        <text x="340" y="26" text-anchor="middle" font-size="8.5" font-weight="700"
+          fill="hsl(270,40%,28%)" font-family="-apple-system,PingFang SC,sans-serif">skill()</text>
+        <text x="340" y="38" text-anchor="middle" font-size="6.5"
+          fill="hsl(270,24%,52%)" font-family="-apple-system,PingFang SC,sans-serif">定义做什么</text>
+        <rect x="305" y="42" width="28" height="5" rx="2" fill="hsl(270,32%,86%)"/>
+        <rect x="338" y="42" width="44" height="5" rx="2" fill="hsl(270,24%,90%)"/>
+      </g>
+
+      <text x="340" y="60" text-anchor="middle" font-size="10" fill="hsl(270,30%,58%)">⇣</text>
+
+      <!-- 知识库变量卡 -->
+      <g filter="url(#fs)">
+        <rect x="291" y="63" width="98" height="38" rx="6" fill="hsl(270,30%,22%)" fill-opacity="0.88"/>
+        <text x="340" y="77" text-anchor="middle" font-size="8.5" font-weight="700"
+          fill="hsl(270,28%,86%)" font-family="-apple-system,PingFang SC,sans-serif">知识库</text>
+        <text x="340" y="89" text-anchor="middle" font-size="6.5"
+          fill="hsl(270,20%,68%)" font-family="-apple-system,PingFang SC,sans-serif">定义像不像</text>
+        <rect x="305" y="93" width="36" height="5" rx="2" fill="hsl(270,22%,38%)"/>
+        <rect x="346" y="93" width="36" height="5" rx="2" fill="hsl(270,16%,32%)"/>
+      </g>
+
+      <text x="340" y="113" text-anchor="middle" font-size="6.5"
+        fill="hsl(270,20%,58%)" font-family="-apple-system,PingFang SC,sans-serif">函数 × 变量关系</text>
+
+      <!-- ── 组3：运营三关（右侧，opacity=0.55，中心 x=567） ── -->
+      <g opacity="0.55">
+        <rect x="517" y="12" width="100" height="12" rx="3.5"
+          fill="hsl(270,44%,90%)" stroke="hsl(270,30%,72%)" stroke-width="0.6"/>
+        <text x="567" y="21" text-anchor="middle" font-size="6.5" font-weight="600"
+          fill="hsl(270,42%,28%)" font-family="-apple-system,PingFang SC,sans-serif">第一关 · 信任</text>
+
+        <text x="567" y="31" text-anchor="middle" font-size="8" fill="hsl(270,28%,58%)">↓</text>
+
+        <rect x="517" y="33" width="100" height="12" rx="3.5"
+          fill="hsl(270,40%,80%)" stroke="hsl(270,26%,62%)" stroke-width="0.6"/>
+        <text x="567" y="42" text-anchor="middle" font-size="6.5" font-weight="600"
+          fill="hsl(270,42%,20%)" font-family="-apple-system,PingFang SC,sans-serif">第二关 · 关联</text>
+
+        <text x="567" y="52" text-anchor="middle" font-size="8" fill="hsl(270,28%,58%)">↓</text>
+
+        <rect x="517" y="54" width="100" height="12" rx="3.5"
+          fill="hsl(270,36%,68%)" stroke="hsl(270,22%,50%)" stroke-width="0.6"/>
+        <text x="567" y="63" text-anchor="middle" font-size="6.5" font-weight="600"
+          fill="hsl(270,40%,12%)" font-family="-apple-system,PingFang SC,sans-serif">第三关 · 价值</text>
+
+        <line x1="567" y1="73" x2="567" y2="82"
+          stroke="hsl(270,26%,68%)" stroke-width="0.7" stroke-dasharray="2,2"/>
+        <rect x="527" y="82" width="80" height="11" rx="3.5"
+          fill="hsl(270,28%,88%)" stroke="hsl(270,20%,74%)" stroke-width="0.5"/>
+        <text x="567" y="91" text-anchor="middle" font-size="6.5"
+          fill="hsl(270,36%,30%)" font-family="-apple-system,PingFang SC,sans-serif">违背预期 · 推力设计</text>
+
+        <text x="567" y="104" text-anchor="middle" font-size="6.5"
+          fill="hsl(270,20%,60%)" font-family="-apple-system,PingFang SC,sans-serif">运营三关漏斗</text>
+      </g>
+
+      <!-- 左右边缘淡出遮罩 -->
+      <rect x="0"   y="0" width="50"  height="110" fill="url(#fadeL)"/>
+      <rect x="630" y="0" width="50"  height="110" fill="url(#fadeR)"/>
+    </svg>
+
+    <div class="hero-overlay">
+      <div class="hero-meta">
+        <span class="meta-badge">方法论</span>
+        <span class="meta-badge">AI 工具</span>
+        <span class="meta-badge">内容运营</span>
+      </div>
+      <h1 class="hero-title">AI 知识库构建与内容运营方法论</h1>
+      <p class="hero-subtitle">来自研发设计中心全员分享的摘要 · 人名已脱敏处理 · 原文含实操演示</p>
+    </div>
+  </div>
+
+  <!-- ══ 核心观点 ══ -->
+  <div class="insight-card">
+    <div class="insight-label">
+      <span>💡</span> 核心观点
+    </div>
+    <p class="insight-quote">
+      知识库是你大脑的 API 接口——AI 什么都懂，但就是不懂你。只有把身份、资产、状态、SOP 四层内容结构化地交给 AI，它才能真正替你干活，而不是每次都从零开始。运营的本质不是传播，而是筛选——让对的人找到你，比让更多人看见你重要得多。
+    </p>
+  </div>
+
+  <!-- ══ Part 1：AI 知识库构建 ══ -->
+
+  <!-- 背景：为什么需要知识库 -->
+  <div class="card">
+    <div class="card-label">背景与问题</div>
+    <div class="card-body">
+      <p>使用 AI 一段时间后，你会发现一个反直觉的问题：每次打开新对话，都得重新向 AI 解释「我是谁、我在做什么、我的风格是什么」——就像交往了两年的对象，每天早上还要问你「你是谁」。</p>
+      <ul>
+        <li><strong>AI 能记住你是设计师、喜欢幽默</strong>，但它很难记住你的项目进展到哪一步、上次某个决策的逻辑是什么、你这个月在关注什么方向</li>
+        <li><strong>每次补充背景的时间是最昂贵的成本</strong>——知识库的本质，就是你把工作外包给 AI 之前，先完成的「入职材料」</li>
+        <li>判断一条内容是否应该进知识库，只有一个标准：<strong>如果 AI 不知道这件事，它工作时会出问题，就放进去</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 四层架构 -->
+  <div class="card">
+    <div class="card-label">知识库四层架构</div>
+    <div class="card-body">
+      <p>知识库不是档案馆（给你找东西用），而是给 AI 随时理解你、随时找到对应信息的结构化记忆系统。分为四层：</p>
+    </div>
+
+    <div class="diagram">
+      <div class="section-label">四层结构 · 由浅入深</div>
+      <div class="layer-list">
+
+        <div class="layer-row">
+          <div class="layer-num">1</div>
+          <div class="layer-content">
+            <div class="layer-name">身份层</div>
+            <div class="layer-desc">你与 AI 平均输出之间的差距——包括风格对照表（「AI 会写什么」vs「你会写什么」）、判断标准（带原因）、禁忌清单（AI 反复默认输出的、你讨厌的东西）。提炼方法：让 AI 对比你的原稿与它的稿，找差异点</div>
+          </div>
+          <div class="layer-chip">identity.md</div>
+        </div>
+        <div class="layer-arrow">↓</div>
+
+        <div class="layer-row">
+          <div class="layer-num">2</div>
+          <div class="layer-content">
+            <div class="layer-name">资产层</div>
+            <div class="layer-desc">你过去产出的方案、文章、PRD、会议记录——让 AI 站在你已走过的路上继续往前走，而非从零开始。原始素材比总结更有价值，因为它保留了你说不清楚的部分</div>
+          </div>
+          <div class="layer-chip">assets/</div>
+        </div>
+        <div class="layer-arrow">↓</div>
+
+        <div class="layer-row">
+          <div class="layer-num">3</div>
+          <div class="layer-content">
+            <div class="layer-name">状态层</div>
+            <div class="layer-desc">你当前在跟进什么项目、本周关注什么、最近在考虑什么。通过每日日记 + AI 定向蒸馏的方式持续沉淀——原始碎片随意放，长期记忆定期整理清洁</div>
+          </div>
+          <div class="layer-chip">daily/</div>
+        </div>
+        <div class="layer-arrow">↓</div>
+
+        <div class="layer-row">
+          <div class="layer-num">4</div>
+          <div class="layer-content">
+            <div class="layer-name">SOP 层（Skill）</div>
+            <div class="layer-desc">Skill 与知识库配合：选题时调状态层，写稿时调资产层，校对时调身份层。三个关键实践：显性文件引用（写明读哪个文件）、分步检索（每个流程读对应文件）、对照自检（让 AI 拿着身份层标准过一遍）</div>
+          </div>
+          <div class="layer-chip">skills/</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 工具选型 -->
+  <div class="card">
+    <div class="card-label">三种工具模式</div>
+    <div class="card-body">
+      <p>知识库本质上就是文件，不同工具提供不同使用方式：</p>
+    </div>
+
+    <div class="diagram">
+      <div class="section-label">工具对比</div>
+      <div class="sop-grid">
+        <div class="sop-col">
+          <div class="sop-title">IDE 模式</div>
+          <div class="sop-item">可视化文件管理，直接拖文件进对话框</div>
+          <div class="sop-item">适合主动控制知识库录入内容</div>
+        </div>
+        <div class="sop-col">
+          <div class="sop-title">Claude Code 模式</div>
+          <div class="sop-item">终端运行，支持多 Agent 并行（读库、写稿分角色）</div>
+          <div class="sop-item">内容创作自主性更强，可结合 Obsidian 实现关系图谱</div>
+        </div>
+        <div class="sop-col">
+          <div class="sop-title">OpenAI 自主模式</div>
+          <div class="sop-item">常驻机器，自动完成任务并记录到知识库</div>
+          <div class="sop-item">自主性强但掌控感弱，适合接受 AI 主动记录的用户</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ Part 2：内容运营方法论 ══ -->
+
+  <div class="card">
+    <div class="card-label">运营前置认知</div>
+    <div class="card-body">
+      <p>做运营/内容，第一件事永远不是学方法，而是定目标——<strong>搞清楚你想做「传播」还是「筛选」</strong>。</p>
+      <ul>
+        <li><strong>传播逻辑</strong>：覆盖越广越好，内容越大众越好，走推荐流量（抖音、算法推送）；情绪共鸣、话题热度是核心</li>
+        <li><strong>筛选逻辑</strong>：让对的人主动找到你，走搜索流量（小红书、B站、YouTube）；即使只有 1000 人关注，也比 10 万路人产生更真实的价值</li>
+        <li>一味追求流量，广度没有深度，是当下最大的认知误区——只有信任才能带来真正的转化</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 三关漏斗 -->
+  <div class="card">
+    <div class="card-label">用户停留的三道关</div>
+    <div class="card-body">
+      <p>用户每次看到一条内容，都会经历一套完整的「内心审判」，分三关：</p>
+    </div>
+
+    <div class="diagram">
+      <div class="section-label">三关漏斗</div>
+      <div class="gate-list">
+        <div class="gate-row">
+          <div class="gate-badge">第一关</div>
+          <div class="gate-text"><strong>信任关</strong>——用户为什么要听你的？越完美反而越不可信。真正建立信任的方法是<strong>展示起手牌比用户差，但最终打出了更好的结果</strong>。自我暴露、失败经历、挣扎过程，是拉近距离的最短路径</div>
+        </div>
+        <div class="gate-row">
+          <div class="gate-badge">第二关</div>
+          <div class="gate-text"><strong>关联关</strong>——这内容跟我有什么关系？普通用户不关心你的专业逻辑，只关心当前表达的内容与自己是否有关。要先让他们感受到「这说的就是我的困境」，他们才想知道你的解决方案</div>
+        </div>
+        <div class="gate-row">
+          <div class="gate-badge">第三关</div>
+          <div class="gate-text"><strong>价值关</strong>——看完之后有什么用？承诺不必大，但一定要具体。「看完后你的配色能看起来贵三倍」比「分享一个配色技巧」价值预期清晰得多</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 违背预期与推力设计 -->
+  <div class="card">
+    <div class="card-label">违背预期 · 推力设计</div>
+    <div class="card-body">
+      <p><strong>所有情绪来自预期与现实的落差</strong>——用户对你的预期越低，现实越高，情绪落差越大，越容易传播。三个具体方向：</p>
+      <ul>
+        <li><strong>从最差版本开始</strong>：先展示第一稿（预期被拉低），再展示成品（落差产生）。改变展示顺序，效果大不同</li>
+        <li><strong>反常识表达</strong>：不说「今天分享配色技巧」，而说「做了五年设计，我最近才搞明白：配色问题根本不出在颜色上」——打破认知，用户大脑宕机，必须继续看下去</li>
+        <li><strong>展示挣扎而非光滑结论</strong>：有摩擦感的东西才有真实感，有真实感才有情绪，有情绪才能传播</li>
+      </ul>
+      <p>好内容有完整的<strong>推力设计</strong>：每隔一段制造一个「认知缺口」不马上解答（蔡格尼克效应），让用户始终想知道「然后呢？」——阶梯式结构而非平铺直叙。</p>
+    </div>
+  </div>
+
+  <!-- 真实感 -->
+  <div class="card">
+    <div class="card-label">底层原则 · 真实感</div>
+    <div class="card-body">
+      <p>前面所有原则背后有一个共同支撑：<strong>真实感是这个时代最稀缺的东西</strong>。</p>
+      <ul>
+        <li>精心包装的完美内容太多了，用户感官已经迟钝——直到他们看到真实挣扎，才会停下来说「这不就是我吗」</li>
+        <li>在视觉上展示完美是加分的，但在建立信任上实际上是扣分的。<strong>不完美才是建立连接的最短路径</strong></li>
+        <li>运营能力说到底是<strong>讲故事的能力</strong>：我们不是在设计内容，而是在设计用户注意力的路径</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>来自研发设计中心全员分享 · 内部会议记录整理</p>
+    <p>摘要由 AI 生成 <span>·</span> 人名已脱敏 <span>·</span> 原文含实操演示</p>
+  </footer>
+
+  </div>
+</body>
+</html>

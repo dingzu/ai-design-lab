@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>设计工程化与 AI 时代 Token 设计</title>
+  <style>
+    :root {
+      --text-primary:   #1d1d1f;
+      --text-secondary: #3d3d3f;
+      --text-tertiary:  #6e6e73;
+      --fill-primary:   #ffffff;
+      --fill-secondary: #f5f5f7;
+      --fill-tertiary:  #ebebed;
+      --separator:      #d2d2d7;
+      --radius-sm:  6px;
+      --radius-md:  14px;
+      --radius-lg:  20px;
+      --radius-xl:  28px;
+    }
+
+    html { -webkit-font-smoothing: antialiased; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+                   "PingFang SC", "Helvetica Neue", sans-serif;
+      /* hue=210（冷蓝调）· AI 生成时写死，刷新不变 */
+      background: linear-gradient(180deg, hsl(210,30%,95%) 0%, #f5f5f7 260px);
+      color: var(--text-primary);
+      line-height: 1.7;
+      padding: 0 20px 80px;
+      margin: 0;
+    }
+
+    .container { max-width: 680px; margin: 0 auto; }
+
+    /* ── 头图 ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+      overflow: hidden;
+      margin-bottom: 32px;
+      background: linear-gradient(160deg,
+        hsl(210, 42%, 87%) 0%,
+        hsl(210, 28%, 91%) 50%,
+        hsl(210, 16%, 94%) 100%);
+    }
+
+    .hero-svg { display: block; width: 100%; height: 220px; }
+
+    .hero-overlay {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 32px 20px;
+      background: linear-gradient(
+        to bottom,
+        transparent                0%,
+        transparent                22%,
+        hsla(210,30%,95%,0.55)     38%,
+        hsla(210,30%,95%,0.82)     48%,
+        hsl(210,30%,95%)           58%,
+        hsl(210,30%,95%)           100%
+      );
+      /* ⚠️ 遮罩终止色与 body 背景起始色一致，确保平滑衔接 */
+    }
+
+    .hero-meta {
+      display: flex; align-items: center; gap: 6px;
+      margin-bottom: 10px; flex-wrap: wrap;
+    }
+
+    .meta-badge {
+      font-size: 11px; font-weight: 600;
+      padding: 3px 9px; border-radius: 20px;
+      background: rgba(255,255,255,0.92);
+      color: hsl(210,45%,28%);
+    }
+
+    .hero-title {
+      font-size: 28px; font-weight: 700; line-height: 1.25;
+      color: var(--text-primary); margin: 0 0 8px; letter-spacing: -0.3px;
+    }
+
+    .hero-subtitle {
+      font-size: 13px; color: var(--text-tertiary); margin: 0; line-height: 1.5;
+    }
+
+    /* ── 卡片 ── */
+    .card {
+      background: var(--fill-primary);
+      border-radius: var(--radius-lg);
+      padding: 30px; margin-bottom: 14px;
+      box-shadow: 0 1px 0 var(--separator), 0 2px 12px rgba(0,0,0,0.04);
+    }
+
+    .card-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.09em;
+      text-transform: uppercase; color: var(--text-tertiary); margin: 0 0 14px;
+    }
+
+    .card-headline {
+      font-size: 17px; font-weight: 600; line-height: 1.55;
+      color: var(--text-primary); margin: 0;
+    }
+
+    .card-body { font-size: 15px; color: var(--text-secondary); line-height: 1.85; margin: 0; }
+
+    .card-body ul {
+      display: flex; flex-direction: column; gap: 14px;
+      padding-left: 0; list-style: none; margin: 0;
+    }
+
+    .card-body ul li { padding-left: 18px; position: relative; }
+
+    .card-body ul li::before {
+      content: "·"; position: absolute; left: 4px;
+      color: var(--text-tertiary); font-size: 18px; line-height: 1.5;
+    }
+
+    /* ── 图例容器 ── */
+    .diagram {
+      background: var(--fill-secondary);
+      border-radius: var(--radius-md);
+      padding: 22px 20px; margin-top: 22px;
+    }
+
+    .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-tertiary); margin: 0 0 16px;
+    }
+
+    /* ── Token 三级层次图 ── */
+    .token-levels { display: flex; flex-direction: column; gap: 3px; }
+
+    .token-level {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 13px 16px; background: var(--fill-primary);
+      border-radius: var(--radius-sm);
+    }
+
+    .token-level-badge {
+      font-size: 10px; font-weight: 700; padding: 3px 8px;
+      border-radius: 4px; flex-shrink: 0; margin-top: 1px;
+      font-family: "SF Mono", Menlo, monospace; white-space: nowrap;
+    }
+
+    .token-level-badge.lv1 { background: hsl(210,45%,92%); color: hsl(210,50%,28%); }
+    .token-level-badge.lv2 { background: hsl(210,42%,84%); color: hsl(210,48%,22%); }
+    .token-level-badge.lv3 { background: hsl(210,40%,76%); color: hsl(210,46%,16%); }
+
+    .token-level-content { flex: 1; }
+    .token-level-name { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 3px; }
+    .token-level-desc { font-size: 12px; color: var(--text-tertiary); line-height: 1.5; }
+
+    /* ── 命名对比图 ── */
+    .compare-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+
+    .compare-col {
+      border-radius: var(--radius-sm); padding: 14px 16px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+
+    .compare-col.bad  { background: hsl(0,20%,97%); border: 1px solid hsl(0,18%,88%); }
+    .compare-col.good { background: hsl(145,18%,96%); border: 1px solid hsl(145,18%,84%); }
+
+    .compare-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .compare-label.bad  { color: #8c3c3c; }
+    .compare-label.good { color: #2d6b46; }
+
+    .compare-item {
+      font-family: "SF Mono", Menlo, monospace; font-size: 12px;
+      padding: 5px 10px; border-radius: 4px;
+      line-height: 1.5;
+    }
+
+    .compare-item.bad  { background: hsl(0,20%,93%); color: #8c3c3c; }
+    .compare-item.good { background: hsl(145,18%,90%); color: #2d6b46; }
+
+    /* ── Workflow 步骤条 ── */
+    .workflow-steps { display: flex; flex-direction: column; gap: 3px; }
+
+    .workflow-step {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 12px 14px; background: var(--fill-primary);
+      border-radius: var(--radius-sm);
+    }
+
+    .step-num {
+      width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; margin-top: 0px;
+      background: hsl(210,42%,88%); color: hsl(210,48%,24%);
+      font-family: "SF Mono", Menlo, monospace;
+    }
+
+    .step-content { flex: 1; }
+    .step-title { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 3px; }
+    .step-desc  { font-size: 12px; color: var(--text-tertiary); line-height: 1.5; }
+
+    /* ── AI 应用三列 ── */
+    .ai-app-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+
+    .ai-app-block {
+      background: var(--fill-primary); border-radius: var(--radius-sm);
+      padding: 14px 12px; display: flex; flex-direction: column; gap: 6px;
+    }
+
+    .ai-app-icon  { font-size: 18px; line-height: 1; }
+    .ai-app-title { font-size: 12px; font-weight: 700; color: var(--text-primary); }
+    .ai-app-desc  { font-size: 11px; color: var(--text-tertiary); line-height: 1.5; }
+
+    /* ── code 块 ── */
+    .code-block {
+      background: hsl(210,20%,18%);
+      border-radius: var(--radius-sm);
+      padding: 16px 18px;
+      margin-top: 16px;
+      overflow-x: auto;
+    }
+
+    .code-block pre {
+      margin: 0; font-family: "SF Mono", Menlo, "Courier New", monospace;
+      font-size: 11.5px; line-height: 1.7; color: hsl(210,25%,85%);
+    }
+
+    .code-comment { color: hsl(210,20%,58%); }
+    .code-key     { color: hsl(210,60%,72%); }
+    .code-val     { color: hsl(145,40%,65%); }
+
+    /* ── 引用块 ── */
+    .insight-quote {
+      border-left: 3px solid hsl(210,42%,62%);
+      padding: 14px 18px;
+      background: hsl(210,32%,95%);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin-top: 20px;
+    }
+
+    .insight-quote p {
+      font-size: 14px; font-weight: 600; color: var(--text-primary);
+      line-height: 1.65; margin: 0;
+    }
+
+    /* ── 命名示例块 ── */
+    .token-name-example {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: hsl(210,40%,93%); border-radius: var(--radius-sm);
+      padding: 6px 12px; margin-top: 12px;
+    }
+
+    .token-name-example code {
+      font-family: "SF Mono", Menlo, monospace; font-size: 13px;
+      font-weight: 700; color: hsl(210,48%,28%);
+    }
+
+    .token-name-parts {
+      display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap;
+    }
+
+    .token-part {
+      font-size: 11px; font-weight: 600; padding: 3px 9px;
+      border-radius: 4px;
+    }
+
+    .token-part.p1 { background: hsl(210,45%,90%); color: hsl(210,50%,28%); }
+    .token-part.p2 { background: hsl(210,42%,83%); color: hsl(210,48%,22%); }
+    .token-part.p3 { background: hsl(210,39%,76%); color: hsl(210,46%,16%); }
+
+    /* ── footer ── */
+    .footer {
+      margin-top: 40px; padding-top: 20px;
+      border-top: 1px solid var(--separator);
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    }
+
+    .footer p { font-size: 12px; color: var(--text-tertiary); margin: 0; }
+
+    @media (max-width: 520px) {
+      .hero-title { font-size: 22px; }
+      .card { padding: 22px 18px; }
+      .compare-grid { grid-template-columns: 1fr; }
+      .ai-app-grid  { grid-template-columns: 1fr 1fr; }
+      .hero-svg { height: 180px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ══ 头图：Token 层级 + Light/Dark 切换 + AI 工作流 ══ -->
+  <div class="hero">
+    <svg class="hero-svg" viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="heroBg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%"   stop-color="hsl(210,42%,87%)"/>
+          <stop offset="50%"  stop-color="hsl(210,28%,91%)"/>
+          <stop offset="100%" stop-color="hsl(210,16%,94%)"/>
+        </linearGradient>
+        <radialGradient id="gA" cx="50%" cy="30%" r="55%">
+          <stop offset="0%"   stop-color="hsl(210,52%,70%)" stop-opacity="0.18"/>
+          <stop offset="100%" stop-color="hsl(210,52%,70%)" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="fs">
+          <feDropShadow dx="0" dy="1" stdDeviation="2"
+            flood-color="hsl(210,30%,48%)" flood-opacity="0.14"/>
+        </filter>
+        <!-- 左右边缘淡出遮罩 -->
+        <linearGradient id="fadeL" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="hsl(210,36%,89%)" stop-opacity="1"/>
+          <stop offset="100%" stop-color="hsl(210,36%,89%)" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="fadeR" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="hsl(210,30%,92%)" stop-opacity="0"/>
+          <stop offset="100%" stop-color="hsl(210,30%,92%)" stop-opacity="1"/>
+        </linearGradient>
+      </defs>
+
+      <rect width="680" height="220" fill="url(#heroBg)"/>
+      <ellipse cx="340" cy="50" rx="320" ry="130" fill="url(#gA)"/>
+
+      <!--
+        布局：3组均分居中，各组中心分别在 x=113 / x=340 / x=567
+        左右边缘元素通过 opacity 降低，避免视觉压迫
+      -->
+
+      <!-- ── 组1：Token 三级层次树  中心 x=113，opacity=0.55（左侧淡化） ── -->
+      <g opacity="0.55">
+        <line x1="113" y1="14" x2="113" y2="76"
+          stroke="hsl(210,30%,74%)" stroke-width="0.8" stroke-dasharray="2,2.5"/>
+
+        <rect x="69" y="14" width="88" height="14" rx="3.5"
+          fill="hsl(210,45%,90%)" stroke="hsl(210,36%,74%)" stroke-width="0.7" filter="url(#fs)"/>
+        <text x="113" y="24.5" text-anchor="middle" font-size="7" font-weight="700"
+          fill="hsl(210,50%,28%)" font-family="-apple-system,PingFang SC,sans-serif">Lv1 基础色板 Token</text>
+
+        <line x1="113" y1="28" x2="113" y2="38" stroke="hsl(210,30%,74%)" stroke-width="0.8"/>
+
+        <rect x="69" y="38" width="88" height="14" rx="3.5"
+          fill="hsl(210,42%,82%)" stroke="hsl(210,34%,68%)" stroke-width="0.7" filter="url(#fs)"/>
+        <text x="113" y="48.5" text-anchor="middle" font-size="7" font-weight="700"
+          fill="hsl(210,48%,22%)" font-family="-apple-system,PingFang SC,sans-serif">Lv2 语义化 Token</text>
+
+        <line x1="113" y1="52" x2="113" y2="62" stroke="hsl(210,30%,74%)" stroke-width="0.8"/>
+
+        <rect x="69" y="62" width="88" height="14" rx="3.5"
+          fill="hsl(210,40%,74%)" stroke="hsl(210,32%,62%)" stroke-width="0.7" filter="url(#fs)"/>
+        <text x="113" y="72.5" text-anchor="middle" font-size="7" font-weight="700"
+          fill="hsl(210,46%,16%)" font-family="-apple-system,PingFang SC,sans-serif">Lv3 组件 Token</text>
+
+        <text x="113" y="86" text-anchor="middle" font-size="6.5"
+          fill="hsl(210,22%,62%)" font-family="-apple-system,PingFang SC,sans-serif">Token 三级结构</text>
+      </g>
+
+      <!-- ── 组2：Light / Dark 切换  中心 x=340（全不透明） ── -->
+      <rect x="264" y="14" width="72" height="40" rx="5"
+        fill="#ffffff" fill-opacity="0.90" filter="url(#fs)"/>
+      <rect x="273" y="22" width="26" height="4" rx="2" fill="hsl(210,18%,24%)"/>
+      <rect x="273" y="30" width="44" height="3" rx="1.5" fill="hsl(210,14%,72%)"/>
+      <rect x="273" y="37" width="34" height="3" rx="1.5" fill="hsl(210,14%,82%)"/>
+      <text x="300" y="61" text-anchor="middle" font-size="6.5"
+        fill="hsl(210,22%,56%)" font-family="-apple-system,PingFang SC,sans-serif">Light</text>
+
+      <text x="340" y="37" text-anchor="middle" font-size="11" fill="hsl(210,36%,62%)">⇆</text>
+
+      <rect x="344" y="14" width="72" height="40" rx="5"
+        fill="hsl(210,20%,24%)" fill-opacity="0.90" filter="url(#fs)"/>
+      <rect x="353" y="22" width="26" height="4" rx="2" fill="hsl(210,25%,86%)"/>
+      <rect x="353" y="30" width="44" height="3" rx="1.5" fill="hsl(210,18%,50%)"/>
+      <rect x="353" y="37" width="34" height="3" rx="1.5" fill="hsl(210,16%,40%)"/>
+      <text x="380" y="61" text-anchor="middle" font-size="6.5"
+        fill="hsl(210,22%,56%)" font-family="-apple-system,PingFang SC,sans-serif">Dark</text>
+
+      <text x="340" y="76" text-anchor="middle" font-size="6.5"
+        fill="hsl(210,22%,58%)" font-family="-apple-system,PingFang SC,sans-serif">语义 Token 驱动主题切换</text>
+
+      <!-- ── 组3：AI × Design System  中心 x=567，opacity=0.55（右侧淡化） ── -->
+      <g opacity="0.55">
+        <rect x="517" y="14" width="100" height="14" rx="4"
+          fill="hsl(210,44%,86%)" stroke="hsl(210,34%,70%)" stroke-width="0.7" filter="url(#fs)"/>
+        <text x="567" y="24.5" text-anchor="middle" font-size="7" font-weight="700"
+          fill="hsl(210,46%,22%)" font-family="-apple-system,PingFang SC,sans-serif">Design System</text>
+
+        <text x="567" y="36" text-anchor="middle" font-size="9" fill="hsl(210,32%,64%)">⇅</text>
+
+        <rect x="517" y="38" width="100" height="14" rx="4"
+          fill="hsl(210,42%,80%)" stroke="hsl(210,32%,64%)" stroke-width="0.7" filter="url(#fs)"/>
+        <text x="567" y="48.5" text-anchor="middle" font-size="7" font-weight="700"
+          fill="hsl(210,46%,18%)" font-family="-apple-system,PingFang SC,sans-serif">AI 工具层</text>
+
+        <rect x="517" y="58" width="44" height="11" rx="2.5" fill="#ffffff" fill-opacity="0.76"/>
+        <text x="539" y="66.5" text-anchor="middle" font-size="6"
+          fill="hsl(210,40%,30%)" font-family="-apple-system,PingFang SC,sans-serif">智能生成</text>
+
+        <rect x="573" y="58" width="44" height="11" rx="2.5" fill="#ffffff" fill-opacity="0.76"/>
+        <text x="595" y="66.5" text-anchor="middle" font-size="6"
+          fill="hsl(210,40%,30%)" font-family="-apple-system,PingFang SC,sans-serif">质量保障</text>
+
+        <text x="567" y="82" text-anchor="middle" font-size="6.5"
+          fill="hsl(210,22%,60%)" font-family="-apple-system,PingFang SC,sans-serif">AI × Design System</text>
+      </g>
+
+      <!-- 左右边缘淡出遮罩层（覆盖在元素之上，加强左右边缘融合感） -->
+      <rect x="0" y="0" width="50" height="110" fill="url(#fadeL)"/>
+      <rect x="630" y="0" width="50" height="110" fill="url(#fadeR)"/>
+    </svg>
+
+    <div class="hero-overlay">
+      <div class="hero-meta">
+        <span class="meta-badge">技术/系统</span>
+        <span class="meta-badge">Token 设计</span>
+        <span class="meta-badge">设计工程化</span>
+      </div>
+      <h1 class="hero-title">设计工程化与 AI 时代 Token 设计</h1>
+      <p class="hero-subtitle">原文含 Figma 操作截图及代码示例 · 原文含图示 · 内部链接已移除</p>
+    </div>
+  </div>
+
+  <!-- ══ 核心观点 ══ -->
+  <section class="card" style="background: hsl(210,28%,98.5%);">
+    <p class="card-label" style="display:flex; align-items:center; gap:6px;">
+      <span style="font-size:14px; line-height:1;">💡</span>核心观点
+    </p>
+    <p class="card-headline" style="color: hsl(210,42%,28%); font-size:17px; line-height:1.65;">工程化仍是基础，Token 驱动的设计系统是拥抱 AI 的必要前提。AI 时代下，Token 命名需兼顾「机器可读性」与「人类可理解性」——语义越精确，AI 生成的还原度越高、发散越少。</p>
+  </section>
+
+  <!-- ══ 为什么谈设计工程化 ══ -->
+  <section class="card">
+    <p class="card-label">背景与挑战</p>
+    <div class="card-body">
+      <ul>
+        <li><strong>一致性规模化需求</strong>：多端、多平台、多品牌下，手工维护设计一致性成本急剧上升，需要系统化约束机制</li>
+        <li><strong>设计与开发协同瓶颈</strong>：设计稿到代码的传递链路中存在大量沟通损耗与还原偏差，Token 机制可将设计决策直接以代码形式交付</li>
+        <li><strong>AI 的冲击与赋能</strong>：AI 工具爆发既对传统设计生产流程带来冲击，也为自动化生成、智能检索、质量检查提供了新路径；但 AI 能否精准调用设计系统，高度依赖 Token 的语义质量</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ══ 什么是 Design Token ══ -->
+  <section class="card">
+    <p class="card-label">第一部分 · 工程化基础</p>
+    <div class="card-body">
+      <ul>
+        <li><strong>Design Token（设计令牌）</strong>是将原子级设计决策（颜色、字体、间距、圆角等）转化为机器可读、可复用的标准化数据片段，解决「设计与开发不一致」「重复劳动」「系统迭代低效」三大核心问题</li>
+        <li>Token 命名遵循三段式结构 <code style="font-family:SF Mono,Menlo,monospace;font-size:13px;background:hsl(210,40%,93%);padding:2px 7px;border-radius:4px;color:hsl(210,48%,28%)">类型_语义_状态</code>，例如 <code style="font-family:SF Mono,Menlo,monospace;font-size:13px;background:hsl(210,40%,93%);padding:2px 7px;border-radius:4px;color:hsl(210,48%,28%)">fill_brand_hover</code> 语义为：「填充色」用于「品牌色」的「悬浮」状态</li>
+      </ul>
+    </div>
+
+    <div class="diagram">
+      <p class="section-label">Token 三级层次结构</p>
+      <div class="token-levels">
+        <div class="token-level">
+          <span class="token-level-badge lv1">Lv 1</span>
+          <div class="token-level-content">
+            <div class="token-level-name">基础色板 Token（Base Tokens）</div>
+            <div class="token-level-desc">完整的基础色板，包含中性色、品牌色、功能色等，是主题的「原始颜料」。如 color-neutral-100 ~ color-neutral-950</div>
+          </div>
+        </div>
+        <div class="token-level">
+          <span class="token-level-badge lv2">Lv 2</span>
+          <div class="token-level-content">
+            <div class="token-level-name">语义化主题 Token（Semantic Tokens）</div>
+            <div class="token-level-desc">基于 Base Tokens 定义与语义强相关的 token，亮/暗色主题时映射到不同的基础色值，驱动全局主题切换</div>
+          </div>
+        </div>
+        <div class="token-level">
+          <span class="token-level-badge lv3">Lv 3</span>
+          <div class="token-level-content">
+            <div class="token-level-name">组件 Token（Component Tokens）</div>
+            <div class="token-level-desc">针对基础组件、业务组件基于语义化 token 进一步封装，避免重复定义，提升组件内聚性</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ Light/Dark Token 映射代码示例 ══ -->
+  <section class="card">
+    <p class="card-label">Light / Dark 主题 Token 映射示例</p>
+    <div class="card-body">
+      <ul>
+        <li>语义化 Token 的核心价值在于：切换主题时，只需整体切换变量集，无需逐一修改每个组件，实现一次绑定、全局响应</li>
+        <li>目前 Figma 尚不支持一键生成并自动绑定 Token，也不内置暗色色值生成功能，需通过手动绑定或借助 AI 工具生成色阶</li>
+      </ul>
+    </div>
+
+    <div class="code-block">
+      <pre><span class="code-comment">// 亮色主题 token（映射到浅色基础色板）</span>
+<span class="code-key">lightTokens</span> = {
+  <span class="code-comment">// 文本</span>
+  <span class="code-key">'text-primary'</span>:  <span class="code-val">'color-neutral-900'</span>,   <span class="code-comment">// 主要文本（深色）</span>
+  <span class="code-key">'text-disabled'</span>: <span class="code-val">'color-neutral-400'</span>,   <span class="code-comment">// 禁用文本（浅灰）</span>
+  <span class="code-comment">// 背景</span>
+  <span class="code-key">'bg-page'</span>:       <span class="code-val">'color-neutral-50'</span>,    <span class="code-comment">// 页面背景（白色）</span>
+  <span class="code-key">'bg-card'</span>:       <span class="code-val">'color-neutral-100'</span>,   <span class="code-comment">// 卡片背景（浅灰）</span>
+}
+
+<span class="code-comment">// 暗色主题 token（映射到深色基础色板，逻辑镜像）</span>
+<span class="code-key">darkTokens</span> = {
+  <span class="code-key">'text-primary'</span>:  <span class="code-val">'color-neutral-50'</span>,    <span class="code-comment">// 主要文本（白色）</span>
+  <span class="code-key">'text-disabled'</span>: <span class="code-val">'color-neutral-600'</span>,   <span class="code-comment">// 禁用文本（中深灰）</span>
+  <span class="code-key">'bg-page'</span>:       <span class="code-val">'color-neutral-950'</span>,   <span class="code-comment">// 页面背景（近黑）</span>
+  <span class="code-key">'bg-card'</span>:       <span class="code-val">'color-neutral-900'</span>,   <span class="code-comment">// 卡片背景（深灰）</span>
+}</pre>
+    </div>
+  </section>
+
+  <!-- ══ Figma Token 工作流 ══ -->
+  <section class="card">
+    <p class="card-label">Figma 中的 Token 工作流</p>
+    <div class="diagram">
+      <p class="section-label">四步交付流程</p>
+      <div class="workflow-steps">
+        <div class="workflow-step">
+          <span class="step-num">1</span>
+          <div class="step-content">
+            <div class="step-title">创建 Token 基础集</div>
+            <div class="step-desc">基于自定义基础色阶生成 100–1000 明度色阶，逐一手动绑定 token（Figma 暂不支持一键批量绑定）；暗色色值可借助 AI 工具辅助生成</div>
+          </div>
+        </div>
+        <div class="workflow-step">
+          <span class="step-num">2</span>
+          <div class="step-content">
+            <div class="step-title">发布至团队组件库</div>
+            <div class="step-desc">将 Token 集发布至团队，供其他项目引用；在项目中添加该组件库后即可复用全局 token 变量</div>
+          </div>
+        </div>
+        <div class="workflow-step">
+          <span class="step-num">3</span>
+          <div class="step-content">
+            <div class="step-title">构建组件与 Token 的关联</div>
+            <div class="step-desc">将组件中的颜色、字体等属性绑定到对应 token 变量；切换变量合集（如切换为 dark 模式）即可全局响应</div>
+          </div>
+        </div>
+        <div class="workflow-step">
+          <span class="step-num">4</span>
+          <div class="step-content">
+            <div class="step-title">导出 JSON Token 包交付前端</div>
+            <div class="step-desc">Figma 目前无内嵌导出功能，可通过 Ant Design 主题色编辑器将色值打包为标准 JSON token 文件，发给前端替换即可完成工程交付</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ AI 友好型 Token 命名 ══ -->
+  <section class="card">
+    <p class="card-label">第二部分 · AI 时代 Token 命名原则</p>
+    <div class="card-body">
+      <ul>
+        <li>传统 Token 命名（如 B500、P600、R300）过于抽象，AI 无法准确解析语义，导致代码生成时还原度低、发散率高</li>
+        <li>好的命名就像餐厅点餐：「我要一份五分熟而非七分熟的牛肉」比「我要牛肉」更精确——Token 的作用正是把设计意图说清楚，减少 AI 的猜测空间</li>
+      </ul>
+    </div>
+
+    <div class="diagram">
+      <p class="section-label">命名对比</p>
+      <div class="compare-grid">
+        <div class="compare-col bad">
+          <span class="compare-label bad">❌ 不建议</span>
+          <span class="compare-item bad">B500</span>
+          <span class="compare-item bad">P600-hover</span>
+          <span class="compare-item bad">color-2</span>
+          <span class="compare-item bad">dis-btn</span>
+          <span class="compare-item bad">min-padding</span>
+        </div>
+        <div class="compare-col good">
+          <span class="compare-label good">✅ AI 时代建议</span>
+          <span class="compare-item good">fill_brand_default</span>
+          <span class="compare-item good">fill_primary_hover</span>
+          <span class="compare-item good">bg_card_default</span>
+          <span class="compare-item good">fill_interactive_disabled</span>
+          <span class="compare-item good">spacing_component_minimum</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="diagram" style="margin-top:14px;">
+      <p class="section-label">三条命名原则</p>
+      <div class="workflow-steps">
+        <div class="workflow-step">
+          <span class="step-num">①</span>
+          <div class="step-content">
+            <div class="step-title">层级分明，三级结构</div>
+            <div class="step-desc">基础色板 → 语义化 token → 组件 token，层级清晰便于 AI 解析复用层次关系</div>
+          </div>
+        </div>
+        <div class="workflow-step">
+          <span class="step-num">②</span>
+          <div class="step-content">
+            <div class="step-title">避免歧义，使用机器友好词汇</div>
+            <div class="step-desc">用 success 而非 good；用 hover 而非 mouse-over；用 disabled 而非 dis；用 minimum 而非 min（AI 可能将 min 混淆为 minute）</div>
+          </div>
+        </div>
+        <div class="workflow-step">
+          <span class="step-num">③</span>
+          <div class="step-content">
+            <div class="step-title">状态词统一，建立固定词汇库</div>
+            <div class="step-desc">交互状态固定为 hover / active / disabled；主题变体固定为 light / dark；形成团队内部标准词汇表，AI 可精准识别</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight-quote">
+      <p>场景设想：当设计师输入「为新产品生成一个充满活力的错误状态提示框」，AI 能精准识别出「错误状态」对应 border_error、background_error，「充满活力」映射到更高色彩饱和度——最终输出完全符合设计系统规范的组件，而非随意发挥。</p>
+    </div>
+  </section>
+
+  <!-- ══ AI 时代设计系统变化 ══ -->
+  <section class="card">
+    <p class="card-label">第三部分 · AI 时代设计系统的演进</p>
+    <div class="card-body">
+      <ul>
+        <li>AI 工具的介入并未颠覆设计系统「标准化、可复用、一致性」的核心目标，而是重构了从设计到开发的全链路流程，让工程化落地更高效、更灵活</li>
+      </ul>
+    </div>
+
+    <div class="diagram">
+      <p class="section-label">AI 在设计系统中的三类应用</p>
+      <div class="ai-app-grid">
+        <div class="ai-app-block">
+          <span class="ai-app-icon">✦</span>
+          <span class="ai-app-title">智能生成与补全</span>
+          <span class="ai-app-desc">根据基础 Token 自动生成完整和谐主题；根据设计意图生成组件变体，设计师校准即用</span>
+        </div>
+        <div class="ai-app-block">
+          <span class="ai-app-icon">✓</span>
+          <span class="ai-app-title">智能质量保障</span>
+          <span class="ai-app-desc">AI 代码助手（如 GitHub Copilot）确保开发代码与设计系统一致；AI 设计助手自动检查设计稿是否符合 Token 规范</span>
+        </div>
+        <div class="ai-app-block">
+          <span class="ai-app-icon">⌕</span>
+          <span class="ai-app-title">智能检索与推荐</span>
+          <span class="ai-app-desc">开发者/设计师用自然语言描述需求，AI 从设计系统中推荐最合适的组件和 token</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 设计系统团队新职责 ══ -->
+  <section class="card">
+    <p class="card-label">设计系统团队的新职责</p>
+    <div class="card-body">
+      <ul>
+        <li><strong>从「创建」转向「治理」</strong>：重点不再是手动创建每一个组件，而是治理 AI 生成内容的质量，建立准入标准和审核机制</li>
+        <li><strong>聚焦高层级创新</strong>：将基础、重复性工作交给 AI，设计系统团队把精力投入到体验策略、设计语言探索、系统架构决策等更高价值的工作</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ══ 结语 ══ -->
+  <section class="card">
+    <p class="card-label">结语</p>
+    <div class="card-body">
+      <ul>
+        <li><strong>工程化仍是基础</strong>：稳固的、Token 驱动的设计系统是迎接 AI 时代的必要前提，有利于 AI 基于 Design System 生成符合规范的样式</li>
+        <li><strong>语义设计需面向 AI</strong>：Token 和组件的设计需要更具语义性和结构性，以便 AI 理解和精准调用，减少生成时的「幻觉」偏差</li>
+        <li><strong>设计流程被重塑</strong>：AI 将深入设计系统的构建、使用和维护全流程，极大提升设计团队效率——这不是威胁，而是设计师进化的契机</li>
+      </ul>
+    </div>
+
+    <div class="insight-quote">
+      <p>Token 体系越完善、命名越语义化，AI 生成的设计越可控、还原度越高——设计工程化的价值，在 AI 时代非但没有削弱，反而成为了更重要的基础设施。</p>
+    </div>
+  </section>
+
+  <!-- ══ footer ══ -->
+  <footer class="footer">
+    <p>内部设计分享摘要 · 内部链接已移除</p>
+    <p>摘要由 AI 生成 · 原文含 Figma 截图与代码示例</p>
+  </footer>
+
+</div>
+</body>
+</html>
